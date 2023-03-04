@@ -2,6 +2,10 @@
 
 ゼロから作るよりも簡単じゃないですかねという程度のサンプル
 
+[![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
+
+
+
 ## できること
 
 - ChatGPTを使ったボイスチャット、テキストチャット
