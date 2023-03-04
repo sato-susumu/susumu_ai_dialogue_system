@@ -87,10 +87,19 @@ class MicrophoneStream(object):
 
 
 class BaseSTT:
+    # 音声認識(単発)の開始イベント
     EVENT_STT_START = "stt_start"
+    # 音声認識(単発)の終了イベント
     EVENT_STT_END = "stt_end"
+    # 音声認識(単発)の結果を知らせるイベント
+    #   次のケースがある
+    #     音声認識の途中経過
+    #     音声認識の最終結果
+    #     タイムアウトによる音声認識の最終結果
     EVENT_STT_RESULT = "stt_result"
+    # 音声認識(単発)のデバッグメッセージイベント
     EVENT_STT_DEBUG_MESSAGE = "stt_debug_message"
+    # 音声認識(単発)のエラーイベント
     EVENT_STT_ERROR = "stt_error"
 
     def __init__(self):

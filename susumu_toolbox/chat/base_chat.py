@@ -14,9 +14,14 @@ class BaseChat:
     _STATE_CONNECTING = 1
     _STATE_CONNECTED = 2
     _STATE_CLOSING = 3
+
+    # チャットモジュールが利用できる状態になったことを知らせるイベント
     EVENT_CHAT_OPEN = "chat_open"
+    # チャットモジュールが利用できない状態になったことを知らせるイベント
     EVENT_CHAT_CLOSE = "chat_close"
+    # チャットモジュールからのメッセージイベント
     EVENT_CHAT_MESSAGE = "chat_message"
+    # チャットモジュールからのエラーイベント
     EVENT_CHAT_ERROR = "chat_error"
 
     def __init__(self):
