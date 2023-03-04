@@ -6,4 +6,10 @@ OBS:
   obs_host: "127.0.0.1"
   obs_port_no: 4444
   obs_password: "パスワード"
-
+VOICEVOX:
+  voicevox_host: "127.0.0.1"
+  voicevox_prot_no: 50021
+  voicevox_speaker_no: 8
+ParlAI:
+  parlai_host: "127.0.0.1"
+  parlai_prot_no: 35496

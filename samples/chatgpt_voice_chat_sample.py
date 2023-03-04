@@ -1,6 +1,6 @@
 import os
 
-from samples.parlai_voice_chat_sample import ParlAIVoiceChatSample
+from samples.base_voice_chat_sample import BaseVoiceChatSample
 from susumu_toolbox.chat.base_chat import BaseChat
 from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.stt.base_stt import BaseSTT
@@ -13,7 +13,7 @@ from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class ChatGPTVoiceChatSample(ParlAIVoiceChatSample):
+class ChatGPTVoiceChatSample(BaseVoiceChatSample):
     """ChatGPTボイスチャットのサンプル
 
     入力：音声認識(SRGoogleSyncSTT)

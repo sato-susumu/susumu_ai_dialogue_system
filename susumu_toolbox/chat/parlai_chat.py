@@ -12,10 +12,12 @@ from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
 # noinspection PyMethodMayBeStatic,PyUnusedLocal
 class ParlAIChat(BaseChat):
 
-    def __init__(self):
+    def __init__(self, host: str = "127.0.0.1", port_no: int = 35496):
         super().__init__()
-        self.ws_app = None
-        self.uuid = self._get_uuid()
+        self._ws_app = None
+        self._uuid = self._get_uuid()
+        self._host = host
+        self._port_no = port_no
 
     def _get_uuid(self) -> str:
         return str(uuid.uuid4())
@@ -51,17 +53,17 @@ class ParlAIChat(BaseChat):
         self._event_channel.publish(self.EVENT_CHAT_CLOSE, status_code, close_msg)
 
     def _send_message(self, text: str) -> None:
-        data = {'id': self.uuid, 'text': text}
+        data = {'id': self._uuid, 'text': text}
         json_data = json.dumps(data)
-        self.ws_app.send(json_data)
+        self._ws_app.send(json_data)
 
-    def connect(self, host: str = "127.0.0.1", port_no: int = 35496) -> None:
+    def connect(self) -> None:
         if not self.is_init():
             return
         self._set_state(self._STATE_CONNECTING)
 
-        self.ws_app = websocket.WebSocketApp(
-            f"ws://{host}:{port_no}/websocket",
+        self._ws_app = websocket.WebSocketApp(
+            f"ws://{self._host}:{self._port_no}/websocket",
             on_message=self._on_message,
             on_error=self._on_error,
             on_close=self._on_close,
@@ -69,7 +71,7 @@ class ParlAIChat(BaseChat):
         )
 
         def _run_forever() -> None:
-            self.ws_app.run_forever()
+            self._ws_app.run_forever()
 
         threading.Thread(target=_run_forever).start()
 
@@ -82,7 +84,7 @@ class ParlAIChat(BaseChat):
         # 元のサンプルでも2秒待っていたので、2秒待つ
         time.sleep(2)
         self._send_message("exit")
-        self.ws_app.close()
+        self._ws_app.close()
         self._set_state(self._STATE_INIT)
 
     def send_message(self, text) -> None:

@@ -1,4 +1,6 @@
-from samples.parlai_voice_chat_sample import ParlAIVoiceChatSample
+from samples.base_voice_chat_sample import BaseVoiceChatSample
+from susumu_toolbox.chat.base_chat import BaseChat
+from susumu_toolbox.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.stt.google_streaming_stt import GoogleStreamingSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
@@ -8,7 +10,7 @@ from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class ParlAIVoiceChatSample2(ParlAIVoiceChatSample):
+class ParlAIVoiceChatSample2(BaseVoiceChatSample):
     """ボイスチャットのサンプル2
 
     入力：音声認識(GoogleStreamingSTT)
@@ -20,12 +22,21 @@ class ParlAIVoiceChatSample2(ParlAIVoiceChatSample):
     def __init__(self):
         super().__init__()
 
+    def create_chat(self) -> BaseChat:
+        return ParlAIChat(
+            self._config.get_parlai_host(),
+            self._config.get_parlai_port_no()
+        )
+
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
         return GoogleStreamingSTT()
 
     def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS()
+        return VoicevoxTTS(self._config.get_voicevox_speaker_no(),
+                           self._config.get_voicevox_host(),
+                           self._config.get_voicevox_port_no()
+                           )
 
     def create_translator(self) -> BaseTranslator:
         return DeepLTranslator(self._config.get_deepl_auth_key())
