@@ -47,7 +47,7 @@ class BaseChat:
     def is_closing(self) -> bool:
         return self.state.value == self._STATE_CLOSING
 
-    def connect(self, host: str = None, port_no: int = None) -> None:
+    def connect(self) -> None:
         if not self.is_init():
             return
         self._set_state(self._STATE_CONNECTING)
