@@ -31,4 +31,18 @@ class ConfigManager:
     def get_obs_password(self):
         return self._setting["OBS"]["obs_password"]
 
-    # TODO: ParlAI, VOICEVOXの設定も追加
+    def get_voicevox_host(self):
+        return self._setting["VOICEVOX"]["voicevox_host"]
+
+    def get_voicevox_port_no(self):
+        return self._setting["VOICEVOX"]["voicevox_prot_no"]
+
+    def get_voicevox_speaker_no(self):
+        return self._setting["VOICEVOX"]["voicevox_speaker_no"]
+
+    def get_parlai_host(self):
+        return self._setting["ParlAI"]["parlai_host"]
+
+    def get_parlai_port_no(self):
+        return self._setting["ParlAI"]["parlai_prot_no"]
+

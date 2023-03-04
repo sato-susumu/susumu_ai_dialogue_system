@@ -1,6 +1,6 @@
 import os
 
-from samples.parlai_voice_chat_sample import ParlAIVoiceChatSample
+from samples.base_voice_chat_sample import BaseVoiceChatSample
 from susumu_toolbox.chat.base_chat import BaseChat
 from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.stt.base_stt import BaseSTT
@@ -9,11 +9,11 @@ from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.dummy_translator import DummyTranslator
 from susumu_toolbox.tts.base_tts import BaseTTS
 from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
-# noinspection PyMethodMayBeStatic,DuplicatedCode
 from susumu_toolbox.utility.system_setting import SystemSettings
 
 
-class ChatGPTVoiceChatSample2(ParlAIVoiceChatSample):
+# noinspection PyMethodMayBeStatic,DuplicatedCode
+class ChatGPTVoiceChatSample2(BaseVoiceChatSample):
     """ChatGPTボイスチャットのサンプル
 
     入力：音声認識(GoogleStreamingSTT)
@@ -36,7 +36,10 @@ class ChatGPTVoiceChatSample2(ParlAIVoiceChatSample):
         return GoogleStreamingSTT()
 
     def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS()
+        return VoicevoxTTS(self._config.get_voicevox_speaker_no(),
+                           self._config.get_voicevox_host(),
+                           self._config.get_voicevox_port_no()
+                           )
 
     def create_translator(self) -> BaseTranslator:
         return DummyTranslator()

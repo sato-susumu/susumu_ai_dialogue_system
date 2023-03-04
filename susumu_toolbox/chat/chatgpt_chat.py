@@ -14,11 +14,6 @@ class ChatGPTChat(BaseChat):
         if len(self._system_settings) != 0:
             self._append_message("system", self._system_settings)
 
-    def connect(self, host: str = None, port_no: int = None) -> None:
-        super().connect(host, port_no)
-        # 起動時には何か送る必要があるため、空文字列を送る
-        self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult("", []))
-
     def _append_message(self, role: str, content: str):
         self._messages.append({"role": role, "content": content})
 

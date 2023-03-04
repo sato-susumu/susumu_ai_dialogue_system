@@ -26,7 +26,6 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
         port = self._config.get_obs_port_no()
         password = self._config.get_obs_password()
         self._obs.connect(host, port, password)
-        # TODO: disconnectどうしよう
         self._stt_text = ""
         self._obs.set_text("scene1", "text1", "")
         self._obs.set_text("scene1", "text2", "")
@@ -50,6 +49,14 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
         print(f"_on_stt_result_for_obs text={text}")
         self._obs.set_text("scene1", "text1", text)
         self._stt_text = text
+
+    def run_forever(self) -> None:
+        try:
+            super().run_forever()
+        finally:
+            self._obs.set_text("scene1", "text1", "")
+            self._obs.set_text("scene1", "text2", "")
+            self._obs.disconnect()
 
 
 if __name__ == "__main__":
