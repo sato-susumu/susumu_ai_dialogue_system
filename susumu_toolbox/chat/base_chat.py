@@ -50,14 +50,22 @@ class BaseChat:
     def connect(self) -> None:
         if not self.is_init():
             return
+        # BaseChatには接続先サーバーがないため、この時点で接続完了に関する処理を行う
         self._set_state(self._STATE_CONNECTING)
         self._set_state(self._STATE_CONNECTED)
+        self._event_channel.publish(self.EVENT_CHAT_OPEN)
+        # 接続先サーバーがある場合は、接続時にサーバーからメッセージを受け取り、そのメッセージを通知する
+        # BaseChatには接続先サーバーがないため、空メッセージを通知する
+        self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult("", []))
 
     def disconnect(self) -> None:
         if not self.is_connected():
             return
+        # BaseChatには接続先サーバーがないため、この時点で切断完了に関する処理を行う
         self._set_state(self._STATE_CLOSING)
         self._set_state(self._STATE_INIT)
+        # BaseChatには接続先サーバーがないため、ダミーの通知を行う
+        self._event_channel.publish(self.EVENT_CHAT_CLOSE, None, None)
 
     def send_message(self, text) -> None:
         pass

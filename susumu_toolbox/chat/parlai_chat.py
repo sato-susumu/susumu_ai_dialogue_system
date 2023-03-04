@@ -30,7 +30,7 @@ class ParlAIChat(BaseChat):
         # noinspection SpellCheckingInspection
         if text == 'Welcome to the overworld for the ParlAI messenger chatbot demo. ' \
                    'Please type "begin" to start, or "exit" to exit':
-            self._send_message("begin")
+            self._send_message_to_server("begin")
             return
         # if text == 'Welcome to the ParlAI Chatbot demo. You are now paired with a bot -' \
         #            ' feel free to send a message.Type [DONE] to finish the chat,' \
@@ -44,15 +44,15 @@ class ParlAIChat(BaseChat):
 
     def _on_open(self, ws_app) -> None:
         self._set_state(self._STATE_CONNECTED)
-        # オープン時に適当に送信
-        self._send_message("")
         self._event_channel.publish(self.EVENT_CHAT_OPEN)
+        # オープン時に適当に送信
+        self._send_message_to_server("")
 
     def _on_close(self, ws_app, status_code: Optional[int], close_msg: Optional[str]) -> None:
         self._set_state(self._STATE_INIT)
         self._event_channel.publish(self.EVENT_CHAT_CLOSE, status_code, close_msg)
 
-    def _send_message(self, text: str) -> None:
+    def _send_message_to_server(self, text: str) -> None:
         data = {'id': self._uuid, 'text': text}
         json_data = json.dumps(data)
         self._ws_app.send(json_data)
@@ -80,14 +80,14 @@ class ParlAIChat(BaseChat):
             return
         self._set_state(self._STATE_CLOSING)
         # 終了時には[DONE] と EXITの両方を送る必要があるらしい。
-        self._send_message("[DONE]")
+        self._send_message_to_server("[DONE]")
         # 元のサンプルでも2秒待っていたので、2秒待つ
         time.sleep(2)
-        self._send_message("exit")
+        self._send_message_to_server("exit")
         self._ws_app.close()
         self._set_state(self._STATE_INIT)
 
     def send_message(self, text) -> None:
         if not self.is_connected():
             return
-        self._send_message(text)
+        self._send_message_to_server(text)
