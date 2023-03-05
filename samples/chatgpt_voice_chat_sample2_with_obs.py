@@ -23,10 +23,7 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
         self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result_for_obs)
 
         self._obs = OBSClient(self._config)
-        self._obs.connect()
         self._stt_text = ""
-        self._obs.set_text("scene1", "text1", "")
-        self._obs.set_text("scene1", "text2", "")
 
     def _on_chat_message_for_obs(self, result: ChatResult):
         text = result.text
@@ -49,6 +46,9 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
         self._stt_text = text
 
     def run_forever(self) -> None:
+        self._obs.connect()
+        self._obs.set_text("scene1", "text1", "")
+        self._obs.set_text("scene1", "text2", "")
         try:
             super().run_forever()
         finally:

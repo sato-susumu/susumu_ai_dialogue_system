@@ -8,11 +8,6 @@ class SRGoogleSyncSTT(BaseSTT):
     def __init__(self, config: Config):
         super().__init__(config)
         self._recognizer = sr.Recognizer()
-        self._setup()
-
-    def _setup(self):
-        with sr.Microphone() as source:
-            self._recognizer.adjust_for_ambient_noise(source)
 
     def recognize(self, audio_stream=None):
         with sr.Microphone() as source:
