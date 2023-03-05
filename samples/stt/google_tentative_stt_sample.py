@@ -2,18 +2,23 @@ from samples.stt.base_stt_sample import BaseSTTSample
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
 
+from susumu_toolbox.utility.config import Config
+
 
 # noinspection PyMethodMayBeStatic
 class GoogleTentativeSTTSample(BaseSTTSample):
     """speech_recognition音声認識(google)のサンプル"""
 
-    def __init__(self):
-        super().__init__()
+    # noinspection PyShadowingNames
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return SRGoogleSyncSTT()
+        return SRGoogleSyncSTT(self._config)
 
 
 if __name__ == "__main__":
-    GoogleTentativeSTTSample().run_forever()
+    config = Config()
+    config.load_config()
+    GoogleTentativeSTTSample(config).run_forever()

@@ -1,10 +1,12 @@
 from susumu_toolbox.stt.base_stt import STTResult, BaseSTT
 
+from susumu_toolbox.utility.config import Config
+
 
 # noinspection PyMethodMayBeStatic,PyRedeclaration
 class BaseSTTSample:
-    def __init__(self):
-        pass
+    def __init__(self, config: Config):
+        self._config = config
 
     def on_start(self):
         print("stt start")
@@ -30,7 +32,7 @@ class BaseSTTSample:
         print(e)
 
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return BaseSTT()
+        return BaseSTT(self._config)
 
     def run_forever(self) -> None:
         speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]

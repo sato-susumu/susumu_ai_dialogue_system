@@ -1,20 +1,20 @@
 import time
 
 from six.moves import queue
+
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
 from susumu_toolbox.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
 from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.tts.base_tts import BaseTTS
-from susumu_toolbox.utility.config_manager import ConfigManager
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class BaseVoiceChatSample:
-    def __init__(self):
-        self._config = ConfigManager()
-        self._config.load_config()
+    def __init__(self, config: Config):
+        self._config = config
 
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
@@ -38,17 +38,17 @@ class BaseVoiceChatSample:
         self._translator = self.create_translator()
 
     def create_chat(self) -> BaseChat:
-        return ParlAIChat()
+        return ParlAIChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return BaseSTT()
+        return BaseSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return BaseTTS()
+        return BaseTTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return BaseTranslator()
+        return BaseTranslator(self._config)
 
     def _on_chat_open(self):
         print("_on_chat_open")

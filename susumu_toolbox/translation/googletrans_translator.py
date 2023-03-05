@@ -3,11 +3,12 @@ from typing import Optional
 from googletrans import Translator
 
 from susumu_toolbox.translation.base_translator import BaseTranslator
+from susumu_toolbox.utility.config import Config
 
 
 class GoogletransTranslator(BaseTranslator):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self._translator = Translator()
 
     def translate(self, text: str, target_lang: str, base_lang: Optional[str] = None) -> str:

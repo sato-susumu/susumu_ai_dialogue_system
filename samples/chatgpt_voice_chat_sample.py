@@ -9,6 +9,7 @@ from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.dummy_translator import DummyTranslator
 from susumu_toolbox.tts.base_tts import BaseTTS
 from susumu_toolbox.tts.pyttsx3_tts import Pyttsx3TTS
+from susumu_toolbox.utility.config import Config
 from susumu_toolbox.utility.system_setting import SystemSettings
 
 
@@ -22,8 +23,8 @@ class ChatGPTVoiceChatSample(BaseVoiceChatSample):
     出力：画面出力、音声合成(Pyttsx3TTS)
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def create_chat(self) -> BaseChat:
         system = SystemSettings()
@@ -33,14 +34,16 @@ class ChatGPTVoiceChatSample(BaseVoiceChatSample):
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return SRGoogleSyncSTT()
+        return SRGoogleSyncSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return Pyttsx3TTS()
+        return Pyttsx3TTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DummyTranslator()
+        return DummyTranslator(self._config)
 
 
 if __name__ == "__main__":
-    ChatGPTVoiceChatSample().run_forever()
+    _config = Config()
+    _config.load_config()
+    ChatGPTVoiceChatSample(_config).run_forever()

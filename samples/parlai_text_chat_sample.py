@@ -5,6 +5,7 @@ from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.stt.stdin_pseud_stt import StdinPseudSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.googletrans_translator import GoogletransTranslator
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
@@ -17,22 +18,21 @@ class ParlAITextChatSample(BaseTextChatSample):
     出力：画面出力、音声合成(Pyttsx3TTS)
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def create_chat(self) -> BaseChat:
-        return ParlAIChat(
-            self._config.get_parlai_host(),
-            self._config.get_parlai_port_no()
-        )
+        return ParlAIChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return StdinPseudSTT()
+        return StdinPseudSTT(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return GoogletransTranslator()
+        return GoogletransTranslator(self._config)
 
 
 if __name__ == "__main__":
-    ParlAITextChatSample().run_forever()
+    _config = Config()
+    _config.load_config()
+    ParlAITextChatSample(_config).run_forever()

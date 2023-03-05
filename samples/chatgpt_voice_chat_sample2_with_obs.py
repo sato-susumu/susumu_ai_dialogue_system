@@ -2,6 +2,7 @@ from samples.chatgpt_voice_chat_sample2 import ChatGPTVoiceChatSample2
 from susumu_toolbox.chat.base_chat import ChatResult
 from susumu_toolbox.obs.obs_client import OBSClient
 from susumu_toolbox.stt.base_stt import STTResult
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
@@ -14,18 +15,15 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
     出力：画面出力、音声合成(VoicevoxTTS)、OBS
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self._chat.subscribe(self._chat.EVENT_CHAT_MESSAGE, self._on_chat_message_for_obs)
         self._stt.subscribe(self._stt.EVENT_STT_START, self._on_stt_start_for_obs)
         self._stt.subscribe(self._stt.EVENT_STT_END, self._on_stt_end_for_obs)
         self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result_for_obs)
 
-        self._obs = OBSClient()
-        host = self._config.get_obs_host()
-        port = self._config.get_obs_port_no()
-        password = self._config.get_obs_password()
-        self._obs.connect(host, port, password)
+        self._obs = OBSClient(self._config)
+        self._obs.connect()
         self._stt_text = ""
         self._obs.set_text("scene1", "text1", "")
         self._obs.set_text("scene1", "text2", "")
@@ -60,4 +58,6 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
 
 
 if __name__ == "__main__":
-    ChatGPTVoiceChatSample2WithOBS().run_forever()
+    _config = Config()
+    _config.load_config()
+    ChatGPTVoiceChatSample2WithOBS(_config).run_forever()
