@@ -2,9 +2,11 @@ import time
 
 from six.moves import queue
 
+
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
 from susumu_toolbox.translation.base_translator import BaseTranslator
+from susumu_toolbox.utility.config import Config
 from susumu_toolbox.utility.config import Config
 
 
@@ -32,9 +34,11 @@ class BaseTextChatSample:
 
     def create_chat(self) -> BaseChat:
         return BaseChat(self._config)
+        return BaseChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
+        return BaseSTT(self._config)
         return BaseSTT(self._config)
 
     def create_translator(self) -> BaseTranslator:
