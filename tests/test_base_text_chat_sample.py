@@ -2,31 +2,14 @@ import threading
 import time
 
 from samples.base_text_chat_sample import BaseTextChatSample
-from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
-from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
-from susumu_toolbox.translation.base_translator import BaseTranslator
-from susumu_toolbox.translation.dummy_translator import DummyTranslator
-from susumu_toolbox.utility.config import Config
-
-
-class TextChatSample(BaseTextChatSample):
-    def __init__(self, config: Config):
-        super().__init__(config)
-
-    def create_chat(self) -> BaseChat:
-        return BaseChat(self._config)
-
-    def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return BaseSTT(self._config)
-
-    def create_translator(self) -> BaseTranslator:
-        return DummyTranslator(self._config)
+from susumu_toolbox.chat.base_chat import ChatResult
+from susumu_toolbox.stt.base_stt import STTResult
+from tests.test_utility import get_test_config
 
 
 def start_sample():
-    _config = Config()
-    _config.load_config()
-    text_chat_sample = TextChatSample(_config)
+    _config = get_test_config()
+    text_chat_sample = BaseTextChatSample(_config)
 
     thread = threading.Thread(target=text_chat_sample.run_forever)
     thread.start()
@@ -75,6 +58,7 @@ def common_close(sample, thread):
     thread.join()
 
 
+# noinspection DuplicatedCode
 def test_bye_1():
     sample, thread = start_sample()
     common_bye_1(sample, thread)
