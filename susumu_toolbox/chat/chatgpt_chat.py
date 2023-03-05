@@ -1,14 +1,15 @@
 import openai
 
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyUnusedLocal,PyMethodMayBeStatic,PyShadowingNames
 class ChatGPTChat(BaseChat):
-    def __init__(self, api_key: str, system_settings: str = ""):
-        super().__init__()
+    def __init__(self, config: Config, system_settings: str = ""):
+        super().__init__(config)
         # イマイチな実装だけど許容
-        openai.api_key = api_key
+        openai.api_key = config.get_openai_api_key()
         self._system_settings = system_settings
         self._messages = []
         if len(self._system_settings) != 0:

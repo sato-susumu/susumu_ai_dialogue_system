@@ -7,17 +7,18 @@ from typing import Optional
 import websocket
 
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,PyUnusedLocal
 class ParlAIChat(BaseChat):
 
-    def __init__(self, host: str = "127.0.0.1", port_no: int = 35496):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self._ws_app = None
         self._uuid = self._get_uuid()
-        self._host = host
-        self._port_no = port_no
+        self._host = self._config.get_parlai_host()
+        self._port_no = self._config.get_parlai_port_no()
 
     def _get_uuid(self) -> str:
         return str(uuid.uuid4())

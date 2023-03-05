@@ -2,6 +2,8 @@ import pyaudio
 from event_channel.threaded_event_channel import ThreadedEventChannel
 from six.moves import queue
 
+from susumu_toolbox.utility.config import Config
+
 
 class STTResult:
     def __init__(self, text: str, is_final: bool, is_timed_out: bool = False):
@@ -102,7 +104,8 @@ class BaseSTT:
     # 音声認識(単発)のエラーイベント
     EVENT_STT_ERROR = "stt_error"
 
-    def __init__(self):
+    def __init__(self, config: Config):
+        self._config = config
         self._event_channel = ThreadedEventChannel(blocking=False)
 
     def subscribe(self, event_name: str, func):

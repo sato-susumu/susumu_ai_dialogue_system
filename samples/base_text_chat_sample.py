@@ -1,17 +1,17 @@
 import time
 
 from six.moves import queue
+
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
 from susumu_toolbox.translation.base_translator import BaseTranslator
-from susumu_toolbox.utility.config_manager import ConfigManager
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class BaseTextChatSample:
-    def __init__(self):
-        self._config = ConfigManager()
-        self._config.load_config()
+    def __init__(self, config: Config):
+        self._config = config
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
         self._translator = self.create_translator()
@@ -31,14 +31,14 @@ class BaseTextChatSample:
         self._stt.subscribe(self._stt.EVENT_STT_ERROR, self._on_stt_error)
 
     def create_chat(self) -> BaseChat:
-        return BaseChat()
+        return BaseChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return BaseSTT()
+        return BaseSTT(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return BaseTranslator()
+        return BaseTranslator(self._config)
 
     def _on_chat_open(self):
         print("_on_chat_open")
@@ -119,4 +119,3 @@ class BaseTextChatSample:
             else:
                 text = self._translator.translate(input_text, self._translator.LANG_CODE_EN_US)
                 self._chat.send_message(text)
-

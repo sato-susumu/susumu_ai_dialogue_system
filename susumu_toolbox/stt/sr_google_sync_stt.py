@@ -1,17 +1,13 @@
 import speech_recognition as sr
 
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
+from susumu_toolbox.utility.config import Config
 
 
 class SRGoogleSyncSTT(BaseSTT):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self._recognizer = sr.Recognizer()
-        self._setup()
-
-    def _setup(self):
-        with sr.Microphone() as source:
-            self._recognizer.adjust_for_ambient_noise(source)
 
     def recognize(self, audio_stream=None):
         with sr.Microphone() as source:

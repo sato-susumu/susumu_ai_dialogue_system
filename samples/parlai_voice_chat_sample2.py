@@ -7,6 +7,7 @@ from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.deepl_translator import DeepLTranslator
 from susumu_toolbox.tts.base_tts import BaseTTS
 from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
@@ -19,28 +20,24 @@ class ParlAIVoiceChatSample2(BaseVoiceChatSample):
     出力：画面出力、音声合成(VoicevoxTTS)
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def create_chat(self) -> BaseChat:
-        return ParlAIChat(
-            self._config.get_parlai_host(),
-            self._config.get_parlai_port_no()
-        )
+        return ParlAIChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return GoogleStreamingSTT()
+        return GoogleStreamingSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS(self._config.get_voicevox_speaker_no(),
-                           self._config.get_voicevox_host(),
-                           self._config.get_voicevox_port_no()
-                           )
+        return VoicevoxTTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DeepLTranslator(self._config.get_deepl_auth_key())
+        return DeepLTranslator(self._config)
 
 
 if __name__ == "__main__":
-    ParlAIVoiceChatSample2().run_forever()
+    _config = Config()
+    _config.load_config()
+    ParlAIVoiceChatSample2(_config).run_forever()

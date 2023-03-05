@@ -2,6 +2,8 @@ from multiprocessing import Value
 
 from event_channel.threaded_event_channel import ThreadedEventChannel
 
+from susumu_toolbox.utility.config import Config
+
 
 class ChatResult:
     def __init__(self, text: str, quick_replies: list):
@@ -24,7 +26,8 @@ class BaseChat:
     # チャットモジュールからのエラーイベント
     EVENT_CHAT_ERROR = "chat_error"
 
-    def __init__(self):
+    def __init__(self, config: Config):
+        self._config = config
         self.state = Value('i', self._STATE_INIT)
         self._event_channel = ThreadedEventChannel(blocking=False)
 

@@ -9,6 +9,7 @@ from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.dummy_translator import DummyTranslator
 from susumu_toolbox.tts.base_tts import BaseTTS
 from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
+from susumu_toolbox.utility.config import Config
 from susumu_toolbox.utility.system_setting import SystemSettings
 
 
@@ -22,28 +23,27 @@ class ChatGPTVoiceChatSample2(BaseVoiceChatSample):
     出力：画面出力、音声合成(VoicevoxTTS)
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def create_chat(self) -> BaseChat:
         system = SystemSettings()
         path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
         system.load_settings(path)
-        return ChatGPTChat(self._config.get_openai_api_key(), system.get_system_settings())
+        return ChatGPTChat(self._config, system.get_system_settings())
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return GoogleStreamingSTT()
+        return GoogleStreamingSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS(self._config.get_voicevox_speaker_no(),
-                           self._config.get_voicevox_host(),
-                           self._config.get_voicevox_port_no()
-                           )
+        return VoicevoxTTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DummyTranslator()
+        return DummyTranslator(self._config)
 
 
 if __name__ == "__main__":
-    ChatGPTVoiceChatSample2().run_forever()
+    _config = Config()
+    _config.load_config()
+    ChatGPTVoiceChatSample2(_config).run_forever()
