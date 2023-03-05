@@ -28,7 +28,7 @@ class ChatGPTTextChatSample(BaseTextChatSample):
         system = SystemSettings()
         path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
         system.load_settings(path)
-        return ChatGPTChat(self._config.get_openai_api_key(), system.get_system_settings())
+        return ChatGPTChat(self._config, system.get_system_settings())
 
     def create_stt(self, speech_contexts=None) -> BaseSTT:
         return StdinPseudSTT(self._config)
