@@ -4,17 +4,21 @@ from typing import Optional
 import yaml
 
 
+# noinspection PyMethodMayBeStatic
 class Config:
     def __init__(self):
         self._setting = {}
 
     # noinspection DuplicatedCode
-    def load_config(self, *, file_path: Optional[str] = None) -> None:
+    def load_config(self, file_path: Optional[str] = None) -> None:
         if file_path is None:
-            file_path = os.path.join(os.path.dirname(__file__), "../../config/config.yaml")
+            file_path = os.path.join(self.get_config_dir(), "config.yaml")
 
         with open(file_path, encoding='utf-8') as file:
             self._setting = yaml.safe_load(file)
+
+    def get_config_dir(self) -> str:
+        return os.path.join(os.path.dirname(__file__), "../../config/")
 
     def get_deepl_auth_key(self):
         return self._setting["DeepL"]["deepl_auth_key"]
