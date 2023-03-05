@@ -1,3 +1,5 @@
+# あとまわし
+# noinspection PyPackageRequirements
 from google.cloud import texttospeech
 
 from susumu_toolbox.tts.base_tts import BaseTTS
@@ -23,6 +25,8 @@ class GoogleCloudTTS(BaseTTS):
         with open(file_path, "wb") as out:
             out.write(audio_content)
 
+    # 型の不一致はあとまわし
+    # noinspection PyTypeChecker
     def _tts(self, text: str, format_name: texttospeech.AudioEncoding) -> bytes:
         synthesis_input = texttospeech.SynthesisInput(text=text)
 
