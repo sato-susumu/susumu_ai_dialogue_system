@@ -49,3 +49,12 @@ class Config:
 
     def get_parlai_port_no(self):
         return self._setting["ParlAI"]["parlai_prot_no"]
+
+    def get_base_tts_second_output_enabled(self):
+        return self._setting["BaseTTS"]["base_tts_second_output_enabled"]
+
+    def get_base_tts_second_output_host_api_name(self):
+        return self._setting["BaseTTS"]["base_tts_second_output_host_api_name"]
+
+    def get_base_tts_second_output_device_name(self):
+        return self._setting["BaseTTS"]["base_tts_second_output_device_name"]
