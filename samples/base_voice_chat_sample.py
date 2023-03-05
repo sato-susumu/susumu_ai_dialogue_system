@@ -3,7 +3,6 @@ import time
 from six.moves import queue
 
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
-from susumu_toolbox.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
 from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
@@ -38,7 +37,7 @@ class BaseVoiceChatSample:
         self._translator = self.create_translator()
 
     def create_chat(self) -> BaseChat:
-        return ParlAIChat(self._config)
+        return BaseChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
