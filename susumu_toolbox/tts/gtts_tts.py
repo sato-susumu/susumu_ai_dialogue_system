@@ -5,11 +5,12 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 from susumu_toolbox.tts.base_tts import BaseTTS
+from susumu_toolbox.utility.config import Config
 
 
 class GttsTTS(BaseTTS):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def tts_play(self, text: str) -> None:
         fp = BytesIO()

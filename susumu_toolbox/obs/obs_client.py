@@ -3,6 +3,8 @@ from queue import Empty
 from obswebsocket import obsws, requests
 from six.moves import queue
 
+from susumu_toolbox.utility.config import Config
+
 
 # noinspection PyMethodMayBeStatic,PyShadowingNames
 class OBSClient:
@@ -23,7 +25,8 @@ class OBSClient:
     https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md
     """
 
-    def __init__(self):
+    def __init__(self, config: Config):
+        self._config = config
         self._ws = None
         self._connection_waiting_queue = queue.Queue()
 
@@ -34,7 +37,10 @@ class OBSClient:
     def _on_disconnect(self, ws_app) -> None:
         print("on_disconnect({})".format(ws_app))
 
-    def connect(self, host: str = "127.0.0.1", port_no: int = "4444", password: str = "") -> None:
+    def connect(self) -> None:
+        host = self._config.get_obs_host()
+        port_no = self._config.get_obs_port_no()
+        password = self._config.get_obs_password()
         self._ws = obsws(host, port_no, password, authreconnect=1,
                          on_connect=self._on_connect, on_disconnect=self._on_disconnect)
 

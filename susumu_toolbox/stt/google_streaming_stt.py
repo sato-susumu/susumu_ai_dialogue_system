@@ -7,6 +7,7 @@ from google.cloud import speech
 
 # noinspection PyMethodMayBeStatic
 from susumu_toolbox.stt.base_stt import BaseSTT, STTResult, MicrophoneStream
+from susumu_toolbox.utility.config import Config
 
 
 class GoogleStreamingSTT(BaseSTT):
@@ -14,9 +15,9 @@ class GoogleStreamingSTT(BaseSTT):
     _SAMPLING_RATE = 16000
     _CHUNK_SIZE = int(_SAMPLING_RATE / 10)  # 100ms
 
-    def __init__(self, language_code: str = "ja-JP", single_utterance: bool = True,
+    def __init__(self, config: Config, language_code: str = "ja-JP", single_utterance: bool = True,
                  speech_contexts: Optional[list[str]] = None):
-        super().__init__()
+        super().__init__(config)
         self._timed_out = Value('i', 0)
         self._transcript = ""
         self._language_code = language_code

@@ -3,16 +3,13 @@ import json
 import requests
 
 from susumu_toolbox.tts.base_tts import BaseTTS
+from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,HttpUrlsUsage
 class VoicevoxTTS(BaseTTS):
-    def __init__(self, speaker: int = 8, host: str = '127.0.0.1', port_no: int = 50021):
-        super().__init__()
-        # server_addrは"localhost"だと遅いことがあるので注意
-        self._host = host
-        self._port_no = port_no
-        self._speaker = speaker
+    def __init__(self, config: Config):
+        super().__init__(config)
 
     def tts_play(self, text: str) -> None:
         audio_content = self._synthesize(text)
@@ -30,11 +27,15 @@ class VoicevoxTTS(BaseTTS):
             out.write(audio_content)
 
     def get_version(self) -> str:
-        response = requests.get(f"http://{self._host}:{self._port_no}/version")
+        host = self._config.get_voicevox_host()
+        port_no = self._config.get_voicevox_port_no()
+        response = requests.get(f"http://{host}:{port_no}/version")
         return response.text.replace("\"", "")
 
     def get_speakers(self) -> dict:
-        response_json = requests.get(f"http://{self._host}:{self._port_no}/speakers").json()
+        host = self._config.get_voicevox_host()
+        port_no = self._config.get_voicevox_port_no()
+        response_json = requests.get(f"http://{host}:{port_no}/speakers").json()
         speakers = {}
         for item in response_json:
             speakers[item["name"]] = {}
@@ -44,13 +45,16 @@ class VoicevoxTTS(BaseTTS):
 
     def _synthesize(self, text: str) -> bytes:
         # before = perf_counter()
-        query_json = requests.post(f"http://{self._host}:{self._port_no}/audio_query",
-                                   params={'text': text, 'speaker': self._speaker}).json()
+        host = self._config.get_voicevox_host()
+        port_no = self._config.get_voicevox_port_no()
+        speaker_no = self._config.get_voicevox_speaker_no()
+        query_json = requests.post(f"http://{host}:{port_no}/audio_query",
+                                   params={'text': text, 'speaker': speaker_no}).json()
         query_json["speedScale"] = 1.2
         query_json["pitchScale"] = 0
 
-        response = requests.post(f"http://{self._host}:{self._port_no}/synthesis",
-                                 params={'speaker': self._speaker},
+        response = requests.post(f"http://{host}:{port_no}/synthesis",
+                                 params={'speaker': speaker_no},
                                  data=json.dumps(query_json))
         # TODO: 何らかの実装でパフォーマンス測定
         # after = perf_counter()

@@ -1,9 +1,9 @@
 from susumu_toolbox.translation.deepl_translator import DeepLTranslator
-from susumu_toolbox.utility.config_manager import ConfigManager
+from susumu_toolbox.utility.config import Config
 
 
 def test_translate_ja_en():
-    config = ConfigManager()
+    config = Config()
     config.load_config()
 
     translator = DeepLTranslator(config.get_deepl_auth_key())
@@ -12,7 +12,7 @@ def test_translate_ja_en():
 
 
 def test_translate_en_ja():
-    config = ConfigManager()
+    config = Config()
     config.load_config()
 
     translator = DeepLTranslator(config.get_deepl_auth_key())

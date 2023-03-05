@@ -3,11 +3,13 @@ import wave
 
 import pyaudio
 
+from susumu_toolbox.utility.config import Config
+
 
 # noinspection PyMethodMayBeStatic
 class BaseTTS:
-    def __init__(self):
-        pass
+    def __init__(self, config: Config):
+        self._config = config
 
     def tts_play(self, text: str) -> None:
         pass

@@ -21,11 +21,8 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
         self._stt.subscribe(self._stt.EVENT_STT_END, self._on_stt_end_for_obs)
         self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result_for_obs)
 
-        self._obs = OBSClient()
-        host = self._config.get_obs_host()
-        port = self._config.get_obs_port_no()
-        password = self._config.get_obs_password()
-        self._obs.connect(host, port, password)
+        self._obs = OBSClient(self._config)
+        self._obs.connect()
         self._stt_text = ""
         self._obs.set_text("scene1", "text1", "")
         self._obs.set_text("scene1", "text2", "")

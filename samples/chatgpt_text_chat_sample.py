@@ -30,10 +30,10 @@ class ChatGPTTextChatSample(BaseTextChatSample):
         return ChatGPTChat(self._config.get_openai_api_key(), system.get_system_settings())
 
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return StdinPseudSTT()
+        return StdinPseudSTT(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DummyTranslator()
+        return DummyTranslator(self._config)
 
 
 if __name__ == "__main__":

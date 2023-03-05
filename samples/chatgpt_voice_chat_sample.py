@@ -33,13 +33,13 @@ class ChatGPTVoiceChatSample(BaseVoiceChatSample):
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return SRGoogleSyncSTT()
+        return SRGoogleSyncSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return Pyttsx3TTS()
+        return Pyttsx3TTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DummyTranslator()
+        return DummyTranslator(self._config)
 
 
 if __name__ == "__main__":

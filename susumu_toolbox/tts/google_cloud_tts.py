@@ -1,11 +1,12 @@
 from google.cloud import texttospeech
 
 from susumu_toolbox.tts.base_tts import BaseTTS
+from susumu_toolbox.utility.config import Config
 
 
 class GoogleCloudTTS(BaseTTS):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self.client = texttospeech.TextToSpeechClient()
 
     def tts_play(self, text: str) -> None:

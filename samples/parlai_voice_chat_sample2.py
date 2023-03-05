@@ -23,23 +23,17 @@ class ParlAIVoiceChatSample2(BaseVoiceChatSample):
         super().__init__()
 
     def create_chat(self) -> BaseChat:
-        return ParlAIChat(
-            self._config.get_parlai_host(),
-            self._config.get_parlai_port_no()
-        )
+        return ParlAIChat(self._config)
 
     # noinspection PyUnusedLocal
     def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return GoogleStreamingSTT()
+        return GoogleStreamingSTT(self._config)
 
     def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS(self._config.get_voicevox_speaker_no(),
-                           self._config.get_voicevox_host(),
-                           self._config.get_voicevox_port_no()
-                           )
+        return VoicevoxTTS(self._config)
 
     def create_translator(self) -> BaseTranslator:
-        return DeepLTranslator(self._config.get_deepl_auth_key())
+        return DeepLTranslator(self._config)
 
 
 if __name__ == "__main__":

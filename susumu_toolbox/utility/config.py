@@ -4,7 +4,7 @@ from typing import Optional
 import yaml
 
 
-class ConfigManager:
+class Config:
     def __init__(self):
         self._setting = {}
 
@@ -45,4 +45,3 @@ class ConfigManager:
 
     def get_parlai_port_no(self):
         return self._setting["ParlAI"]["parlai_prot_no"]
-
