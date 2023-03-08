@@ -13,9 +13,9 @@ VOICEVOX:
 ParlAI:
   parlai_host: "127.0.0.1"
   parlai_prot_no: 35496
-BaseTTS:
+PyAudio:
   # 標準スピーカー以外にも同時出力するかどうか
-  base_tts_second_output_enabled: false
+  pyaudio_second_output_enabled: false
   # 名前の一部でもいい
-  base_tts_second_output_host_api_name: "MME"
-  base_tts_second_output_device_name: "VB-Audio Virtual C"
+  pyaudio_second_output_host_api_name: "MME"
+  pyaudio_second_output_device_name: "VB-Audio Virtual C"
