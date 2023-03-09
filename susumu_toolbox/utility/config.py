@@ -26,6 +26,9 @@ class Config:
     def get_openai_api_key(self):
         return self._setting["OpenAI"]["openai_api_key"]
 
+    def set_openai_api_key(self, value):
+        self._setting["OpenAI"]["openai_api_key"] = value
+
     def get_obs_host(self):
         return self._setting["OBS"]["obs_host"]
 
