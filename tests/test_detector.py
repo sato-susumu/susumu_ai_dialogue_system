@@ -15,7 +15,7 @@ def test_base_language_detector_en():
 def test_lingua_language_detector_jp():
     detector = LinguaLanguageDetector()
     result = detector.detect("コマ")
-    assert result == detector.LANG_CODE_JP
+    assert result == detector.LANG_CODE_JA
 
 
 def test_lingua_language_detector_en():

@@ -3,7 +3,8 @@
 
 # noinspection PyMethodMayBeStatic
 class BaseLanguageDetector:
-    LANG_CODE_JP = "jp"
+    # 定数名はISO 639-1。中身は暫定でlinguaに合わせる
+    LANG_CODE_JA = "jp"
     LANG_CODE_EN = "en"
 
     def __init__(self):
