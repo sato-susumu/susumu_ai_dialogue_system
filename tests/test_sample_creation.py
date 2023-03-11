@@ -10,6 +10,7 @@ from samples.stt.base_stt_sample import BaseSTTSample
 from samples.stt.google_streaming_stt_sample import GoogleStreamingSTTSample
 from samples.stt.google_tentative_stt_sample import GoogleTentativeSTTSample
 from samples.stt.stdin_pseud_stt_sample import StdinPseudSTTSample
+from samples.stt.whisper_stt_sample import WhisperSTTSample
 
 from tests.test_utility import get_test_config
 
@@ -72,3 +73,7 @@ def test_sample_creation_11():
 def test_sample_creation_12():
     config = get_test_config()
     StdinPseudSTTSample(config)
+
+def test_sample_creation_13():
+    config = get_test_config()
+    WhisperSTTSample(config)
