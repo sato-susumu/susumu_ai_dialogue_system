@@ -18,3 +18,4 @@ obs-websocket-py
 openai
 pyyaml
 pysimplegui
+webrtcvad

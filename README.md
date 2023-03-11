@@ -4,8 +4,6 @@
 
 [![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
 
-
-
 ## できること
 
 - ChatGPTを使ったボイスチャット、テキストチャット
@@ -15,7 +13,6 @@
 - 音声認識や音声合成のモジュールを入れ替えて実行
 
 - OBSを使った字幕表示
-
 
 ## サンプル一覧
 
@@ -95,5 +92,8 @@ Windows 11
 
 Python 3.10
 
+## 補足
 
+Windows環境でビルドするためには、事前に[Microsoft C++ Build Tools](https://visualstudio.microsoft.com/ja/visual-cpp-build-tools/)
+のインストールが必要です。
 
