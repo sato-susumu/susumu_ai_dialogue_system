@@ -8,7 +8,6 @@ from susumu_toolbox.utility.config import Config
 class ChatGPTChat(BaseChat):
     def __init__(self, config: Config, system_settings: str = ""):
         super().__init__(config)
-        # イマイチな実装だけど許容
         openai.api_key = config.get_openai_api_key()
         self._system_settings = system_settings
         self._messages = []

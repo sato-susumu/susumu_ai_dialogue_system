@@ -8,7 +8,7 @@ from samples.parlai_voice_chat_sample import ParlAIVoiceChatSample
 from samples.parlai_voice_chat_sample2 import ParlAIVoiceChatSample2
 from samples.stt.base_stt_sample import BaseSTTSample
 from samples.stt.google_streaming_stt_sample import GoogleStreamingSTTSample
-from samples.stt.google_tentative_stt_sample import GoogleTentativeSTTSample
+from samples.stt.sr_google_sync_stt_sample import SRGoogleSyncSTTSample
 from samples.stt.stdin_pseud_stt_sample import StdinPseudSTTSample
 from samples.stt.whisper_stt_sample import WhisperSTTSample
 
@@ -67,7 +67,7 @@ def test_sample_creation_10():
 
 def test_sample_creation_11():
     config = get_test_config()
-    GoogleTentativeSTTSample(config)
+    SRGoogleSyncSTTSample(config)
 
 
 def test_sample_creation_12():
