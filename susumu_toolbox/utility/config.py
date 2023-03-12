@@ -24,10 +24,12 @@ class Config:
         if os.path.exists(self._CONFIG_FILE_NAME):
             return "."
         # ルートフォルダ用
+        # TODO:__file__の撤廃
         path = os.path.join(os.path.dirname(__file__), "../config/")
         if os.path.exists(path):
             return path
         # サンプルフォルダ用
+        # TODO:__file__の撤廃
         return os.path.join(os.path.dirname(__file__), "../../config/")
 
     def get_deepl_auth_key(self):
