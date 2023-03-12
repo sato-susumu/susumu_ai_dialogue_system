@@ -6,18 +6,28 @@ import yaml
 
 # noinspection PyMethodMayBeStatic
 class Config:
+    _CONFIG_FILE_NAME = "config.yaml"
+
     def __init__(self):
         self._setting = {}
 
     # noinspection DuplicatedCode
     def load_config(self, file_path: Optional[str] = None) -> None:
         if file_path is None:
-            file_path = os.path.join(self.get_config_dir(), "config.yaml")
+            file_path = os.path.join(self.get_config_dir(), self._CONFIG_FILE_NAME)
 
         with open(file_path, encoding='utf-8') as file:
             self._setting = yaml.safe_load(file)
 
     def get_config_dir(self) -> str:
+        # カレントフォルダ用
+        if os.path.exists(self._CONFIG_FILE_NAME):
+            return "."
+        # ルートフォルダ用
+        path = os.path.join(os.path.dirname(__file__), "../config/")
+        if os.path.exists(path):
+            return path
+        # サンプルフォルダ用
         return os.path.join(os.path.dirname(__file__), "../../config/")
 
     def get_deepl_auth_key(self):
