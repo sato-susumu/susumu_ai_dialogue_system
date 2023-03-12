@@ -3,8 +3,8 @@ import os
 # noinspection PyPep8Naming
 import PySimpleGUI as sg
 
-from gui_config import GuiConfig
 from samples.chatgpt_text_chat_sample import ChatGPTTextChatSample
+from samples.gui.gui_config import GuiConfig
 from susumu_toolbox.utility.config import Config
 
 
