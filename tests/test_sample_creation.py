@@ -11,6 +11,7 @@ from samples.stt.google_streaming_stt_sample import GoogleStreamingSTTSample
 from samples.stt.sr_google_sync_stt_sample import SRGoogleSyncSTTSample
 from samples.stt.stdin_pseud_stt_sample import StdinPseudSTTSample
 from samples.stt.whisper_stt_sample import WhisperSTTSample
+from samples.stt.youtube_pseud_stt_sample import YoutubePseudSTTSample
 
 from tests.test_utility import get_test_config
 
@@ -74,6 +75,12 @@ def test_sample_creation_12():
     config = get_test_config()
     StdinPseudSTTSample(config)
 
+
 def test_sample_creation_13():
     config = get_test_config()
     WhisperSTTSample(config)
+
+
+def test_sample_creation_14():
+    config = get_test_config()
+    YoutubePseudSTTSample(config)

@@ -53,6 +53,12 @@ class Config:
     def get_parlai_port_no(self):
         return self._setting["ParlAI"]["parlai_prot_no"]
 
+    def get_youtube_api_key(self):
+        return self._setting["YouTube"]["youtube_api_key"]
+
+    def get_youtube_live_url(self):
+        return self._setting["YouTube"]["youtube_live_url"]
+
     def get_pyaudio_second_output_enabled(self):
         return self._setting["PyAudio"]["pyaudio_second_output_enabled"]
 

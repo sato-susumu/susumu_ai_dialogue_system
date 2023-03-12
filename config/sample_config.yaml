@@ -13,6 +13,11 @@ VOICEVOX:
 ParlAI:
   parlai_host: "127.0.0.1"
   parlai_prot_no: 35496
+YouTube:
+  # YouTube Data API v3のAPIキー
+  youtube_api_key: ""
+  # YouTubeのライブ配信URL。例：https://www.youtube.com/watch?v=xxxxxxxxxxx
+  youtube_live_url: ""
 PyAudio:
   # 標準スピーカー以外にも同時出力するかどうか
   pyaudio_second_output_enabled: false
