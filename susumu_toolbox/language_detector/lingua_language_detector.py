@@ -13,5 +13,5 @@ class LinguaLanguageDetector(BaseLanguageDetector):
     def detect(self, text: str) -> str:
         result = self._detector.detect_language_of(text)
         if result == Language.JAPANESE:
-            return self.LANG_CODE_JP
+            return self.LANG_CODE_JA
         return self.LANG_CODE_EN

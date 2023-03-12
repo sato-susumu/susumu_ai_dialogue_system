@@ -27,7 +27,7 @@ class ChatGPTVoiceChatSample2(BaseVoiceChatSample):
         super().__init__(config)
 
     def create_chat(self) -> BaseChat:
-        system = SystemSettings()
+        system = SystemSettings(self._config)
         path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
         system.load_settings(path)
         return ChatGPTChat(self._config, system.get_system_settings())

@@ -1,10 +1,8 @@
 # AI音声対話サンプル
 
-ゼロから作るよりも簡単じゃないですかねという程度のサンプル
+様々なモジュールを組み合わせて、ChatGPTやParlAIとボイスチャットができるサンプルです。
 
 [![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
-
-
 
 ## できること
 
@@ -15,12 +13,6 @@
 - 音声認識や音声合成のモジュールを入れ替えて実行
 
 - OBSを使った字幕表示
-
-## できてないこと
-
-- 様々なエラー処理
-
-- いろいろ
 
 ## サンプル一覧
 
@@ -42,17 +34,17 @@
 
 | カテゴリ | モジュール | 条件        |
 | -------- | ---------- | ------------------ |
-| チャット | ChatGPT    | APIキー必要 |
-| チャット     | ParlAI | ParlAIチャットサーバー必要 |
+| チャット | [ChatGPT](https://chat.openai.com/)    | APIキーが必要 |
+| チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要 |
 | 音声認識 | Googleストリーミング音声認識 | Googleの認証必要 |
-| 音声認識 | SpeechRecognition(Google) |  |
+| 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |  |
 | 音声認識 | 標準入力を使った擬似的な音声認識 |  |
-| 音声合成 | VOICEVOX | VOICEVOXサーバーまたはアプリの起動が必要 |
+| 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要 |
 | 音声合成 | Google音声合成 | Googleの認証必要 |
-| 音声合成 | pyttsx3 |  |
-| 音声合成 | gtts |  |
-| 翻訳 | Googletrans |  |
-| 翻訳 | DeepL | APIキー必要 |
+| 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |  |
+| 音声合成 | [gTTS](https://github.com/pndurette/gTTS) |  |
+| 翻訳 | [Googletrans](https://github.com/ssut/py-googletrans) |  |
+| 翻訳 | [DeepL API](https://www.deepl.com/) | API認証キーが必要 |
 
 ## 実行手順
 
@@ -80,9 +72,9 @@ pip install -U -r requirements.txt
 
 #### ChatGPTを使ったリッチなボイスチャットの場合
 
-ストリーミング音声認識、VOICEVOXによる音声合成を使うので簡易ボイスチャットよりもリッチです。
+Googleストリーミング音声認識、VOICEVOX音声合成を使うボイスチャットです。
 
-1. VOICEVOXアプリの起動する  
+1. VOICEVOXアプリを起動する  
    音声合成にVOICEVOXサーバーが必要になります。  
    VOICEVOXアプリにはサーバー機能も含まれているのでアプリを立ち上げればOKです。
 2. Googleの認証を設定する
@@ -100,5 +92,8 @@ Windows 11
 
 Python 3.10
 
+## 補足
 
+Windows環境でビルドするためには、事前に[Microsoft C++ Build Tools](https://visualstudio.microsoft.com/ja/visual-cpp-build-tools/)
+のインストールが必要です。
 

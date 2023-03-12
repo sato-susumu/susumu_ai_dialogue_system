@@ -17,3 +17,7 @@ lingua-language-detector
 obs-websocket-py
 openai
 pyyaml
+pysimplegui
+webrtcvad
+python-dateutil
+pyinstaller

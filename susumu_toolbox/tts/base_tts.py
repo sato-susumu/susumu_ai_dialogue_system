@@ -1,15 +1,12 @@
-import io
-import wave
-
-import pyaudio
-
 from susumu_toolbox.utility.config import Config
+from susumu_toolbox.utility.pyaudio_player import PyAudioPlayer
 
 
 # noinspection PyMethodMayBeStatic
 class BaseTTS:
     def __init__(self, config: Config):
         self._config = config
+        self._player = PyAudioPlayer(config)
 
     def tts_play(self, text: str) -> None:
         pass
@@ -21,29 +18,4 @@ class BaseTTS:
         pass
 
     def _wav_play(self, audio_content: bytes) -> None:
-        wf = None
-        pa = None
-        stream = None
-        try:
-            wf = wave.open(io.BytesIO(audio_content), 'rb')
-            pa = pyaudio.PyAudio()
-            stream = pa.open(
-                format=pyaudio.get_format_from_width(wf.getsampwidth()),
-                channels=wf.getnchannels(),
-                rate=wf.getframerate(),
-                output=True
-            )
-
-            chunk_size = 1024
-            data = wf.readframes(chunk_size)
-            while len(data) > 0:
-                stream.write(data)
-                data = wf.readframes(chunk_size)
-        finally:
-            if stream:
-                stream.stop_stream()
-                stream.close()
-            if pa:
-                pa.terminate()
-            if wf:
-                wf.close()
+        self._player.play_bytes(audio_content)

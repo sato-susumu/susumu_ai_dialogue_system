@@ -6,18 +6,30 @@ import yaml
 
 # noinspection PyMethodMayBeStatic
 class Config:
+    _CONFIG_FILE_NAME = "config.yaml"
+
     def __init__(self):
         self._setting = {}
 
     # noinspection DuplicatedCode
     def load_config(self, file_path: Optional[str] = None) -> None:
         if file_path is None:
-            file_path = os.path.join(self.get_config_dir(), "config.yaml")
+            file_path = os.path.join(self.get_config_dir(), self._CONFIG_FILE_NAME)
 
         with open(file_path, encoding='utf-8') as file:
             self._setting = yaml.safe_load(file)
 
     def get_config_dir(self) -> str:
+        # カレントフォルダ用
+        if os.path.exists(self._CONFIG_FILE_NAME):
+            return "."
+        # ルートフォルダ用
+        # TODO:__file__の撤廃
+        path = os.path.join(os.path.dirname(__file__), "../config/")
+        if os.path.exists(path):
+            return path
+        # サンプルフォルダ用
+        # TODO:__file__の撤廃
         return os.path.join(os.path.dirname(__file__), "../../config/")
 
     def get_deepl_auth_key(self):
@@ -25,6 +37,9 @@ class Config:
 
     def get_openai_api_key(self):
         return self._setting["OpenAI"]["openai_api_key"]
+
+    def set_openai_api_key(self, value):
+        self._setting["OpenAI"]["openai_api_key"] = value
 
     def get_obs_host(self):
         return self._setting["OBS"]["obs_host"]
@@ -49,3 +64,18 @@ class Config:
 
     def get_parlai_port_no(self):
         return self._setting["ParlAI"]["parlai_prot_no"]
+
+    def get_youtube_api_key(self):
+        return self._setting["YouTube"]["youtube_api_key"]
+
+    def get_youtube_live_url(self):
+        return self._setting["YouTube"]["youtube_live_url"]
+
+    def get_pyaudio_second_output_enabled(self):
+        return self._setting["PyAudio"]["pyaudio_second_output_enabled"]
+
+    def get_pyaudio_second_output_host_api_name(self):
+        return self._setting["PyAudio"]["pyaudio_second_output_host_api_name"]
+
+    def get_pyaudio_second_output_device_name(self):
+        return self._setting["PyAudio"]["pyaudio_second_output_device_name"]
