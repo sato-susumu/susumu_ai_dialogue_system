@@ -20,3 +20,4 @@ pyyaml
 pysimplegui
 webrtcvad
 python-dateutil
+pyinstaller
