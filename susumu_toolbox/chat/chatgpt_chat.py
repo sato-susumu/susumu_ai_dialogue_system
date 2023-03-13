@@ -17,12 +17,17 @@ class ChatGPTChat(BaseChat):
     def _append_message(self, role: str, content: str):
         self._messages.append({"role": role, "content": content})
 
+    def _create_prompt(self):
+        if len(self._messages) < 20:
+            return self._messages
+        return self._messages[0:1] + self._messages[-19:]
+
     def send_message(self, text: str) -> None:
         self._append_message("user", text)
 
         result = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=self._messages
+            messages=self._create_prompt(),
         )
         result_text = result.choices[0].message.content
         self._append_message("assistant", result_text)
