@@ -18,4 +18,4 @@ class BaseTTS:
         pass
 
     def _wav_play(self, audio_content: bytes) -> None:
-        self._player.play_bytes(audio_content)
+        self._player.play_bytes_sync(audio_content)

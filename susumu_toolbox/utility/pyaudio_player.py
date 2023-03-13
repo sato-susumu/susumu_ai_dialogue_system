@@ -69,7 +69,7 @@ class PyAudioPlayer:
             if wf:
                 wf.close()
 
-    def play_bytes(self, audio_content: bytes) -> None:
+    def play_bytes_sync(self, audio_content: bytes) -> None:
         second_output_device_id = self._get_second_output_device_id()
         self._thread1 = threading.Thread(target=self._play_bytes, args=(audio_content, 0, 0))
         self._thread2 = threading.Thread(target=self._play_bytes, args=(audio_content, 1, second_output_device_id))
@@ -78,11 +78,13 @@ class PyAudioPlayer:
 
         self._thread1.start()
         self._thread2.start()
+        self._thread1.join()
+        self._thread2.join()
 
     def play_wav_file(self, file_path: str):
         with open(file_path, 'rb') as wf:
             data = wf.read()
-        self.play_bytes(data)
+        self.play_bytes_sync(data)
 
     def stop(self):
         if self._thread1 or self._thread2:
