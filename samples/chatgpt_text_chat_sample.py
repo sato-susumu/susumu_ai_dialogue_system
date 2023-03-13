@@ -39,5 +39,5 @@ class ChatGPTTextChatSample(BaseTextChatSample):
 
 if __name__ == "__main__":
     _config = Config()
-    _config.load_config()
+    _config.load()
     ChatGPTTextChatSample(_config).run_forever()

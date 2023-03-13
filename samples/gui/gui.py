@@ -1,5 +1,3 @@
-import os
-
 # noinspection PyPep8Naming
 import PySimpleGUI as sg
 
@@ -25,8 +23,6 @@ class GUI:
 
     def _get_sample_config(self) -> Config:
         config = Config()
-        file_path = os.path.join(config.get_config_dir(), "sample_config.yaml")
-        config.load_config(file_path)
         return config
 
     def _run(self) -> None:

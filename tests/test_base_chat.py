@@ -1,9 +1,9 @@
 from susumu_toolbox.chat.base_chat import BaseChat
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def test_chat_connect_1():
-    config = get_test_config()
+    config = Config()
     chat = BaseChat(config)
     assert chat.is_init()
 
@@ -15,7 +15,7 @@ def test_chat_connect_1():
 
 
 def test_chat_connect_2():
-    config = get_test_config()
+    config = Config()
     chat = BaseChat(config)
     assert chat.is_init()
 

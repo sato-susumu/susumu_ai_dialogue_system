@@ -4,11 +4,11 @@ import time
 from samples.base_text_chat_sample import BaseTextChatSample
 from susumu_toolbox.chat.base_chat import ChatResult
 from susumu_toolbox.stt.base_stt import STTResult
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def start_sample():
-    _config = get_test_config()
+    _config = Config()
     text_chat_sample = BaseTextChatSample(_config)
 
     thread = threading.Thread(target=text_chat_sample.run_forever)

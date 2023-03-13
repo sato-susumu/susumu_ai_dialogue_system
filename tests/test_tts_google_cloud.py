@@ -1,7 +1,7 @@
 from susumu_toolbox.tts.google_cloud_tts import GoogleCloudTTS
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def test_tts():
-    config = get_test_config()
+    config = Config()
     GoogleCloudTTS(config)

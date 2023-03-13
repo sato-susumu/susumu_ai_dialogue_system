@@ -1,7 +1,7 @@
 from susumu_toolbox.tts.pyttsx3_tts import Pyttsx3TTS
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def test_tts_play():
-    config = get_test_config()
+    config = Config()
     Pyttsx3TTS(config)

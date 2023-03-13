@@ -45,5 +45,5 @@ class ChatGPTVoiceChatSample2(BaseVoiceChatSample):
 
 if __name__ == "__main__":
     _config = Config()
-    _config.load_config()
+    _config.load()
     ChatGPTVoiceChatSample2(_config).run_forever()

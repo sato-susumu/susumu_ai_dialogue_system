@@ -1,7 +1,7 @@
 from susumu_toolbox.translation.deepl_translator import DeepLTranslator
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def test_deepl():
-    config = get_test_config()
+    config = Config()
     DeepLTranslator(config)

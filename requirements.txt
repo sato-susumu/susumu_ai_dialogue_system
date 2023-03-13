@@ -21,3 +21,4 @@ pysimplegui
 webrtcvad
 python-dateutil
 pyinstaller
+omegaconf

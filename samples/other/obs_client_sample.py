@@ -7,7 +7,7 @@ from susumu_toolbox.utility.config import Config
 logging.basicConfig(level=logging.DEBUG)
 
 config = Config()
-config.load_config()
+config.load()
 client = OBSClient(config)
 client.connect()
 for i in range(30):

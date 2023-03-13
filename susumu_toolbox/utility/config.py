@@ -1,7 +1,7 @@
 import os
 from typing import Optional
 
-import yaml
+from omegaconf import OmegaConf
 
 
 # noinspection PyMethodMayBeStatic
@@ -9,15 +9,44 @@ class Config:
     _CONFIG_FILE_NAME = "config.yaml"
 
     def __init__(self):
-        self._setting = {}
+        # 辞書からコンフィグを読み込む
+        default_yaml = """
+            DeepL:
+              deepl_auth_key: "DEEPLの認証キー"
+            OpenAI:
+              openai_api_key: "OpenAIのAPIキー"
+            OBS:
+              obs_host: "127.0.0.1"
+              obs_port_no: 4444
+              obs_password: "パスワード"
+            VOICEVOX:
+              voicevox_host: "127.0.0.1"
+              voicevox_prot_no: 50021
+              voicevox_speaker_no: 8
+            ParlAI:
+              parlai_host: "127.0.0.1"
+              parlai_prot_no: 35496
+            YouTube:
+              # YouTube Data API v3のAPIキー
+              youtube_api_key: ""
+              # YouTubeのライブ配信URL。例：https://www.youtube.com/watch?v=xxxxxxxxxxx
+              youtube_live_url: ""
+            PyAudio:
+              # 標準スピーカー以外にも同時出力するかどうか
+              pyaudio_second_output_enabled: false
+              # 名前の一部でもいい
+              pyaudio_second_output_host_api_name: "MME"
+              pyaudio_second_output_device_name: "VB-Audio Virtual C"        
+        """
+        self._config = OmegaConf.create(default_yaml)
 
     # noinspection DuplicatedCode
-    def load_config(self, file_path: Optional[str] = None) -> None:
+    def load(self, file_path: Optional[str] = None) -> None:
         if file_path is None:
             file_path = os.path.join(self.get_config_dir(), self._CONFIG_FILE_NAME)
 
-        with open(file_path, encoding='utf-8') as file:
-            self._setting = yaml.safe_load(file)
+        loaded_config = OmegaConf.load(file_path)
+        self._config = OmegaConf.merge(self._config, loaded_config)
 
     def get_config_dir(self) -> str:
         # カレントフォルダ用
@@ -30,52 +59,56 @@ class Config:
             return path
         # サンプルフォルダ用
         # TODO:__file__の撤廃
-        return os.path.join(os.path.dirname(__file__), "../../config/")
+        path = os.path.join(os.path.dirname(__file__), "../../config/")
+        if os.path.exists(path):
+            return path
+        return "."
 
-    def get_deepl_auth_key(self):
-        return self._setting["DeepL"]["deepl_auth_key"]
+    def get_deepl_auth_key(self) -> str:
+        return self._config["DeepL"]["deepl_auth_key"]
 
-    def get_openai_api_key(self):
-        return self._setting["OpenAI"]["openai_api_key"]
+    def get_openai_api_key(self) -> str:
+        value = self._config["OpenAI"]["openai_api_key"]
+        return value
 
     def set_openai_api_key(self, value):
-        self._setting["OpenAI"]["openai_api_key"] = value
+        self._config["OpenAI"]["openai_api_key"] = value
 
     def get_obs_host(self):
-        return self._setting["OBS"]["obs_host"]
+        return self._config["OBS"]["obs_host"]
 
     def get_obs_port_no(self):
-        return self._setting["OBS"]["obs_port_no"]
+        return self._config["OBS"]["obs_port_no"]
 
     def get_obs_password(self):
-        return self._setting["OBS"]["obs_password"]
+        return self._config["OBS"]["obs_password"]
 
     def get_voicevox_host(self):
-        return self._setting["VOICEVOX"]["voicevox_host"]
+        return self._config["VOICEVOX"]["voicevox_host"]
 
     def get_voicevox_port_no(self):
-        return self._setting["VOICEVOX"]["voicevox_prot_no"]
+        return self._config["VOICEVOX"]["voicevox_prot_no"]
 
     def get_voicevox_speaker_no(self):
-        return self._setting["VOICEVOX"]["voicevox_speaker_no"]
+        return self._config["VOICEVOX"]["voicevox_speaker_no"]
 
     def get_parlai_host(self):
-        return self._setting["ParlAI"]["parlai_host"]
+        return self._config["ParlAI"]["parlai_host"]
 
     def get_parlai_port_no(self):
-        return self._setting["ParlAI"]["parlai_prot_no"]
+        return self._config["ParlAI"]["parlai_prot_no"]
 
     def get_youtube_api_key(self):
-        return self._setting["YouTube"]["youtube_api_key"]
+        return self._config["YouTube"]["youtube_api_key"]
 
     def get_youtube_live_url(self):
-        return self._setting["YouTube"]["youtube_live_url"]
+        return self._config["YouTube"]["youtube_live_url"]
 
     def get_pyaudio_second_output_enabled(self):
-        return self._setting["PyAudio"]["pyaudio_second_output_enabled"]
+        return self._config["PyAudio"]["pyaudio_second_output_enabled"]
 
     def get_pyaudio_second_output_host_api_name(self):
-        return self._setting["PyAudio"]["pyaudio_second_output_host_api_name"]
+        return self._config["PyAudio"]["pyaudio_second_output_host_api_name"]
 
     def get_pyaudio_second_output_device_name(self):
-        return self._setting["PyAudio"]["pyaudio_second_output_device_name"]
+        return self._config["PyAudio"]["pyaudio_second_output_device_name"]

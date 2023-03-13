@@ -59,5 +59,5 @@ class ChatGPTVoiceChatSample2WithOBS(ChatGPTVoiceChatSample2):
 
 if __name__ == "__main__":
     _config = Config()
-    _config.load_config()
+    _config.load()
     ChatGPTVoiceChatSample2WithOBS(_config).run_forever()

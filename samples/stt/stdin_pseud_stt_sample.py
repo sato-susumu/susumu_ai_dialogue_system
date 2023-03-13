@@ -20,5 +20,5 @@ class StdinPseudSTTSample(BaseSTTSample):
 
 if __name__ == "__main__":
     config = Config()
-    config.load_config()
+    config.load()
     StdinPseudSTTSample(config).run_forever()

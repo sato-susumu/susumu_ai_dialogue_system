@@ -39,5 +39,5 @@ class ParlAIVoiceChatSample(BaseVoiceChatSample):
 
 if __name__ == "__main__":
     _config = Config()
-    _config.load_config()
+    _config.load()
     ParlAIVoiceChatSample(_config).run_forever()

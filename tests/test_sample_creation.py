@@ -12,75 +12,74 @@ from samples.stt.sr_google_sync_stt_sample import SRGoogleSyncSTTSample
 from samples.stt.stdin_pseud_stt_sample import StdinPseudSTTSample
 from samples.stt.whisper_stt_sample import WhisperSTTSample
 from samples.stt.youtube_pseud_stt_sample import YoutubePseudSTTSample
-
-from tests.test_utility import get_test_config
+from susumu_toolbox.utility.config import Config
 
 
 def test_sample_creation_1():
-    config = get_test_config()
+    config = Config()
     BaseVoiceChatSample(config)
 
 
 def test_sample_creation_2():
-    config = get_test_config()
+    config = Config()
     ChatGPTTextChatSample(config)
 
 
 def test_sample_creation_3():
-    config = get_test_config()
+    config = Config()
     ChatGPTVoiceChatSample(config)
 
 
 def test_sample_creation_4():
-    config = get_test_config()
+    config = Config()
     ChatGPTVoiceChatSample2(config)
 
 
 def test_sample_creation_5():
-    config = get_test_config()
+    config = Config()
     ChatGPTVoiceChatSample2WithOBS(config)
 
 
 def test_sample_creation_6():
-    config = get_test_config()
+    config = Config()
     ParlAITextChatSample(config)
 
 
 def test_sample_creation_7():
-    config = get_test_config()
+    config = Config()
     ParlAIVoiceChatSample(config)
 
 
 def test_sample_creation_8():
-    config = get_test_config()
+    config = Config()
     ParlAIVoiceChatSample2(config)
 
 
 def test_sample_creation_9():
-    config = get_test_config()
+    config = Config()
     BaseSTTSample(config)
 
 
 def test_sample_creation_10():
-    config = get_test_config()
+    config = Config()
     GoogleStreamingSTTSample(config)
 
 
 def test_sample_creation_11():
-    config = get_test_config()
+    config = Config()
     SRGoogleSyncSTTSample(config)
 
 
 def test_sample_creation_12():
-    config = get_test_config()
+    config = Config()
     StdinPseudSTTSample(config)
 
 
 def test_sample_creation_13():
-    config = get_test_config()
+    config = Config()
     WhisperSTTSample(config)
 
 
 def test_sample_creation_14():
-    config = get_test_config()
+    config = Config()
     YoutubePseudSTTSample(config)

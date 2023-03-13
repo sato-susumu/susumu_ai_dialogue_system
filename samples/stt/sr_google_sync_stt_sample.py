@@ -20,5 +20,5 @@ class SRGoogleSyncSTTSample(BaseSTTSample):
 
 if __name__ == "__main__":
     config = Config()
-    config.load_config()
+    config.load()
     SRGoogleSyncSTTSample(config).run_forever()

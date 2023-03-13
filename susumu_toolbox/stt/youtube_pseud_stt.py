@@ -47,7 +47,7 @@ class YoutubePseudSTT(BaseSTT):
 
 if __name__ == '__main__':
     _config = Config()
-    _config.load_config()
+    _config.load()
     while True:
         YoutubePseudSTT(_config).recognize()
         time.sleep(5)
