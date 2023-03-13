@@ -40,13 +40,31 @@ class Config:
         """
         self._config = OmegaConf.create(default_yaml)
 
+        # TODO: 下記のようにコンフィグファイルパスの扱いはごちゃっとしているので整理する
+        # 自動検知もしくはload時に引数で指定されたコンフィグファイルパス
+        # 次のようなケースもある
+        # ・自動検知で見つかり、そのパスを使う。ファイルは存在する
+        # ・load時に引数で指定されたもののファイルが存在しない
+        # ・自動検知で見つからず、仮のパスを使う。ファイルは存在しない
+        self._current_config_path = self._get_config_file_path()
+
+    def _get_config_file_path(self) -> str:
+        return os.path.join(self.get_config_dir(), self._CONFIG_FILE_NAME)
+
+    def exist_config_file(self) -> bool:
+        return os.path.exists(self._get_config_file_path())
+
+    def save(self) -> None:
+        OmegaConf.save(self._config, self._current_config_path)
+
     # noinspection DuplicatedCode
     def load(self, file_path: Optional[str] = None) -> None:
         if file_path is None:
-            file_path = os.path.join(self.get_config_dir(), self._CONFIG_FILE_NAME)
-
-        loaded_config = OmegaConf.load(file_path)
-        self._config = OmegaConf.merge(self._config, loaded_config)
+            file_path = self._get_config_file_path()
+        if self.exist_config_file():
+            loaded_config = OmegaConf.load(file_path)
+            self._config = OmegaConf.merge(self._config, loaded_config)
+        self._current_config_path = file_path
 
     def get_config_dir(self) -> str:
         # カレントフォルダ用

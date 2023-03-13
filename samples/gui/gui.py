@@ -2,7 +2,6 @@
 import PySimpleGUI as sg
 
 from samples.chatgpt_text_chat_sample import ChatGPTTextChatSample
-from samples.gui.gui_config import GuiConfig
 from susumu_toolbox.utility.config import Config
 
 
@@ -11,37 +10,31 @@ class GUI:
     _GUI_TITLE = "susumu_toolkit GUI"
     _OPEN_AI_API_KEY = "open_ai_api_key"
 
-    def __init__(self):
-        self._gui_config = GuiConfig()
+    def __init__(self, config: Config):
+        self._config = config
 
     def _load(self) -> None:
-        self._gui_config.load()
+        self._config.load()
 
     def _save(self, values: dict) -> None:
-        self._gui_config.open_ai_api_key = values[self._OPEN_AI_API_KEY]
-        self._gui_config.save()
-
-    def _get_sample_config(self) -> Config:
-        config = Config()
-        return config
+        self._config.set_openai_api_key(values[self._OPEN_AI_API_KEY])
+        self._config.save()
 
     def _run(self) -> None:
-        config = self._get_sample_config()
-        config.set_openai_api_key(self._gui_config.open_ai_api_key)
-        ChatGPTTextChatSample(config).run_forever()
+        ChatGPTTextChatSample(self._config).run_forever()
 
     def execute(self) -> None:
-        self._load()
         self._display()
 
     def _display(self) -> None:
         sg.theme('Bright Colors')
 
         setting_items = [
-            [sg.Text("OpenAI APIキー"), sg.InputText(self._gui_config.open_ai_api_key,
-                                                   size=(100, 1),
-                                                   password_char="*",
-                                                   key=self._OPEN_AI_API_KEY)],
+            [sg.Text("OpenAI APIキー"), sg.InputText(
+                self._config.get_openai_api_key(),
+                size=(100, 1),
+                # password_char="*",
+                key=self._OPEN_AI_API_KEY)],
             # [sg.Button("高度な設定")],
             [sg.Button("設定保存", key="save")],
         ]
@@ -71,4 +64,7 @@ class GUI:
 
 
 if __name__ == "__main__":
-    GUI().execute()
+    _config_file_path = "./config.yaml"
+    _config = Config()
+    _config.load(_config_file_path)
+    GUI(_config).execute()
