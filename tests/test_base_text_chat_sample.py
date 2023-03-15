@@ -11,7 +11,7 @@ def start_sample():
     _config = Config()
     text_chat_sample = BaseTextChatSample(_config)
 
-    thread = threading.Thread(target=text_chat_sample.run_forever)
+    thread = threading.Thread(target=text_chat_sample.run_once)
     thread.start()
 
     # 接続待ち

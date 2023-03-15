@@ -10,7 +10,7 @@ def start_sample():
     _config = Config()
     voice_chat_sample = BaseVoiceChatSample(_config)
 
-    thread = threading.Thread(target=voice_chat_sample.run_forever)
+    thread = threading.Thread(target=voice_chat_sample.run_once)
     thread.start()
 
     # 接続待ち
