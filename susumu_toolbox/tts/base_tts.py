@@ -8,8 +8,14 @@ class BaseTTS:
         self._config = config
         self._player = PyAudioPlayer(config)
 
-    def tts_play(self, text: str) -> None:
+    def tts_play_sync(self, text: str) -> None:
         pass
+
+    def tts_play_async(self, text: str) -> None:
+        pass
+
+    def is_playing(self):
+        self._player.is_playing()
 
     def tts_save_mp3(self, text: str, file_path: str) -> None:
         pass
@@ -17,5 +23,8 @@ class BaseTTS:
     def tts_save_wav(self, text: str, file_path: str) -> None:
         pass
 
-    def _wav_play(self, audio_content: bytes) -> None:
+    def _wav_play_sync(self, audio_content: bytes) -> None:
         self._player.play_bytes_sync(audio_content)
+
+    def _wav_play_async(self, audio_content: bytes) -> None:
+        self._player.play_bytes_async(audio_content)
