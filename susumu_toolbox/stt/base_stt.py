@@ -88,6 +88,7 @@ class MicrophoneStream(object):
             yield b"".join(data)
 
 
+# noinspection PyMethodMayBeStatic
 class BaseSTT:
     # 音声認識(単発)の開始イベント
     EVENT_STT_START = "stt_start"
@@ -113,3 +114,19 @@ class BaseSTT:
 
     def recognize(self):
         pass
+
+    @staticmethod
+    def recognize_decorator(func):
+        def wrapper(self, *args, **kwargs):
+            try:
+                result = func(self, *args, **kwargs)
+            except Exception as e:
+                self._event_channel.publish(self.EVENT_STT_RESULT, STTResult("", True))
+                self._event_channel.publish(self.EVENT_STT_ERROR, e)
+                raise
+            finally:
+                self._event_channel.publish(self.EVENT_STT_END)
+
+            return result
+
+        return wrapper

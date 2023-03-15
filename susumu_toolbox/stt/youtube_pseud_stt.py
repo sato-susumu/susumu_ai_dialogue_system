@@ -31,9 +31,9 @@ class YoutubePseudSTT(BaseSTT):
         for message in message_list:
             self._fifo.put(message)
 
-    def recognize(self, audio_stream=None):
+    @BaseSTT.recognize_decorator
+    def recognize(self):
         self._event_channel.publish(self.EVENT_STT_START)
-
         self._fetch_message()
         if self._fifo.is_empty():
             self._event_channel.publish(self.EVENT_STT_RESULT, STTResult("", True))
@@ -41,8 +41,6 @@ class YoutubePseudSTT(BaseSTT):
             message = self._fifo.get()
             # print(f"message={message.message}")
             self._event_channel.publish(self.EVENT_STT_RESULT, STTResult(message.message, True))
-
-        self._event_channel.publish(self.EVENT_STT_END)
 
 
 if __name__ == '__main__':

@@ -13,7 +13,8 @@ class WhisperSTT(BaseSTT):
         openai.api_key = config.get_openai_api_key()
         self._recognizer = sr.Recognizer()
 
-    def recognize(self, audio_stream=None):
+    @BaseSTT.recognize_decorator
+    def recognize(self):
         with sr.Microphone() as source:
             self._recognizer.adjust_for_ambient_noise(source)
             self._event_channel.publish(self.EVENT_STT_START)
@@ -29,7 +30,3 @@ class WhisperSTT(BaseSTT):
             except sr.UnknownValueError:
                 # 無音等でUnknownValueError例外が発生した場合は、空文字列を渡す
                 self._event_channel.publish(self.EVENT_STT_RESULT, STTResult("", True))
-            except Exception as e:
-                self._event_channel.publish(self.EVENT_STT_ERROR, e)
-
-        self._event_channel.publish(self.EVENT_STT_END)

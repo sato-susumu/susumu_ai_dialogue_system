@@ -96,12 +96,10 @@ class GoogleStreamingSTT(BaseSTT):
             if timer:
                 timer.cancel()
 
+    @BaseSTT.recognize_decorator
     def recognize(self):
-        try:
-            with MicrophoneStream(self._SAMPLING_RATE, self._CHUNK_SIZE) as stream:
-                self._recognize(stream)
-        except Exception as e:
-            self._event_channel.publish(self.EVENT_STT_ERROR, e)
+        with MicrophoneStream(self._SAMPLING_RATE, self._CHUNK_SIZE) as stream:
+            self._recognize(stream)
 
     def _recognize(self, audio_stream=None):
         self._stream = audio_stream
@@ -118,4 +116,3 @@ class GoogleStreamingSTT(BaseSTT):
 
         self._processing(response_generator)
         self._stream = None
-        self._event_channel.publish(self.EVENT_STT_END)
