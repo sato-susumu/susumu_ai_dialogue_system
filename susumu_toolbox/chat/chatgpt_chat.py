@@ -1,3 +1,5 @@
+import time
+
 import openai
 
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
@@ -25,10 +27,21 @@ class ChatGPTChat(BaseChat):
     def send_message(self, text: str) -> None:
         self._append_message("user", text)
 
-        result = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=self._create_prompt(),
-        )
+        before = time.perf_counter()
+        try:
+            result = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self._create_prompt(),
+            )
+        except openai.error.RateLimitError as e:
+            print("RateLimitError: OpenAI APIのリクエスト制限に達しました。")
+            self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult("", []))
+            self._event_channel.publish(self.EVENT_CHAT_ERROR, e)
+            raise
+
+        after = time.perf_counter()
+        print(f"ChatGPT processing time={after - before:.3f} s")
+
         result_text = result.choices[0].message.content
         self._append_message("assistant", result_text)
 
