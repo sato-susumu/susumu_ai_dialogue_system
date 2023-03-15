@@ -62,6 +62,8 @@ class YouTubeLiveChat:
             self._video_id = self._get_video_id()
         if self._chat_id is None:
             self._chat_id = self._get_chat_id()
+            if self._chat_id is None:
+                raise ValueError("YouTubeライブチャットIDの取得に失敗しました。YouTubeのライブチャットが開始されいないか、ライブチャットが無効になっています。")
 
         params = {
             'key': self._api_key,
