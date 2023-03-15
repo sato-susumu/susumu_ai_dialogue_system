@@ -52,13 +52,7 @@ class AITuberSample(BaseVoiceChatSample):
 
         self._translator = self.create_translator()
 
-        self._chat.subscribe(self._chat.EVENT_CHAT_MESSAGE, self._on_chat_message_for_obs)
-        self._stt.subscribe(self._stt.EVENT_STT_START, self._on_stt_start_for_obs)
-        self._stt.subscribe(self._stt.EVENT_STT_END, self._on_stt_end_for_obs)
-        self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result_for_obs)
-
         self._obs = OBSClient(self._config)
-        self._stt_text = ""
 
     def _on_chat_open(self):
         print("_on_chat_open")
@@ -113,46 +107,63 @@ class AITuberSample(BaseVoiceChatSample):
                 continue
             return input_text
 
+    def run_once(self) -> None:
+        try:
+            self._obs.connect()
+            self._obs.set_text("scene1", "text1", "")
+            self._obs.set_text("scene1", "text2", "")
+            self._chat.connect()
+
+            while self._chat.is_connecting():
+                time.sleep(1)
+
+            input_text = ""
+            while self._chat.is_connected():
+                print("CHATメッセージキュー待機")
+                chat_message = self._chat_message_queue.get(block=True, timeout=None)
+                print("CHATメッセージキュー取得")
+                if chat_message is None:
+                    break
+                message_text = chat_message.text
+                message_text = self._translator.translate(message_text, self._translator.LANG_CODE_JA_JP)
+                print("User: " + input_text)
+                print("Bot: " + message_text)
+
+                # 前の音声合成が再生中なら待つ
+                if self._tts.is_playing():
+                    print("前の音声合成が再生中なので待つ")
+                    while self._tts.is_playing():
+                        time.sleep(0.1)
+
+                # OBSにはこの時点で提示
+                self._obs.set_text("scene1", "text1", input_text)
+                self._obs.set_text("scene1", "text2", message_text)
+
+                # 音声合成の非同期再生
+                self._tts.tts_play_async(message_text)
+
+                input_text = self._wait_input()
+
+                if input_text == "bye":
+                    self._chat.disconnect()
+                else:
+                    text = self._translator.translate(input_text, self._translator.LANG_CODE_EN_US)
+                    print("Bot 返事待ち開始")
+                    self._chat.send_message(text)
+                    print("Bot 返事待ち完了 ")
+        except Exception as e:
+            print(e)
+            print("エラーが発生しましたが処理を継続します！")
+        finally:
+            self._obs.set_text("scene1", "text1", "")
+            self._obs.set_text("scene1", "text2", "")
+            self._obs.disconnect()
+            self._chat.disconnect()
+
     def run_forever(self) -> None:
         print("run_forever")
         while True:
-            try:
-                self._obs.connect()
-                self._obs.set_text("scene1", "text1", "")
-                self._obs.set_text("scene1", "text2", "")
-                self._chat.connect()
-
-                while self._chat.is_connecting():
-                    time.sleep(1)
-
-                while self._chat.is_connected():
-                    print("CHATメッセージキュー待機")
-                    chat_message = self._chat_message_queue.get(block=True, timeout=None)
-                    print("CHATメッセージキュー取得")
-                    if chat_message is None:
-                        break
-                    message_text = chat_message.text
-                    message_text = self._translator.translate(message_text, self._translator.LANG_CODE_JA_JP)
-                    print("Bot: " + message_text)
-                    self._tts.tts_play(message_text)
-
-                    input_text = self._wait_input()
-
-                    if input_text == "bye":
-                        self._chat.disconnect()
-                    else:
-                        text = self._translator.translate(input_text, self._translator.LANG_CODE_EN_US)
-                        print("Bot 返事待ち開始")
-                        self._chat.send_message(text)
-                        print("Bot 返事待ち完了 ")
-            except Exception as e:
-                print(e)
-                print("エラーが発生しましたが処理を継続します！")
-            finally:
-                self._obs.set_text("scene1", "text1", "")
-                self._obs.set_text("scene1", "text2", "")
-                self._obs.disconnect()
-                self._chat.disconnect()
+            self.run_once()
 
     def create_chat(self) -> BaseChat:
         system = SystemSettings(self._config)
@@ -169,26 +180,6 @@ class AITuberSample(BaseVoiceChatSample):
 
     def create_translator(self) -> BaseTranslator:
         return DummyTranslator(self._config)
-
-    # TODO: OBSのコードがChatGPTVoiceChatSample2WithOBSと重複しているので、まとめる？
-    def _on_chat_message_for_obs(self, result: ChatResult):
-        text = result.text
-        # print(f"_on_chat_message_for_obs text={text}")
-        self._obs.set_text("scene1", "text2", text)
-
-    def _on_stt_start_for_obs(self):
-        pass
-
-    def _on_stt_end_for_obs(self):
-        # print("_on_stt_end_for_obs")
-        if self._stt_text != "":
-            self._obs.set_text("scene1", "text2", "(考え中。。。)")
-
-    def _on_stt_result_for_obs(self, result: STTResult):
-        text = result.text
-        print(f"_on_stt_result_for_obs text={text}")
-        self._obs.set_text("scene1", "text1", text)
-        self._stt_text = text
 
 
 if __name__ == "__main__":
