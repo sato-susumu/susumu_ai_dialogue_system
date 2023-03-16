@@ -10,6 +10,7 @@ class Pyttsx3TTS(BaseTTS):
         self.engine = pyttsx3.init()
 
     def tts_play_sync(self, text: str) -> None:
+        super().tts_play_sync(text)
         self.engine.say(text)
         self.engine.runAndWait()
 

@@ -12,10 +12,12 @@ class VoicevoxTTS(BaseTTS):
         super().__init__(config)
 
     def tts_play_sync(self, text: str) -> None:
+        super().tts_play_sync(text)
         audio_content = self._synthesize(text)
         self._wav_play_sync(audio_content)
 
     def tts_play_async(self, text: str) -> None:
+        super().tts_play_async(text)
         audio_content = self._synthesize(text)
         self._wav_play_async(audio_content)
 

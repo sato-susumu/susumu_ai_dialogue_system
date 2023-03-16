@@ -9,13 +9,15 @@ class BaseTTS:
         self._player = PyAudioPlayer(config)
 
     def tts_play_sync(self, text: str) -> None:
+        print(f"tts_play_sync() is called. text: {text}")
         pass
 
     def tts_play_async(self, text: str) -> None:
+        print(f"tts_play_async() is called. text: {text}")
         pass
 
-    def is_playing(self):
-        self._player.is_playing()
+    def is_playing(self) -> bool:
+        return self._player.is_playing()
 
     def tts_save_mp3(self, text: str, file_path: str) -> None:
         pass

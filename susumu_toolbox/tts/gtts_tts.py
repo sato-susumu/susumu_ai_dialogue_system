@@ -13,6 +13,7 @@ class GttsTTS(BaseTTS):
         super().__init__(config)
 
     def tts_play_sync(self, text: str) -> None:
+        super().tts_play_sync(text)
         fp = BytesIO()
         gTTS(text=text, lang='ja').write_to_fp(fp)
         fp.seek(0)

@@ -12,10 +12,12 @@ class GoogleCloudTTS(BaseTTS):
         self.client = texttospeech.TextToSpeechClient()
 
     def tts_play_sync(self, text: str) -> None:
+        super().tts_play_sync(text)
         audio_content = self._tts(text, texttospeech.AudioEncoding.LINEAR16)
         self._wav_play_sync(audio_content)
 
     def tts_play_async(self, text: str) -> None:
+        super().tts_play_async(text)
         audio_content = self._tts(text, texttospeech.AudioEncoding.LINEAR16)
         self._wav_play_async(audio_content)
 
