@@ -1,4 +1,5 @@
 import time
+import traceback
 
 from six.moves import queue
 
@@ -110,6 +111,7 @@ class BaseVoiceChatSample:
             return input_text
 
     def run_once(self) -> None:
+        # noinspection PyBroadException
         try:
             self._chat.connect()
 
@@ -137,7 +139,7 @@ class BaseVoiceChatSample:
                     self._chat.send_message(text)
                     print("Bot 返事待ち完了 ")
         except Exception as e:
-            print(e)
+            print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
             self._chat.disconnect()

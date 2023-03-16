@@ -1,5 +1,6 @@
 import os
 import time
+import traceback
 
 from six.moves import queue
 
@@ -108,6 +109,7 @@ class AITuberSample(BaseVoiceChatSample):
             return input_text
 
     def run_once(self) -> None:
+        # noinspection PyBroadException
         try:
             self._obs.connect()
             self._obs.set_text("scene1", "text1", "")
@@ -152,7 +154,7 @@ class AITuberSample(BaseVoiceChatSample):
                     self._chat.send_message(text)
                     print("Bot 返事待ち完了 ")
         except Exception as e:
-            print(e)
+            print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
             self._obs.set_text("scene1", "text1", "")
