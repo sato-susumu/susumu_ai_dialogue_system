@@ -4,13 +4,10 @@ import re
 import dateutil.parser
 import requests
 
-# noinspection PyMethodMayBeStatic, PyShadowingNames
 from susumu_toolbox.utility.config import Config
 
 
-# pip install python-dateutil
-
-
+# noinspection PyMethodMayBeStatic, PyShadowingNames
 class YouTubeLiveChatMessage:
     _custom_emoji_pattern = re.compile(r":[a-zA-Z0-9_]+:")
 
@@ -40,6 +37,8 @@ class YouTubeLiveChat:
         self._video_id = None
 
     def _get_video_id(self):
+        if "https://www.youtube.com/watch?v=" not in self._youtube_url:
+            raise ValueError("YouTubeのURLが不正です。")
         video_id = self._youtube_url.replace('https://www.youtube.com/watch?v=', '')
         return video_id
 
