@@ -16,7 +16,7 @@ class PyAudioPlayer:
         self._config = config
         # 複数スレッドで同時にPyAudioを取得するとうまく動作しなかったっぽいので、1箇所のみで取得
         self._pa = pyaudio.PyAudio()
-        self._stop_event = threading.Event()
+        self._stop_requested_event = threading.Event()
 
     def _get_second_output_device_id(self) -> int:
         second_output_enabled = self._config.get_pyaudio_second_output_enabled()
@@ -60,7 +60,7 @@ class PyAudioPlayer:
             while len(data) > 0:
                 stream.write(data)
                 data = wf.readframes(chunk_size)
-                if self._stop_event.is_set():
+                if self._stop_requested_event.is_set():
                     break
         finally:
             if stream:
@@ -74,7 +74,7 @@ class PyAudioPlayer:
         self._thread1 = threading.Thread(target=self._play_bytes, args=(audio_content, 0, 0))
         self._thread2 = threading.Thread(target=self._play_bytes, args=(audio_content, 1, second_output_device_id))
 
-        self._stop_event.clear()
+        self._stop_requested_event.clear()
 
         self._thread1.start()
         self._thread2.start()
@@ -93,7 +93,7 @@ class PyAudioPlayer:
 
     def stop(self):
         if self._thread1 or self._thread2:
-            self._stop_event.set()
+            self._stop_requested_event.set()
             self._thread1.join()
             self._thread2.join()
             self._thread1 = None
