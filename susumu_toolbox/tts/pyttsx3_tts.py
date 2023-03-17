@@ -11,6 +11,14 @@ class Pyttsx3TTS(BaseTTS):
 
     def tts_play_sync(self, text: str) -> None:
         super().tts_play_sync(text)
+        self._play_sync(text)
+
+    def tts_play_async(self, text: str) -> None:
+        super().tts_play_async(text)
+        # 非同期再生に対応していないため、同期再生
+        self._play_sync(text)
+
+    def _play_sync(self, text: str) -> None:
         self.engine.say(text)
         self.engine.runAndWait()
 

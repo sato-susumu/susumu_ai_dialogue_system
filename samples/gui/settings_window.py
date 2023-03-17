@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 from samples.gui.base_window import BaseWindow
 from susumu_toolbox.tts.google_cloud_tts import GoogleCloudTTS
 from susumu_toolbox.tts.gtts_tts import GttsTTS
+from susumu_toolbox.tts.pyttsx3_tts import Pyttsx3TTS
 from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
 from susumu_toolbox.utility.config import Config
 
@@ -96,14 +97,19 @@ class SettingsWindow(BaseWindow):
             [sg.Button("テスト", size=(15, 1), key="gtts_test")],
         ]
 
+        pyttsx3_items = [
+            [sg.Button("テスト", size=(15, 1), key="pyttsx3_test")],
+        ]
+
         google_cloud_tts_items = [
             [sg.Button("テスト", size=(15, 1), key="google_cloud_tts_test")],
         ]
 
         tts_tab_layout = [
             [sg.Frame("gTTS (動作確認用)", gtts_items)],
-            [sg.Frame("Google TTS", google_cloud_tts_items)],
             [sg.Frame("VOICEVOX", voicevox_items)],
+            [sg.Frame("Google TTS", google_cloud_tts_items)],
+            [sg.Frame("Pyttsx3", pyttsx3_items)],
         ]
 
         obs_items = [
@@ -178,7 +184,7 @@ class SettingsWindow(BaseWindow):
                 #     break
                 close_button_clicked = False
                 break
-            if event in ("voicevox_test", "gtts_test", "google_cloud_tts_test"):
+            if event in ("voicevox_test", "gtts_test", "google_cloud_tts_test", "pyttsx3_test"):
                 self._tts_test(event, values)
         settings_window.close()
         return close_button_clicked
@@ -191,9 +197,11 @@ class SettingsWindow(BaseWindow):
                 tts = VoicevoxTTS(config)
             elif event == "google_cloud_tts_test":
                 tts = GoogleCloudTTS(config)
+            elif event == "pyttsx3_test":
+                tts = Pyttsx3TTS(config)
             else:
                 tts = GttsTTS(config)
-            tts.tts_play_sync("テストです。")
+            tts.tts_play_async("テストです。")
         except Exception as e:
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
