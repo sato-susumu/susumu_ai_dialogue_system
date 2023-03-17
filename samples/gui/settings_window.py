@@ -1,19 +1,19 @@
 import PySimpleGUI as sg
 
 from samples.gui.base_window import BaseWindow
+from susumu_toolbox.tts.google_cloud_tts import GoogleCloudTTS
+from susumu_toolbox.tts.gtts_tts import GttsTTS
+from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
 from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic
 class SettingsWindow(BaseWindow):
-    # TODO: 最終的にはConfigで定義して参照する
-    _OPEN_AI_API_KEY = "openai_api_key"
-
     def __init__(self, config: Config):
         super().__init__(config)
 
     def _save(self, values: dict) -> None:
-        self._config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
+        self._config = self._update_config(values, self._config)
         self._config.save()
 
     def display(self) -> bool:
@@ -72,23 +72,37 @@ class SettingsWindow(BaseWindow):
 
         voicevox_items = [
             [sg.Text('アドレス'),
-             sg.InputText(key="voicevox_host",
+             sg.InputText(default_text=self._config.get_voicevox_host(),
+                          key=self._config.KEY_VOICEVOX_HOST,
                           size=self.INPUT_SIZE_NORMAL,
                           ),
              ],
             [sg.Text('ポート番号'),
-             sg.InputText(key="voicevox_prot_no",
+             sg.InputText(default_text=self._config.get_voicevox_port_no(),
+                          key=self._config.KEY_VOICEVOX_PORT_NO,
                           size=self.INPUT_SIZE_SHORT,
                           ),
              ],
             [sg.Text('スピーカー番号'),
-             sg.InputText(key="voicevox_speaker_no",
+             sg.InputText(default_text=self._config.get_voicevox_speaker_no(),
+                          key=self._config.KEY_VOICEVOX_SPEAKER_NO,
                           size=self.INPUT_SIZE_SHORT,
                           ),
              ],
+            [sg.Button("テスト", size=(15, 1), key="voicevox_test")],
+        ]
+
+        gtts_items = [
+            [sg.Button("テスト", size=(15, 1), key="gtts_test")],
+        ]
+
+        google_cloud_tts_items = [
+            [sg.Button("テスト", size=(15, 1), key="google_cloud_tts_test")],
         ]
 
         tts_tab_layout = [
+            [sg.Frame("gTTS (動作確認用)", gtts_items)],
+            [sg.Frame("Google TTS", google_cloud_tts_items)],
             [sg.Frame("VOICEVOX", voicevox_items)],
         ]
 
@@ -134,7 +148,7 @@ class SettingsWindow(BaseWindow):
                     # [sg.Tab('AI設定', ai_tab_layout)],
                     # [sg.Tab('入力', stt_tab_layout)],
                     # [sg.Tab('チャットエンジン', chat_tab_layout)],
-                    # [sg.Tab('音声合成', tts_tab_layout)],
+                    [sg.Tab('音声合成', tts_tab_layout)],
                     # [sg.Tab('その他', other_tab_layout, )],
                 ],
                 # tab_location='left',
@@ -164,6 +178,28 @@ class SettingsWindow(BaseWindow):
                 #     break
                 close_button_clicked = False
                 break
-
+            if event in ("voicevox_test", "gtts_test", "google_cloud_tts_test"):
+                self._tts_test(event, values)
         settings_window.close()
         return close_button_clicked
+
+    def _tts_test(self, event, values) -> None:
+        try:
+            config = self._config.clone()
+            config = self._update_config(values, config)
+            if event == "voicevox_test":
+                tts = VoicevoxTTS(config)
+            elif event == "google_cloud_tts_test":
+                tts = GoogleCloudTTS(config)
+            else:
+                tts = GttsTTS(config)
+            tts.tts_play_sync("テストです。")
+        except Exception as e:
+            sg.PopupError(e, title="エラー", keep_on_top=True)
+
+    def _update_config(self, values, target_config) -> Config:
+        target_config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
+        target_config.set_voicevox_host(values[self._config.KEY_VOICEVOX_HOST])
+        target_config.set_voicevox_port_no(values[self._config.KEY_VOICEVOX_PORT_NO])
+        target_config.set_voicevox_speaker_no(values[self._config.KEY_VOICEVOX_SPEAKER_NO])
+        return target_config

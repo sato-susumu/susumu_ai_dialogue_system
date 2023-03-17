@@ -1,3 +1,4 @@
+import copy
 import os
 from typing import Optional
 
@@ -8,6 +9,9 @@ from omegaconf import OmegaConf
 class Config:
     CONFIG_FILE_NAME = "config.yaml"
     KEY_OPENAI_API_KEY = "openai_api_key"
+    KEY_VOICEVOX_HOST = "voicevox_host"
+    KEY_VOICEVOX_PORT_NO = "voicevox_port_no"
+    KEY_VOICEVOX_SPEAKER_NO = "voicevox_speaker_no"
 
     def __init__(self):
         # 辞書からコンフィグを読み込む
@@ -22,7 +26,7 @@ class Config:
               obs_password: "パスワード"
             VOICEVOX:
               voicevox_host: "127.0.0.1"
-              voicevox_prot_no: 50021
+              voicevox_port_no: 50021
               voicevox_speaker_no: 8
             ParlAI:
               parlai_host: "127.0.0.1"
@@ -103,13 +107,22 @@ class Config:
         return self._config["OBS"]["obs_password"]
 
     def get_voicevox_host(self):
-        return self._config["VOICEVOX"]["voicevox_host"]
+        return self._config["VOICEVOX"][self.KEY_VOICEVOX_HOST]
+
+    def set_voicevox_host(self, value):
+        self._config["VOICEVOX"][self.KEY_VOICEVOX_HOST] = value
 
     def get_voicevox_port_no(self):
-        return self._config["VOICEVOX"]["voicevox_prot_no"]
+        return self._config["VOICEVOX"][self.KEY_VOICEVOX_PORT_NO]
+
+    def set_voicevox_port_no(self, value):
+        self._config["VOICEVOX"][self.KEY_VOICEVOX_PORT_NO] = value
 
     def get_voicevox_speaker_no(self):
-        return self._config["VOICEVOX"]["voicevox_speaker_no"]
+        return self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO]
+
+    def set_voicevox_speaker_no(self, value):
+        self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO] = value
 
     def get_parlai_host(self):
         return self._config["ParlAI"]["parlai_host"]
@@ -131,3 +144,6 @@ class Config:
 
     def get_pyaudio_second_output_device_name(self):
         return self._config["PyAudio"]["pyaudio_second_output_device_name"]
+
+    def clone(self):
+        return copy.deepcopy(self)

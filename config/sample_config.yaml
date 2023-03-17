@@ -8,7 +8,7 @@ OBS:
   obs_password: "パスワード"
 VOICEVOX:
   voicevox_host: "127.0.0.1"
-  voicevox_prot_no: 50021
+  voicevox_port_no: 50021
   voicevox_speaker_no: 8
 ParlAI:
   parlai_host: "127.0.0.1"
