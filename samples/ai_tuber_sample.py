@@ -19,7 +19,7 @@ from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class AITuberSample(BaseVoiceChatSample):
+class AiTuberSample(BaseVoiceChatSample):
     """AITuberのサンプル
 
     入力：YouTubeコメント入力
@@ -187,4 +187,4 @@ class AITuberSample(BaseVoiceChatSample):
 if __name__ == "__main__":
     _config = Config()
     _config.load()
-    AITuberSample(_config).run_forever()
+    AiTuberSample(_config).run_forever()
