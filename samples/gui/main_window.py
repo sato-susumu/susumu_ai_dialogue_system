@@ -2,9 +2,11 @@ import os
 
 import PySimpleGUI as sg
 
-from samples.chatgpt_text_chat_sample import ChatGPTTextChatSample
 from samples.gui.base_window import BaseWindow
 from samples.gui.settings_window import SettingsWindow
+from samples.gui_ai_tuber_sample import GuiAiTuberSample
+from samples.gui_text_chat_sample import GuiTextChatSample
+from samples.gui_voice_chat_sample import GuiVoiceChatSample
 from susumu_toolbox.utility.config import Config
 
 
@@ -14,7 +16,16 @@ class MainWindow(BaseWindow):
         super().__init__(config)
 
     def _run(self) -> None:
-        ChatGPTTextChatSample(self._config).run_forever()
+        base_function = self._config.get_gui_base_function()
+        if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
+            base = GuiTextChatSample(self._config)
+        elif base_function == Config.BASE_FUNCTION_VOICE_DIALOGUE:
+            base = GuiVoiceChatSample(self._config)
+        elif base_function == Config.BASE_FUNCTION_AI_TUBER:
+            base = GuiAiTuberSample(self._config)
+        else:
+            raise ValueError(f"Invalid base_function: {base_function}")
+        base.run_forever()
 
     def display(self):
         buttons_layout = [[
@@ -36,7 +47,6 @@ class MainWindow(BaseWindow):
             if event in (sg.WIN_CLOSED, 'exit'):
                 break
             if event == "run":
-                # TODO: 起動時にmain_windowも終了する?
                 main_window.Hide()
                 self._run()
                 break

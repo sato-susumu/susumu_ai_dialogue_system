@@ -18,10 +18,43 @@ class SettingsWindow(BaseWindow):
         self._config = self._update_config(values, self._config)
         self._config.save()
 
+    _base_function_items_dic = {
+        Config.BASE_FUNCTION_VOICE_DIALOGUE: "音声対話",
+        Config.BASE_FUNCTION_AI_TUBER: "AITuber",
+        Config.BASE_FUNCTION_TEXT_DIALOGUE: "文字対話",
+    }
+    _input_function_items_dic = {
+        Config.INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
+        Config.INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
+        Config.INPUT_FUNCTION_GOOGLE_STREAMING: "Googleストリーミング音声認識 (追加設定が必要)",
+        Config.INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
+    }
+    _output_function_items_dic = {
+        Config.OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
+        Config.OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
+        Config.OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google音声合成 (追加設定が必要)",
+        Config.OUTPUT_FUNCTION_GTTS: "サンプル音声合成 gTTS",
+    }
+
     def display(self) -> bool:
+        base_function_items = [[
+            sg.Radio(key=key, text=text, group_id='base', default=self._config.get_gui_base_function() == key)
+        ] for key, text in self._base_function_items_dic.items()]
+
+        input_function_items = [[
+            sg.Radio(key=key, text=text, group_id='input', default=self._config.get_gui_input_function() == key)
+        ] for key, text in self._input_function_items_dic.items()]
+
+        output_function_items = [[
+            sg.Radio(key=key, text=text, group_id='output', default=self._config.get_gui_output_function() == key)
+        ] for key, text in self._output_function_items_dic.items()]
+
         common_tab_layout = [
-            [sg.Text("common")],
+            [sg.Frame("ベース機能", base_function_items)],
+            [sg.Frame("入力", input_function_items)],
+            [sg.Frame("出力", output_function_items)],
         ]
+
         api_keys_tab_layout = [
             [sg.Text("OpenAI APIキー"),
              sg.InputText(
@@ -180,7 +213,7 @@ class SettingsWindow(BaseWindow):
         window_layout = [
             [sg.TabGroup(
                 [
-                    # [sg.Tab('共通設定', common_tab_layout)],
+                    [sg.Tab('共通設定', common_tab_layout)],
                     [sg.Tab('API KEY', api_keys_tab_layout)],
                     # [sg.Tab('AI設定', ai_tab_layout)],
                     [sg.Tab('入力', stt_tab_layout)],
@@ -261,6 +294,11 @@ class SettingsWindow(BaseWindow):
         if values[self._config.KEY_OBS_PORT_NO] != "":
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
+
+        [target_config.set_gui_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
+        [target_config.set_gui_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
+        [target_config.set_gui_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
+
         return target_config
 
     def _stt_test(self, event, values):
