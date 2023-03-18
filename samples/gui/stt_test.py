@@ -1,4 +1,3 @@
-from samples.gui.gui_events import GuiEvents
 from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.stt.google_streaming_stt import GoogleStreamingSTT
 from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
@@ -14,20 +13,23 @@ class STTTest:
         self._stt = None
         self._start_message = ""
 
-    def run(self, event) -> None:
-        if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
-            self._stt = YoutubePseudSTT(self._config)
-            self._start_message = "YouTubeライブチャットのコメント入力待ち"
-        elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
-            speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
-            self._stt = GoogleStreamingSTT(self._config, speech_contexts=speech_contexts)
-            self._start_message = "マイクに向かって何か話しかけてください"
-        elif event == GuiEvents.SR_GOOGLE_STT_TEST:
+    def run(self) -> None:
+        speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
+        input_function = self._config.get_gui_input_function()
+        if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
             self._stt = SRGoogleSyncSTT(self._config)
             self._start_message = "マイクに向かって何か話しかけてください"
-        else:
+        elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
             self._stt = StdinPseudSTT(self._config)
             self._start_message = "このウィンドウで何か入力して、リターンキーを押してください"
+        elif input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
+            self._stt = GoogleStreamingSTT(self._config, speech_contexts=speech_contexts)
+            self._start_message = "マイクに向かって何か話しかけてください"
+        elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
+            self._stt = YoutubePseudSTT(self._config)
+            self._start_message = "YouTubeライブチャットのコメント入力待ち"
+        else:
+            raise ValueError(f"Invalid input_function: {input_function}")
 
         # noinspection DuplicatedCode
         self._stt.subscribe(self._stt.EVENT_STT_START, self._on_stt_start)
@@ -57,3 +59,9 @@ class STTTest:
 
     def _on_stt_error(self, e):
         pass
+
+
+if __name__ == "__main__":
+    _config = Config()
+    _config.load()
+    STTTest(_config).run()

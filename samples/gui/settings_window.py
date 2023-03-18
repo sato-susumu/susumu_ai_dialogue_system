@@ -269,6 +269,18 @@ class SettingsWindow(BaseWindow):
     def _tts_test(self, event, values) -> None:
         config = self._config.clone()
         config = self._update_config(values, config)
+
+        if event == GuiEvents.VOICEVOX_TEST:
+            config.set_gui_output_function(Config.OUTPUT_FUNCTION_VOICEVOX)
+        elif event == GuiEvents.GTTS_TEST:
+            config.set_gui_output_function(Config.OUTPUT_FUNCTION_GTTS)
+        elif event == GuiEvents.GOOGLE_CLOUD_TTS_TEST:
+            config.set_gui_output_function(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
+        elif event == GuiEvents.PYTTSX3_TEST:
+            config.set_gui_output_function(Config.OUTPUT_FUNCTION_PYTTSX3)
+        else:
+            raise Exception("想定外のイベントです")
+
         try:
             TTSTest(config).run(event)
         except Exception as e:
@@ -304,8 +316,20 @@ class SettingsWindow(BaseWindow):
     def _stt_test(self, event, values):
         config = self._config.clone()
         config = self._update_config(values, config)
+
+        if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
+            config.set_gui_input_function(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
+        elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
+            config.set_gui_input_function(config.INPUT_FUNCTION_GOOGLE_STREAMING)
+        elif event == GuiEvents.SR_GOOGLE_STT_TEST:
+            config.set_gui_input_function(config.INPUT_FUNCTION_SR_GOOGLE)
+        elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
+            config.set_gui_input_function(config.INPUT_FUNCTION_STDIN_PSEUD)
+        else:
+            raise Exception("想定外のイベントです")
+
         try:
-            STTTest(config).run(event)
+            STTTest(config).run()
         except Exception as e:
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
