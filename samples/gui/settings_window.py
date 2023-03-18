@@ -38,15 +38,15 @@ class SettingsWindow(BaseWindow):
 
     def display(self) -> bool:
         base_function_items = [[
-            sg.Radio(key=key, text=text, group_id='base', default=self._config.get_gui_base_function() == key)
+            sg.Radio(key=key, text=text, group_id='base', default=self._config.get_common_base_function() == key)
         ] for key, text in self._base_function_items_dic.items()]
 
         input_function_items = [[
-            sg.Radio(key=key, text=text, group_id='input', default=self._config.get_gui_input_function() == key)
+            sg.Radio(key=key, text=text, group_id='input', default=self._config.get_common_input_function() == key)
         ] for key, text in self._input_function_items_dic.items()]
 
         output_function_items = [[
-            sg.Radio(key=key, text=text, group_id='output', default=self._config.get_gui_output_function() == key)
+            sg.Radio(key=key, text=text, group_id='output', default=self._config.get_common_output_function() == key)
         ] for key, text in self._output_function_items_dic.items()]
 
         common_tab_layout = [
@@ -270,13 +270,13 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.VOICEVOX_TEST:
-            config.set_gui_output_function(Config.OUTPUT_FUNCTION_VOICEVOX)
+            config.set_common_output_function(Config.OUTPUT_FUNCTION_VOICEVOX)
         elif event == GuiEvents.GTTS_TEST:
-            config.set_gui_output_function(Config.OUTPUT_FUNCTION_GTTS)
+            config.set_common_output_function(Config.OUTPUT_FUNCTION_GTTS)
         elif event == GuiEvents.GOOGLE_CLOUD_TTS_TEST:
-            config.set_gui_output_function(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
+            config.set_common_output_function(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
         elif event == GuiEvents.PYTTSX3_TEST:
-            config.set_gui_output_function(Config.OUTPUT_FUNCTION_PYTTSX3)
+            config.set_common_output_function(Config.OUTPUT_FUNCTION_PYTTSX3)
         else:
             raise Exception("想定外のイベントです")
 
@@ -307,9 +307,9 @@ class SettingsWindow(BaseWindow):
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
 
-        [target_config.set_gui_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
-        [target_config.set_gui_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
-        [target_config.set_gui_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
+        [target_config.set_common_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
+        [target_config.set_common_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
+        [target_config.set_common_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
 
         return target_config
 
@@ -318,13 +318,13 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
-            config.set_gui_input_function(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
+            config.set_common_input_function(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
         elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
-            config.set_gui_input_function(config.INPUT_FUNCTION_GOOGLE_STREAMING)
+            config.set_common_input_function(config.INPUT_FUNCTION_GOOGLE_STREAMING)
         elif event == GuiEvents.SR_GOOGLE_STT_TEST:
-            config.set_gui_input_function(config.INPUT_FUNCTION_SR_GOOGLE)
+            config.set_common_input_function(config.INPUT_FUNCTION_SR_GOOGLE)
         elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
-            config.set_gui_input_function(config.INPUT_FUNCTION_STDIN_PSEUD)
+            config.set_common_input_function(config.INPUT_FUNCTION_STDIN_PSEUD)
         else:
             raise Exception("想定外のイベントです")
 

@@ -1,3 +1,7 @@
+Common:
+  common_base_function: "voice_dialogue"
+  common_input_function: "sr_google"
+  common_output_function: "pyttsx3"
 DeepL:
   deepl_auth_key: ""
 OpenAI:
@@ -24,7 +28,3 @@ PyAudio:
   # 名前の一部でもいい
   pyaudio_second_output_host_api_name: "MME"
   pyaudio_second_output_device_name: "VB-Audio Virtual C"
-GUI:
-  gui_base_function: "voice_dialogue"
-  gui_input_function: "sr_google"
-  gui_output_function: "pyttsx3"

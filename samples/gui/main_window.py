@@ -16,7 +16,7 @@ class MainWindow(BaseWindow):
         super().__init__(config)
 
     def _run(self) -> None:
-        base_function = self._config.get_gui_base_function()
+        base_function = self._config.get_common_base_function()
         if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
             base = GuiTextChatSample(self._config)
         elif base_function == Config.BASE_FUNCTION_VOICE_DIALOGUE:

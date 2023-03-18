@@ -15,7 +15,7 @@ class GuiFunctionFactory:
 
     @staticmethod
     def create_stt(config: Config, speech_contexts) -> BaseSTT:
-        input_function = config.get_gui_input_function()
+        input_function = config.get_common_input_function()
         if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
             return SRGoogleSyncSTT(config)
         elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
@@ -28,7 +28,7 @@ class GuiFunctionFactory:
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:
-        output_function = config.get_gui_output_function()
+        output_function = config.get_common_output_function()
         if output_function == Config.OUTPUT_FUNCTION_GOOGLE_CLOUD:
             return GoogleCloudTTS(config)
         elif output_function == Config.OUTPUT_FUNCTION_GTTS:

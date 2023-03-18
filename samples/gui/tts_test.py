@@ -10,7 +10,7 @@ class TTSTest:
         self._config = config
 
     def run(self) -> None:
-        output_function = self._config.get_gui_output_function()
+        output_function = self._config.get_common_output_function()
         if output_function == self._config.OUTPUT_FUNCTION_VOICEVOX:
             tts = VoicevoxTTS(self._config)
         elif output_function == self._config.OUTPUT_FUNCTION_GOOGLE_CLOUD:
