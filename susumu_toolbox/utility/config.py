@@ -12,6 +12,11 @@ class Config:
     KEY_VOICEVOX_HOST = "voicevox_host"
     KEY_VOICEVOX_PORT_NO = "voicevox_port_no"
     KEY_VOICEVOX_SPEAKER_NO = "voicevox_speaker_no"
+    KEY_OBS_HOST = "obs_host"
+    KEY_OBS_PORT_NO = "obs_port_no"
+    KEY_OBS_PASSWORD = "obs_password"
+    KEY_YOUTUBE_LIVE_URL = "youtube_live_url"
+    KEY_YOUTUBE_API_KEY = "youtube_api_key"
 
     def __init__(self):
         # 辞書からコンフィグを読み込む
@@ -94,55 +99,70 @@ class Config:
         value = self._config["OpenAI"][self.KEY_OPENAI_API_KEY]
         return value
 
-    def set_openai_api_key(self, value):
+    def set_openai_api_key(self, value: str) -> None:
         self._config["OpenAI"][self.KEY_OPENAI_API_KEY] = value
 
-    def get_obs_host(self):
-        return self._config["OBS"]["obs_host"]
+    def get_obs_host(self) -> str:
+        return self._config["OBS"][self.KEY_OBS_HOST]
 
-    def get_obs_port_no(self):
-        return self._config["OBS"]["obs_port_no"]
+    def set_obs_host(self, value: str) -> None:
+        self._config["OBS"][self.KEY_OBS_HOST] = value
 
-    def get_obs_password(self):
-        return self._config["OBS"]["obs_password"]
+    def get_obs_port_no(self) -> int:
+        return self._config["OBS"][self.KEY_OBS_PORT_NO]
 
-    def get_voicevox_host(self):
+    def set_obs_port_no(self, value: int) -> None:
+        self._config["OBS"][self.KEY_OBS_PORT_NO] = value
+
+    def get_obs_password(self) -> str:
+        return self._config["OBS"][self.KEY_OBS_PASSWORD]
+
+    def set_obs_password(self, value: str) -> None:
+        self._config["OBS"][self.KEY_OBS_PASSWORD] = value
+
+    def get_voicevox_host(self) -> str:
         return self._config["VOICEVOX"][self.KEY_VOICEVOX_HOST]
 
-    def set_voicevox_host(self, value):
+    def set_voicevox_host(self, value: str) -> None:
         self._config["VOICEVOX"][self.KEY_VOICEVOX_HOST] = value
 
-    def get_voicevox_port_no(self):
+    def get_voicevox_port_no(self) -> int:
         return self._config["VOICEVOX"][self.KEY_VOICEVOX_PORT_NO]
 
-    def set_voicevox_port_no(self, value):
+    def set_voicevox_port_no(self, value: int) -> None:
         self._config["VOICEVOX"][self.KEY_VOICEVOX_PORT_NO] = value
 
-    def get_voicevox_speaker_no(self):
+    def get_voicevox_speaker_no(self) -> int:
         return self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO]
 
-    def set_voicevox_speaker_no(self, value):
+    def set_voicevox_speaker_no(self, value: int) -> None:
         self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO] = value
 
-    def get_parlai_host(self):
+    def get_parlai_host(self) -> str:
         return self._config["ParlAI"]["parlai_host"]
 
-    def get_parlai_port_no(self):
+    def get_parlai_port_no(self) -> int:
         return self._config["ParlAI"]["parlai_prot_no"]
 
-    def get_youtube_api_key(self):
-        return self._config["YouTube"]["youtube_api_key"]
+    def get_youtube_api_key(self) -> str:
+        return self._config["YouTube"][self.KEY_YOUTUBE_API_KEY]
 
-    def get_youtube_live_url(self):
-        return self._config["YouTube"]["youtube_live_url"]
+    def set_youtube_api_key(self, value: str) -> None:
+        self._config["YouTube"][self.KEY_YOUTUBE_API_KEY] = value
 
-    def get_pyaudio_second_output_enabled(self):
+    def get_youtube_live_url(self) -> str:
+        return self._config["YouTube"][self.KEY_YOUTUBE_LIVE_URL]
+
+    def set_youtube_live_url(self, value: str) -> None:
+        self._config["YouTube"][self.KEY_YOUTUBE_LIVE_URL] = value
+
+    def get_pyaudio_second_output_enabled(self) -> bool:
         return self._config["PyAudio"]["pyaudio_second_output_enabled"]
 
-    def get_pyaudio_second_output_host_api_name(self):
+    def get_pyaudio_second_output_host_api_name(self) -> str:
         return self._config["PyAudio"]["pyaudio_second_output_host_api_name"]
 
-    def get_pyaudio_second_output_device_name(self):
+    def get_pyaudio_second_output_device_name(self) -> str:
         return self._config["PyAudio"]["pyaudio_second_output_device_name"]
 
     def clone(self):

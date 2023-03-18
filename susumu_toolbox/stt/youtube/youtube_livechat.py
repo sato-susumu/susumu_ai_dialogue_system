@@ -49,7 +49,10 @@ class YouTubeLiveChat:
             'id': self._video_id,
             'part': 'liveStreamingDetails'
         }
-        data = requests.get(url, params=params).json()
+        response = requests.get(url, params=params)
+        if response.status_code // 100 != 2:
+            raise ValueError(f"{response.status_code}: {response.text}")
+        data = response.json()
 
         details = data['items'][0]['liveStreamingDetails']
         if 'activeLiveChatId' in details.keys():
@@ -75,7 +78,10 @@ class YouTubeLiveChat:
         # API仕様は https://developers.google.com/youtube/v3/live/docs/liveChatMessages/list 参照
         # itemsの仕様は https://developers.google.com/youtube/v3/live/docs/liveChatMessages 参照
         url = "https://www.googleapis.com/youtube/v3/liveChat/messages"
-        result = requests.get(url, params=params).json()
+        response = requests.get(url, params=params)
+        if response.status_code // 100 != 2:
+            raise ValueError(f"{response.status_code}: {response.text}")
+        result = response.json()
 
         messages = []
         if "items" not in result.keys():

@@ -41,7 +41,7 @@ class OBSClient:
         host = self._config.get_obs_host()
         port_no = self._config.get_obs_port_no()
         password = self._config.get_obs_password()
-        self._ws = obsws(host, port_no, password, authreconnect=1,
+        self._ws = obsws(host, port_no, password, authreconnect=0,
                          on_connect=self._on_connect, on_disconnect=self._on_disconnect)
 
         while not self._connection_waiting_queue.empty():
@@ -57,5 +57,6 @@ class OBSClient:
         self._ws.disconnect()
 
     def set_text(self, scene_name: str, source: str, text: str) -> None:
+        print("OBS: set_text(scene_name={}, source={}, text={})".format(scene_name, source, text))
         self._ws.call(
             requests.SetTextGDIPlusProperties(scene_name=scene_name, source=source, text=text))
