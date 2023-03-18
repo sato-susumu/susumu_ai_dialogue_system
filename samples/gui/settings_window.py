@@ -63,12 +63,15 @@ class SettingsWindow(BaseWindow):
                  password_char="*",
                  size=self.INPUT_SIZE_LONG,
              )],
-            [sg.Text('DEEPL APIキー'),
+            [sg.Text('DEEPL APIキー',
+                     visible=False,
+                     ),
              sg.InputText(
                  default_text=self._config.get_deepl_auth_key(),
                  key=self._config.KEY_DEEPL_AUTH_KEY,
                  password_char="*",
                  size=self.INPUT_SIZE_LONG,
+                 visible=False,
              )],
         ]
 
