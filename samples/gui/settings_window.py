@@ -58,22 +58,18 @@ class SettingsWindow(BaseWindow):
         api_keys_tab_layout = [
             [sg.Text("OpenAI APIキー"),
              sg.InputText(
-                 self._config.get_openai_api_key(),
-                 size=self.INPUT_SIZE_LONG,
+                 default_text=self._config.get_openai_api_key(),
+                 key=self._config.KEY_OPENAI_API_KEY,
                  password_char="*",
-                 key=self._config.KEY_OPENAI_API_KEY)],
-            # [sg.Text('GCP APIキー'),
-            #  sg.InputText(key="gcp_api_key",
-            #               password_char="*",
-            #               size=self.INPUT_SIZE_LONG,
-            #               )
-            #  ],
-            # [sg.Text('DEEPL APIキー'),
-            #  sg.InputText(key="deepl_auth_key",
-            #               password_char="*",
-            #               size=self.INPUT_SIZE_LONG,
-            #               )
-            #  ],
+                 size=self.INPUT_SIZE_LONG,
+             )],
+            [sg.Text('DEEPL APIキー'),
+             sg.InputText(
+                 default_text=self._config.get_deepl_auth_key(),
+                 key=self._config.KEY_DEEPL_AUTH_KEY,
+                 password_char="*",
+                 size=self.INPUT_SIZE_LONG,
+             )],
         ]
 
         youtube_pseud_stt_items = [
@@ -289,6 +285,7 @@ class SettingsWindow(BaseWindow):
     def _update_config(self, values, target_config) -> Config:
         # API KEY
         target_config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
+        target_config.set_deepl_auth_key(values[self._config.KEY_DEEPL_AUTH_KEY])
 
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])
