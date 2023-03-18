@@ -18,6 +18,23 @@ class Config:
     KEY_OBS_PASSWORD = "obs_password"
     KEY_YOUTUBE_LIVE_URL = "youtube_live_url"
     KEY_YOUTUBE_API_KEY = "youtube_api_key"
+    KEY_GUI_BASE_FUNCTION = "gui_base_function"
+    KEY_GUI_INPUT_FUNCTION = "gui_input_function"
+    KEY_GUI_OUTPUT_FUNCTION = "gui_output_function"
+
+    BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
+    BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
+    BASE_FUNCTION_AI_TUBER = "ai_tuber"
+
+    INPUT_FUNCTION_SR_GOOGLE = "sr_google"
+    INPUT_FUNCTION_STDIN_PSEUD = "stdin_pseud"
+    INPUT_FUNCTION_GOOGLE_STREAMING = "google_streaming"
+    INPUT_FUNCTION_YOUTUBE_PSEUD = "youtube_pseud"
+
+    OUTPUT_FUNCTION_PYTTSX3 = "pyttsx3"
+    OUTPUT_FUNCTION_VOICEVOX = "voicevox"
+    OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"
+    OUTPUT_FUNCTION_GTTS = "gtts"
 
     def __init__(self):
         # 辞書からコンフィグを読み込む
@@ -47,7 +64,11 @@ class Config:
               pyaudio_second_output_enabled: false
               # 名前の一部でもいい
               pyaudio_second_output_host_api_name: "MME"
-              pyaudio_second_output_device_name: "VB-Audio Virtual C"        
+              pyaudio_second_output_device_name: "VB-Audio Virtual C"
+            GUI:
+              gui_base_function: "voice_dialogue"
+              gui_input_function: "sr_google"
+              gui_output_function: "pyttsx3"
         """
         self._config = OmegaConf.create(default_yaml)
 
@@ -171,3 +192,21 @@ class Config:
 
     def clone(self):
         return copy.deepcopy(self)
+
+    def get_gui_base_function(self) -> str:
+        return self._config["GUI"][self.KEY_GUI_BASE_FUNCTION]
+
+    def set_gui_base_function(self, value: str) -> None:
+        self._config["GUI"][self.KEY_GUI_BASE_FUNCTION] = value
+
+    def get_gui_input_function(self) -> str:
+        return self._config["GUI"][self.KEY_GUI_INPUT_FUNCTION]
+
+    def set_gui_input_function(self, value: str) -> None:
+        self._config["GUI"][self.KEY_GUI_INPUT_FUNCTION] = value
+
+    def get_gui_output_function(self) -> str:
+        return self._config["GUI"][self.KEY_GUI_OUTPUT_FUNCTION]
+
+    def set_gui_output_function(self, value: str) -> None:
+        self._config["GUI"][self.KEY_GUI_OUTPUT_FUNCTION] = value
