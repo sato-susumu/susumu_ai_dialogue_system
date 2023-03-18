@@ -15,10 +15,14 @@ class GttsTTS(BaseTTS):
 
     def tts_play_sync(self, text: str) -> None:
         super().tts_play_sync(text)
+        if text == "":
+            return
         self._play_sync(text)
 
     def tts_play_async(self, text: str) -> None:
         super().tts_play_async(text)
+        if text == "":
+            return
         # 非同期再生に対応していないため、同期再生
         self._play_sync(text)
 
