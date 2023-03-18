@@ -52,6 +52,7 @@ def test_sample_creation_7():
 
 def test_sample_creation_8():
     config = Config()
+    config.set_deepl_auth_key("test")
     ParlAIVoiceChatSample2(config)
 
 

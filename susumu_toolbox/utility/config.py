@@ -9,6 +9,7 @@ from omegaconf import OmegaConf
 class Config:
     CONFIG_FILE_NAME = "config.yaml"
     KEY_OPENAI_API_KEY = "openai_api_key"
+    KEY_DEEPL_AUTH_KEY = "deepl_auth_key"
     KEY_VOICEVOX_HOST = "voicevox_host"
     KEY_VOICEVOX_PORT_NO = "voicevox_port_no"
     KEY_VOICEVOX_SPEAKER_NO = "voicevox_speaker_no"
@@ -22,9 +23,9 @@ class Config:
         # 辞書からコンフィグを読み込む
         default_yaml = """
             DeepL:
-              deepl_auth_key: "DEEPLの認証キー"
+              deepl_auth_key: ""
             OpenAI:
-              openai_api_key: "OpenAIのAPIキー"
+              openai_api_key: ""
             OBS:
               obs_host: "127.0.0.1"
               obs_port_no: 4444
@@ -93,7 +94,10 @@ class Config:
         return "."
 
     def get_deepl_auth_key(self) -> str:
-        return self._config["DeepL"]["deepl_auth_key"]
+        return self._config["DeepL"][self.KEY_DEEPL_AUTH_KEY]
+
+    def set_deepl_auth_key(self, value: str) -> None:
+        self._config["DeepL"][self.KEY_DEEPL_AUTH_KEY] = value
 
     def get_openai_api_key(self) -> str:
         value = self._config["OpenAI"][self.KEY_OPENAI_API_KEY]

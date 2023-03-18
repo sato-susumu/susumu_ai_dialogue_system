@@ -1,7 +1,7 @@
 DeepL:
-  deepl_auth_key: "DEEPLの認証キー"
+  deepl_auth_key: ""
 OpenAI:
-  openai_api_key: "OpenAIのAPIキー"
+  openai_api_key: ""
 OBS:
   obs_host: "127.0.0.1"
   obs_port_no: 4444
