@@ -9,7 +9,7 @@ class TTSTest:
     def __init__(self, config: Config):
         self._config = config
 
-    def run(self, event) -> None:
+    def run(self) -> None:
         output_function = self._config.get_gui_output_function()
         if output_function == self._config.OUTPUT_FUNCTION_VOICEVOX:
             tts = VoicevoxTTS(self._config)

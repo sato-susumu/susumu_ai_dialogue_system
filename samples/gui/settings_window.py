@@ -282,7 +282,7 @@ class SettingsWindow(BaseWindow):
             raise Exception("想定外のイベントです")
 
         try:
-            TTSTest(config).run(event)
+            TTSTest(config).run()
         except Exception as e:
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
