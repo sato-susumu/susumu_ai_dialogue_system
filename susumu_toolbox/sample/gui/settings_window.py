@@ -67,11 +67,11 @@ class SettingsWindow(BaseWindow):
 
         common_tab_layout = [[
             sg.Column([
-                [sg.Frame("ベース機能", base_function_items)],
-                [sg.Frame("入力", input_function_items)],
-                [sg.Frame("チャットエンジン", chat_function_items)],
-                [sg.Frame("出力", output_function_items)],
-                [sg.Frame("その他", other_function_items)],
+                [sg.Frame("ベース機能", base_function_items, expand_x=True)],
+                [sg.Frame("入力", input_function_items, expand_x=True)],
+                [sg.Frame("チャットエンジン", chat_function_items, expand_x=True)],
+                [sg.Frame("出力", output_function_items, expand_x=True)],
+                [sg.Frame("その他", other_function_items, expand_x=True)],
             ],
                 scrollable=True,
                 vertical_scroll_only=True,
@@ -80,7 +80,7 @@ class SettingsWindow(BaseWindow):
             ),
         ]]
 
-        api_keys_tab_layout = [
+        openai_items = [
             [sg.Text("OpenAI APIキー"),
              sg.InputText(
                  default_text=self._config.get_openai_api_key(),
@@ -98,6 +98,21 @@ class SettingsWindow(BaseWindow):
                  size=self.INPUT_SIZE_LONG,
                  visible=False,
              )],
+        ]
+        deepl_items = [
+            [sg.Text('DEEPL APIキー',
+                     ),
+             sg.InputText(
+                 default_text=self._config.get_deepl_auth_key(),
+                 key=self._config.KEY_DEEPL_AUTH_KEY,
+                 password_char="*",
+                 size=self.INPUT_SIZE_LONG,
+             )],
+        ]
+
+        api_keys_tab_layout = [
+            [sg.Frame("OpenAI", openai_items, expand_x=True)],
+            [sg.Frame("DeepL", deepl_items, expand_x=True, visible=False)],
         ]
 
         youtube_pseud_stt_items = [
@@ -129,10 +144,10 @@ class SettingsWindow(BaseWindow):
         ]
 
         stt_tab_layout = [
-            [sg.Frame("SpeechRecognition(Google)", sr_google_stt_items)],
-            [sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items)],
-            [sg.Frame("Googleストリーミング音声認識", google_streaming_stt_items)],
-            [sg.Frame("文字入力", stdin_pseud_stt_items)],
+            [sg.Frame("SpeechRecognition(Google)", sr_google_stt_items, expand_x=True)],
+            [sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
+            [sg.Frame("Googleストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
+            [sg.Frame("文字入力", stdin_pseud_stt_items, expand_x=True)],
         ]
 
         parlai_items = [
@@ -152,7 +167,7 @@ class SettingsWindow(BaseWindow):
         ]
 
         chat_tab_layout = [
-            [sg.Frame("ParlAI", parlai_items)],
+            [sg.Frame("ParlAI", parlai_items, expand_x=True)],
         ]
 
         voicevox_items = [
@@ -192,10 +207,10 @@ class SettingsWindow(BaseWindow):
         ]
 
         tts_tab_layout = [
-            [sg.Frame("gTTS (動作確認用)", gtts_items)],
-            [sg.Frame("VOICEVOX", voicevox_items)],
-            [sg.Frame("Google TTS", google_cloud_tts_items)],
-            [sg.Frame("Pyttsx3", pyttsx3_items)],
+            [sg.Frame("gTTS (動作確認用)", gtts_items, expand_x=True)],
+            [sg.Frame("VOICEVOX", voicevox_items, expand_x=True)],
+            [sg.Frame("Google TTS", google_cloud_tts_items, expand_x=True)],
+            [sg.Frame("Pyttsx3", pyttsx3_items, expand_x=True)],
         ]
 
         # TODO:セリフ用テキストとユーザー発話用テキストの設定方法を明確にする
@@ -224,7 +239,7 @@ class SettingsWindow(BaseWindow):
         ]
 
         other_tab_layout = [
-            [sg.Frame("OBS", obs_items)],
+            [sg.Frame("OBS", obs_items, expand_x=True)],
         ]
 
         # TODO: AI関連の設定追加
