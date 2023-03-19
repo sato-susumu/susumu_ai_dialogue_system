@@ -18,5 +18,5 @@ class WhisperSTTSample(BaseSTTSample):
 
 if __name__ == "__main__":
     config = Config()
-    config.load()
+    config.search_and_load()
     WhisperSTTSample(config).run_forever()

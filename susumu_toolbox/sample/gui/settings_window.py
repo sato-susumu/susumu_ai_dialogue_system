@@ -198,6 +198,7 @@ class SettingsWindow(BaseWindow):
             [sg.Frame("Pyttsx3", pyttsx3_items)],
         ]
 
+        # TODO:セリフ用テキストとユーザー発話用テキストの設定方法を明確にする
         obs_items = [
             [sg.Text('アドレス'),
              sg.InputText(default_text=self._config.get_obs_host(),
@@ -226,6 +227,7 @@ class SettingsWindow(BaseWindow):
             [sg.Frame("OBS", obs_items)],
         ]
 
+        # TODO: AI関連の設定追加
         ai_tab_layout = [
             [sg.Text('タブ5のコンテンツ')]
         ]

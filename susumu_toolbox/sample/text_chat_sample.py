@@ -8,12 +8,13 @@ from susumu_toolbox.sample.base_chat_sample import BaseChatSample
 from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.stt.stdin_pseud_stt import StdinPseudSTT
 from susumu_toolbox.utility.config import Config
+from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class TextChatSample(BaseChatSample):
-    def __init__(self, config: Config):
-        super().__init__(config)
+    def __init__(self, config: Config, system_settings: SystemSettings):
+        super().__init__(config, system_settings)
 
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
@@ -157,5 +158,6 @@ class TextChatSample(BaseChatSample):
 
 if __name__ == "__main__":
     _config = Config()
-    _config.load()
-    TextChatSample(_config).run_forever()
+    _config.search_and_load()
+    _system_settings = SystemSettings(_config)
+    TextChatSample(_config, _system_settings).run_forever()

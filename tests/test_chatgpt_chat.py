@@ -1,26 +1,19 @@
-import os
-
 from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.utility.config import Config
-
-
-def test_no_settings():
-    config = Config()
-    chat = ChatGPTChat(config)
-    assert len(chat._messages) == 0
+from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 def test_settings():
     config = Config()
-    settings_path = os.path.join(config.get_config_dir(), "system_settings.txt")
-    chat = ChatGPTChat(config, settings_path)
+    system_settings = SystemSettings(config)
+    chat = ChatGPTChat(config, system_settings)
     assert len(chat._messages) == 1
 
 
 def test_prompt():
     config = Config()
-    settings_path = os.path.join(config.get_config_dir(), "system_settings.txt")
-    chat = ChatGPTChat(config, settings_path)
+    system_settings = SystemSettings(config)
+    chat = ChatGPTChat(config, system_settings)
     assert len(chat._messages) == 1
 
     for i in range(10):

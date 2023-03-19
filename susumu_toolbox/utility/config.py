@@ -1,6 +1,5 @@
 import copy
 import os
-from typing import Optional
 
 from omegaconf import OmegaConf
 
@@ -45,6 +44,9 @@ class Config:
     OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"
     OUTPUT_FUNCTION_GTTS = "gtts"
 
+    USER_DATA_DIR_NAME = "user_data"
+    SAMPLE_DIR_NAME = "sample"
+
     def __init__(self):
         # 辞書からコンフィグを読み込む
         default_yaml = """
@@ -82,48 +84,44 @@ class Config:
               pyaudio_second_output_device_name: "VB-Audio Virtual C"
         """
         self._config = OmegaConf.create(default_yaml)
-
-        # TODO: 下記のようにコンフィグファイルパスの扱いはごちゃっとしているので整理する
-        # 自動検知もしくはload時に引数で指定されたコンフィグファイルパス
-        # 次のようなケースもある
-        # ・自動検知で見つかり、そのパスを使う。ファイルは存在する
-        # ・load時に引数で指定されたもののファイルが存在しない
-        # ・自動検知で見つからず、仮のパスを使う。ファイルは存在しない
-        self._current_config_path = self._get_config_file_path()
-
-    def _get_config_file_path(self) -> str:
-        return os.path.join(self.get_config_dir(), self.CONFIG_FILE_NAME)
-
-    def exist_config_file(self, file_path) -> bool:
-        return os.path.exists(file_path)
+        self._config_path = None
 
     def save(self) -> None:
-        OmegaConf.save(self._config, self._current_config_path)
+        assert self._config_path is not None
+        config_dir = os.path.dirname(self._config_path)
+        if not os.path.exists(config_dir):
+            os.makedirs(config_dir)
+        OmegaConf.save(self._config, self._config_path)
 
     # noinspection DuplicatedCode
-    def load(self, file_path: Optional[str] = None) -> None:
-        if file_path is None:
-            file_path = self._get_config_file_path()
-        if self.exist_config_file(file_path):
-            loaded_config = OmegaConf.load(file_path)
-            self._config = OmegaConf.merge(self._config, loaded_config)
-        self._current_config_path = file_path
+    def search_and_load(self) -> None:
+        file_path = os.path.join(self.search_config_dir(), self.CONFIG_FILE_NAME)
+        self.load(file_path)
 
-    def get_config_dir(self) -> str:
-        # カレントフォルダ用
-        if os.path.exists(self.CONFIG_FILE_NAME):
-            return "."
-        # ルートフォルダ用
-        # TODO:__file__の撤廃
-        path = os.path.join(os.path.dirname(__file__), "../config/")
-        if os.path.exists(path):
-            return path
-        # サンプルフォルダ用
-        # TODO:__file__の撤廃
-        path = os.path.join(os.path.dirname(__file__), "../../config/")
-        if os.path.exists(path):
-            return path
-        return "."
+    def load(self, file_path: str) -> None:
+        loaded_config = OmegaConf.load(file_path)
+        self._config = OmegaConf.merge(self._config, loaded_config)
+
+    def set_config_path(self, file_path: str) -> None:
+        self._config_path = file_path
+
+    def get_user_data_dir_path(self) -> str:
+        return f"./{self.USER_DATA_DIR_NAME}/"
+
+    def search_config_dir(self) -> str:
+        dir_path_list = [
+            ".",
+            f"./{self.USER_DATA_DIR_NAME}/",
+            f"../{self.USER_DATA_DIR_NAME}/",
+            f"../../{self.USER_DATA_DIR_NAME}/",
+            f"./{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
+            f"../{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
+            f"../../{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
+        ]
+        for dir_path in dir_path_list:
+            if os.path.exists(os.path.join(dir_path, self.CONFIG_FILE_NAME)):
+                return dir_path
+        raise FileNotFoundError(f"{self.CONFIG_FILE_NAME} not found.")
 
     def get_deepl_auth_key(self) -> str:
         return self._config["DeepL"][self.KEY_DEEPL_AUTH_KEY]

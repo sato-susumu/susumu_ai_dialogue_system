@@ -41,7 +41,7 @@ class FunctionFactory:
         if chat_function == Config.CHAT_FUNCTION_PARLAI:
             return ParlAIChat(config)
         if chat_function == Config.CHAT_FUNCTION_CHATGPT:
-            return ChatGPTChat(config, system.get_system_settings())
+            return ChatGPTChat(config, system)
         raise ValueError(f"Invalid chat_function: {chat_function}")
 
     @staticmethod

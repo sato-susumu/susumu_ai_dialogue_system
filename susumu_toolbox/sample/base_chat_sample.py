@@ -1,5 +1,3 @@
-import os
-
 from susumu_toolbox.chat.base_chat import BaseChat
 from susumu_toolbox.sample.common.function_factory import FunctionFactory
 from susumu_toolbox.stt.base_stt import BaseSTT
@@ -12,14 +10,12 @@ from susumu_toolbox.utility.system_setting import SystemSettings
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class BaseChatSample:
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, system_settings: SystemSettings):
         self._config = config
+        self._system_settings = system_settings
 
     def create_chat(self) -> BaseChat:
-        system = SystemSettings(self._config)
-        path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
-        system.load_settings(path)
-        chat = FunctionFactory.create_chat(self._config, system)
+        chat = FunctionFactory.create_chat(self._config, self._system_settings)
         print("chat:", chat)
         return chat
 

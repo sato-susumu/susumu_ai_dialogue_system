@@ -22,5 +22,5 @@ class OBSTest:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _config = Config()
-    _config.load()
+    _config.search_and_load()
     OBSTest(_config).run()

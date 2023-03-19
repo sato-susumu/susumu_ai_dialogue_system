@@ -5,6 +5,7 @@ from susumu_toolbox.chat.base_chat import ChatResult
 from susumu_toolbox.sample.text_chat_sample import TextChatSample
 from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.utility.config import Config
+from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 def start_sample():
@@ -12,7 +13,9 @@ def start_sample():
     _config.set_common_input_function(_config.INPUT_FUNCTION_BASE)
     _config.set_common_output_function(_config.OUTPUT_FUNCTION_BASE)
     _config.set_common_obs_enabled(False)
-    text_chat_sample = TextChatSample(_config)
+    _system_settings = SystemSettings(_config)
+
+    text_chat_sample = TextChatSample(_config, _system_settings)
 
     thread = threading.Thread(target=text_chat_sample.run_once)
     thread.start()
