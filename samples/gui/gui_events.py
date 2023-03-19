@@ -8,3 +8,4 @@ class GuiEvents:
     SR_GOOGLE_STT_TEST = "sr_google_stt_test"
     STDIN_PSEUD_STT_TEST = "stdin_pseud_stt_test"
     OBS_TEST = "obs_test"
+    PARLAI_TEST = "parlai_test"

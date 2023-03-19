@@ -17,7 +17,7 @@ VOICEVOX:
   voicevox_speaker_no: 8
 ParlAI:
   parlai_host: "127.0.0.1"
-  parlai_prot_no: 35496
+  parlai_port_no: 35496
 YouTube:
   # YouTube Data API v3のAPIキー
   youtube_api_key: ""

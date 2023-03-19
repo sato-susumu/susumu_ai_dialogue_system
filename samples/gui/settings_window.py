@@ -121,13 +121,16 @@ class SettingsWindow(BaseWindow):
 
         parlai_items = [
             [sg.Text('アドレス'),
-             sg.InputText(key="parlai_host",
+             sg.InputText(key=self._config.KEY_PARLAI_HOST,
+                          default_text=self._config.get_parlai_host(),
                           size=self.INPUT_SIZE_NORMAL,
                           )
              ],
             [sg.Text('ポート番号'),
-             sg.InputText(key="parlai_prot_no",
+             sg.InputText(key=self._config.KEY_PARLAI_PORT_NO,
+                          default_text=self._config.get_parlai_port_no(),
                           size=self.INPUT_SIZE_SHORT,
+                          enable_events=True,
                           )
              ],
         ]
@@ -225,7 +228,7 @@ class SettingsWindow(BaseWindow):
                     [sg.Tab('API KEY', api_keys_tab_layout)],
                     # [sg.Tab('AI設定', ai_tab_layout)],
                     [sg.Tab('入力', stt_tab_layout)],
-                    # [sg.Tab('チャットエンジン', chat_tab_layout)],
+                    [sg.Tab('チャットエンジン', chat_tab_layout)],
                     [sg.Tab('音声合成', tts_tab_layout)],
                     [sg.Tab('その他', other_tab_layout, )],
                 ],
@@ -265,12 +268,11 @@ class SettingsWindow(BaseWindow):
                 self._stt_test(event, values)
             if event == GuiEvents.OBS_TEST:
                 self._obs_test(event, values)
-            if event == self._config.KEY_VOICEVOX_PORT_NO:
-                self._input_validation_number_only(settings_window, self._config.KEY_VOICEVOX_PORT_NO, values)
-            if event == self._config.KEY_VOICEVOX_SPEAKER_NO:
-                self._input_validation_number_only(settings_window, self._config.KEY_VOICEVOX_SPEAKER_NO, values)
-            if event == self._config.KEY_OBS_PORT_NO:
-                self._input_validation_number_only(settings_window, self._config.KEY_OBS_PORT_NO, values)
+
+            if event in (self._config.KEY_VOICEVOX_PORT_NO, self._config.KEY_VOICEVOX_SPEAKER_NO,
+                         self._config.KEY_OBS_PORT_NO, self._config.KEY_PARLAI_PORT_NO):
+                self._input_validation_number_only(settings_window, event, values)
+
         settings_window.close()
         return close_button_clicked
 
@@ -302,6 +304,11 @@ class SettingsWindow(BaseWindow):
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])
         target_config.set_youtube_api_key(values[self._config.KEY_YOUTUBE_API_KEY])
+
+        # チャットエンジン
+        target_config.set_parlai_host(values[self._config.KEY_PARLAI_HOST])
+        if values[self._config.KEY_PARLAI_PORT_NO] != "":
+            target_config.set_parlai_port_no(int(values[self._config.KEY_PARLAI_PORT_NO]))
 
         # 出力
         target_config.set_voicevox_host(values[self._config.KEY_VOICEVOX_HOST])

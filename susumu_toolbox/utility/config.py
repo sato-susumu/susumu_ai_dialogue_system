@@ -22,6 +22,8 @@ class Config:
     KEY_COMMON_INPUT_FUNCTION = "common_input_function"
     KEY_COMMON_OUTPUT_FUNCTION = "common_output_function"
     KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
+    KEY_PARLAI_HOST = "parlai_host"
+    KEY_PARLAI_PORT_NO = "parlai_port_no"
 
     BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
@@ -59,7 +61,7 @@ class Config:
               voicevox_speaker_no: 8
             ParlAI:
               parlai_host: "127.0.0.1"
-              parlai_prot_no: 35496
+              parlai_port_no: 35496
             YouTube:
               # YouTube Data API v3のAPIキー
               youtube_api_key: ""
@@ -166,10 +168,16 @@ class Config:
         self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO] = value
 
     def get_parlai_host(self) -> str:
-        return self._config["ParlAI"]["parlai_host"]
+        return self._config["ParlAI"][self.KEY_PARLAI_HOST]
+
+    def set_parlai_host(self, value: str) -> None:
+        self._config["ParlAI"][self.KEY_PARLAI_HOST] = value
 
     def get_parlai_port_no(self) -> int:
-        return self._config["ParlAI"]["parlai_prot_no"]
+        return self._config["ParlAI"][self.KEY_PARLAI_PORT_NO]
+
+    def set_parlai_port_no(self, value: int) -> None:
+        self._config["ParlAI"][self.KEY_PARLAI_PORT_NO] = value
 
     def get_youtube_api_key(self) -> str:
         return self._config["YouTube"][self.KEY_YOUTUBE_API_KEY]
