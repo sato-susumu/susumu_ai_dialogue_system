@@ -1,6 +1,5 @@
 import os
 
-from samples.base_voice_chat_sample import BaseVoiceChatSample
 from samples.gui.gui_function_factory import GuiFunctionFactory
 from susumu_toolbox.chat.base_chat import BaseChat
 from susumu_toolbox.stt.base_stt import BaseSTT
@@ -12,9 +11,9 @@ from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class GuiVoiceChatSample(BaseVoiceChatSample):
+class BaseChatSample:
     def __init__(self, config: Config):
-        super().__init__(config)
+        self._config = config
 
     def create_chat(self) -> BaseChat:
         system = SystemSettings(self._config)
@@ -37,8 +36,7 @@ class GuiVoiceChatSample(BaseVoiceChatSample):
         print("tts:", tts)
         return tts
 
-
-if __name__ == "__main__":
-    _config = Config()
-    _config.load()
-    GuiVoiceChatSample(_config).run_forever()
+    def create_obs_client(self):
+        obs = GuiFunctionFactory.create_obs_client(self._config)
+        print("obs:", obs)
+        return obs

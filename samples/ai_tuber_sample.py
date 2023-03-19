@@ -1,26 +1,16 @@
-import os
 import time
 import traceback
 
 from six.moves import queue
 
-from samples.base_voice_chat_sample import BaseVoiceChatSample
-from susumu_toolbox.chat.base_chat import ChatResult, BaseChat
-from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
-from susumu_toolbox.obs.base_obs_client import BaseOBSClient
-from susumu_toolbox.obs.dummy_obs_client import DummyOBSClient
-from susumu_toolbox.stt.base_stt import STTResult, BaseSTT
-from susumu_toolbox.stt.youtube_pseud_stt import YoutubePseudSTT
-from susumu_toolbox.translation.base_translator import BaseTranslator
-from susumu_toolbox.translation.dummy_translator import DummyTranslator
-from susumu_toolbox.tts.base_tts import BaseTTS
-from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
+from samples.base_chat_sample import BaseChatSample
+from susumu_toolbox.chat.base_chat import ChatResult
+from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.utility.config import Config
-from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class AiTuberSample(BaseVoiceChatSample):
+class AiTuberSample(BaseChatSample):
     """AITuberのサンプル
 
     入力：YouTubeコメント入力
@@ -31,7 +21,6 @@ class AiTuberSample(BaseVoiceChatSample):
 
     def __init__(self, config: Config):
         super().__init__(config)
-        self._config = config
 
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
@@ -154,7 +143,7 @@ class AiTuberSample(BaseVoiceChatSample):
                     print("Bot 返事待ち開始")
                     self._chat.send_message(text)
                     print("Bot 返事待ち完了 ")
-        except Exception as e:
+        except Exception:
             print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
@@ -167,25 +156,6 @@ class AiTuberSample(BaseVoiceChatSample):
         print("run_forever")
         while True:
             self.run_once()
-
-    def create_chat(self) -> BaseChat:
-        system = SystemSettings(self._config)
-        path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
-        system.load_settings(path)
-        return ChatGPTChat(self._config, system.get_system_settings())
-
-    # noinspection PyUnusedLocal
-    def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return YoutubePseudSTT(self._config)
-
-    def create_tts(self) -> BaseTTS:
-        return VoicevoxTTS(self._config)
-
-    def create_translator(self) -> BaseTranslator:
-        return DummyTranslator(self._config)
-
-    def create_obs_client(self) -> BaseOBSClient:
-        return DummyOBSClient(self._config)
 
 
 if __name__ == "__main__":

@@ -19,6 +19,9 @@ class BaseTTS:
     def is_playing(self) -> bool:
         return self._player.is_playing()
 
+    def tts_stop(self) -> None:
+        self._player.stop()
+
     def tts_save_mp3(self, text: str, file_path: str) -> None:
         pass
 

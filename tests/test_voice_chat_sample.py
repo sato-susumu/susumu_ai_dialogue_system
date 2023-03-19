@@ -1,14 +1,17 @@
 import threading
 import time
 
-from samples.base_voice_chat_sample import BaseVoiceChatSample
+from samples.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.utility.config import Config
-from tests.test_base_text_chat_sample import common_bye_1, common_bye_2, common_close
+from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 
 
 def start_sample():
     _config = Config()
-    voice_chat_sample = BaseVoiceChatSample(_config)
+    _config.set_common_input_function(_config.INPUT_FUNCTION_BASE)
+    _config.set_common_output_function(_config.OUTPUT_FUNCTION_BASE)
+    _config.set_common_obs_enabled(False)
+    voice_chat_sample = VoiceChatSample(_config)
 
     thread = threading.Thread(target=voice_chat_sample.run_once)
     thread.start()

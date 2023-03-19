@@ -14,20 +14,6 @@
 
 - OBSを使った字幕表示
 
-## サンプル一覧
-
-| ソースコード                                 | チャットモジュール | 音声認識                      | 音声出力     | 翻訳          | 字幕  |
-|----------------------------------------|-----------|---------------------------|----------|-------------|-----|
-| chatgpt_text_chat_sample.py            | ChatGPT   | 標準入力 [^1]                 | -        | -           | -   |
-| chatgpt_voice_chat_sample.py           | ChatGPT   | SpeechRecognition(Google) | pyttsx3  | -           | -   |
-| chatgpt_voice_chat_sample2.py          | ChatGPT   | Googleストリーミング音声認識         | VOICEVOX | -           | -   |
-| chatgpt_voice_chat_sample2_with_obs.py | ChatGPT   | Googleストリーミング音声認識         | VOICEVOX | -           | OBS |
-| parlai_text_chat_sample.py             | ParlAI    | 標準入力 [^1]                 | -        | Googletrans | -   |
-| parlai_voice_chat_sample.py            | ParlAI    | SpeechRecognition(Google) | pyttsx3  | Googletrans | -   |
-| parlai_voice_chat_sample2.py           | ParlAI    | Googleストリーミング音声認識         | VOICEVOX | DeepL       | -   |
-
-[^1]: 音声認識モジュールのインタフェースに合わせた擬似的な音声認識モジュール
-
 ## 対応モジュール
 
 同じカテゴリのモジュールは簡単に入れ替えることができます。

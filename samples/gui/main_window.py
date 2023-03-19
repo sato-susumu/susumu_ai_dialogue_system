@@ -1,12 +1,10 @@
-import os
-
 import PySimpleGUI as sg
 
+from samples.ai_tuber_sample import AiTuberSample
 from samples.gui.base_window import BaseWindow
 from samples.gui.settings_window import SettingsWindow
-from samples.gui_ai_tuber_sample import GuiAiTuberSample
-from samples.gui_text_chat_sample import GuiTextChatSample
-from samples.gui_voice_chat_sample import GuiVoiceChatSample
+from samples.text_chat_sample import TextChatSample
+from samples.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.utility.config import Config
 
 
@@ -18,11 +16,11 @@ class MainWindow(BaseWindow):
     def _run(self) -> None:
         base_function = self._config.get_common_base_function()
         if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
-            base = GuiTextChatSample(self._config)
+            base = TextChatSample(self._config)
         elif base_function == Config.BASE_FUNCTION_VOICE_DIALOGUE:
-            base = GuiVoiceChatSample(self._config)
+            base = VoiceChatSample(self._config)
         elif base_function == Config.BASE_FUNCTION_AI_TUBER:
-            base = GuiAiTuberSample(self._config)
+            base = AiTuberSample(self._config)
         else:
             raise ValueError(f"Invalid base_function: {base_function}")
         base.run_forever()
@@ -57,13 +55,3 @@ class MainWindow(BaseWindow):
                     break
                 main_window.UnHide()
         main_window.close()
-
-
-if __name__ == "__main__":
-    sg.theme('Bright Colors')
-    _config = Config()
-    _config_file_path = os.path.join("./", _config.CONFIG_FILE_NAME)
-    _config.load(_config_file_path)
-    MainWindow(_config).display()
-    # SettingsWindow(_config).display()
-    # WelcomeWindow(_config).display()

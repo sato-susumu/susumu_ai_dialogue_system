@@ -3,21 +3,21 @@ import traceback
 
 from six.moves import queue
 
-from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
-from susumu_toolbox.stt.base_stt import BaseSTT, STTResult
-from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
-from susumu_toolbox.translation.base_translator import BaseTranslator
-from susumu_toolbox.tts.base_tts import BaseTTS
+from samples.base_chat_sample import BaseChatSample
+from susumu_toolbox.chat.base_chat import ChatResult
+from susumu_toolbox.stt.base_stt import STTResult
+from susumu_toolbox.stt.stdin_pseud_stt import StdinPseudSTT
 from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class BaseVoiceChatSample:
+class TextChatSample(BaseChatSample):
     def __init__(self, config: Config):
-        self._config = config
+        super().__init__(config)
 
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
+        self._translator = self.create_translator()
         self._chat = self.create_chat()
         self._chat.subscribe(self._chat.EVENT_CHAT_OPEN, self._on_chat_open)
         self._chat.subscribe(self._chat.EVENT_CHAT_CLOSE, self._on_chat_close)
@@ -37,18 +37,7 @@ class BaseVoiceChatSample:
 
         self._translator = self.create_translator()
 
-    def create_chat(self) -> BaseChat:
-        return BaseChat(self._config)
-
-    # noinspection PyUnusedLocal
-    def create_stt(self, speech_contexts=None) -> BaseSTT:
-        return BaseSTT(self._config)
-
-    def create_tts(self) -> BaseTTS:
-        return BaseTTS(self._config)
-
-    def create_translator(self) -> BaseTranslator:
-        return BaseTranslator(self._config)
+        self._obs = self.create_obs_client()
 
     def _on_chat_open(self):
         print("_on_chat_open")
@@ -65,23 +54,27 @@ class BaseVoiceChatSample:
         print(f"_on_chat_error exception={error}")
 
     def _on_stt_start(self):
-        if type(self._stt) == SRGoogleSyncSTT:
-            print("ME(マイクに向かって何か5文字以上話してください): ")
+        if type(self._stt) == StdinPseudSTT:
+            message = "ME(このウィンドウに発言を入力してリターンを押してください。終了する場合はbyeと入力) "
         else:
-            print("ME(マイクに向かって何か話してください): ")
+            message = "ME(マイクに向かって何か話してください): "
+        print(message)
+        self._obs.set_text("scene1", "text1", message)
 
     def _on_stt_end(self):
-        print("音声認識 終了")
+        # print("stt end")
+        pass
 
     def _on_stt_result(self, result: STTResult):
-        if result.is_final:
-            if result.is_timed_out:
-                print('stt final(timeout):' + result.text)
-            else:
-                print('stt final:' + result.text)
+        if result.is_timed_out:
+            print('stt final(timeout):' + result.text)
+        elif result.is_final:
+            print('stt final:' + result.text)
             self._stt_message_queue.put(result)
         else:
             print('stt not final:' + result.text)
+
+        self._obs.set_text("scene1", "text1", result.text)
 
     def _on_stt_debug_message(self, x):
         # # デバッグ出力
@@ -94,8 +87,6 @@ class BaseVoiceChatSample:
 
     def _wait_input(self) -> str:
         while True:
-            if type(self._stt) == SRGoogleSyncSTT:
-                print("音声認識 準備中")
             self._stt.recognize()
             print("STTメッセージキュー待機")
             stt_message = self._stt_message_queue.get(block=True, timeout=None)
@@ -103,16 +94,17 @@ class BaseVoiceChatSample:
             if stt_message is None:
                 return "bye"
             input_text = stt_message.text
-            if input_text == "終了":
-                return "bye"
             if input_text == "":
-                print("音声認識 失敗")
+                print("入力 失敗")
                 continue
             return input_text
 
     def run_once(self) -> None:
         # noinspection PyBroadException
         try:
+            self._obs.connect()
+            self._obs.set_text("scene1", "text1", "")
+            self._obs.set_text("scene1", "text2", "")
             self._chat.connect()
 
             while self._chat.is_connecting():
@@ -127,10 +119,20 @@ class BaseVoiceChatSample:
                 message_text = chat_message.text
                 message_text = self._translator.translate(message_text, self._translator.LANG_CODE_JA_JP)
                 print("Bot: " + message_text)
-                self._tts.tts_play_sync(message_text)
+                self._obs.set_text("scene1", "text2", message_text)
+
+                if self._tts.is_playing():
+                    print("前の音声合成が再生中なので、再生停止")
+                    self._tts.tts_stop()
+                self._tts.tts_play_async(message_text)
+
+                quick_replies = chat_message.quick_replies
+                if quick_replies is not None and len(quick_replies) > 0:
+                    print(f"\nOptions: [{'|'.join(quick_replies)}]")
 
                 input_text = self._wait_input()
 
+                self._obs.set_text("scene1", "text2", "(考え中。。。)")
                 if input_text == "bye":
                     self._chat.disconnect()
                 else:
@@ -138,13 +140,22 @@ class BaseVoiceChatSample:
                     print("Bot 返事待ち開始")
                     self._chat.send_message(text)
                     print("Bot 返事待ち完了 ")
-        except Exception as e:
+        except Exception:
             print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
+            self._obs.set_text("scene1", "text1", "")
+            self._obs.set_text("scene1", "text2", "")
+            self._obs.disconnect()
             self._chat.disconnect()
 
     def run_forever(self) -> None:
         print("run_forever")
         while True:
             self.run_once()
+
+
+if __name__ == "__main__":
+    _config = Config()
+    _config.load()
+    TextChatSample(_config).run_forever()
