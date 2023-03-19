@@ -51,6 +51,7 @@ class Config:
         # 辞書からコンフィグを読み込む
         default_yaml = """
             Common:
+              format_version: 1
               common_base_function: "voice_dialogue"
               common_input_function: "sr_google"
               common_chat_function: "chatgpt"
