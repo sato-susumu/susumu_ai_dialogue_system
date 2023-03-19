@@ -30,6 +30,7 @@ class Config:
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
     BASE_FUNCTION_AI_TUBER = "ai_tuber"
 
+    INPUT_FUNCTION_BASE = "base_stt"
     INPUT_FUNCTION_SR_GOOGLE = "sr_google"
     INPUT_FUNCTION_STDIN_PSEUD = "stdin_pseud"
     INPUT_FUNCTION_GOOGLE_STREAMING = "google_streaming"
@@ -38,6 +39,7 @@ class Config:
     CHAT_FUNCTION_CHATGPT = "chatgpt"
     CHAT_FUNCTION_PARLAI = "parlai"
 
+    OUTPUT_FUNCTION_BASE = "base_tts"
     OUTPUT_FUNCTION_PYTTSX3 = "pyttsx3"
     OUTPUT_FUNCTION_VOICEVOX = "voicevox"
     OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"

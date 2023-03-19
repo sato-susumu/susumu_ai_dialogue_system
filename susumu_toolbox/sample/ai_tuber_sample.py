@@ -3,8 +3,8 @@ import traceback
 
 from six.moves import queue
 
-from samples.base_chat_sample import BaseChatSample
 from susumu_toolbox.chat.base_chat import ChatResult
+from susumu_toolbox.sample.base_chat_sample import BaseChatSample
 from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.utility.config import Config
 

@@ -1,8 +1,8 @@
 import threading
 import time
 
-from samples.text_chat_sample import TextChatSample
 from susumu_toolbox.chat.base_chat import ChatResult
+from susumu_toolbox.sample.text_chat_sample import TextChatSample
 from susumu_toolbox.stt.base_stt import STTResult
 from susumu_toolbox.utility.config import Config
 

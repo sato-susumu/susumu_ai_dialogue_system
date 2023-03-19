@@ -18,18 +18,20 @@ from susumu_toolbox.utility.config import Config
 from susumu_toolbox.utility.system_setting import SystemSettings
 
 
-class GuiFunctionFactory:
+class FunctionFactory:
 
     @staticmethod
     def create_stt(config: Config, speech_contexts) -> BaseSTT:
         input_function = config.get_common_input_function()
+        if input_function == Config.INPUT_FUNCTION_BASE:
+            return BaseSTT(config)
         if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
             return SRGoogleSyncSTT(config)
-        elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
+        if input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
             return StdinPseudSTT(config)
-        elif input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
+        if input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
             return GoogleStreamingSTT(config, speech_contexts=speech_contexts)
-        elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
+        if input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
             return YoutubePseudSTT(config)
         raise ValueError(f"Invalid input_function: {input_function}")
 
@@ -38,20 +40,22 @@ class GuiFunctionFactory:
         chat_function = config.get_common_chat_function()
         if chat_function == Config.CHAT_FUNCTION_PARLAI:
             return ParlAIChat(config)
-        elif chat_function == Config.CHAT_FUNCTION_CHATGPT:
+        if chat_function == Config.CHAT_FUNCTION_CHATGPT:
             return ChatGPTChat(config, system.get_system_settings())
         raise ValueError(f"Invalid chat_function: {chat_function}")
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:
         output_function = config.get_common_output_function()
+        if output_function == Config.OUTPUT_FUNCTION_BASE:
+            return BaseTTS(config)
         if output_function == Config.OUTPUT_FUNCTION_GOOGLE_CLOUD:
             return GoogleCloudTTS(config)
-        elif output_function == Config.OUTPUT_FUNCTION_GTTS:
+        if output_function == Config.OUTPUT_FUNCTION_GTTS:
             return GttsTTS(config)
-        elif output_function == Config.OUTPUT_FUNCTION_PYTTSX3:
+        if output_function == Config.OUTPUT_FUNCTION_PYTTSX3:
             return Pyttsx3TTS(config)
-        elif output_function == Config.OUTPUT_FUNCTION_VOICEVOX:
+        if output_function == Config.OUTPUT_FUNCTION_VOICEVOX:
             return VoicevoxTTS(config)
         raise ValueError(f"Invalid output_function: {output_function}")
 

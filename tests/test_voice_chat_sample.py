@@ -1,7 +1,7 @@
 import threading
 import time
 
-from samples.voice_chat_sample import VoiceChatSample
+from susumu_toolbox.sample.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.utility.config import Config
 from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 

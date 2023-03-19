@@ -2,7 +2,7 @@ import os
 
 import PySimpleGUI as sg
 
-from samples.gui.main_window import MainWindow
+from susumu_toolbox.sample.gui.main_window import MainWindow
 from susumu_toolbox.utility.config import Config
 
 if __name__ == "__main__":

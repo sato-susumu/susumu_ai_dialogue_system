@@ -1,4 +1,4 @@
-from samples.stt.base_stt_sample import BaseSTTSample
+from susumu_toolbox.sample.stt.base_stt_sample import BaseSTTSample
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.stt.whisper_stt import WhisperSTT
 from susumu_toolbox.utility.config import Config

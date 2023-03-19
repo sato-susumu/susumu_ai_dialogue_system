@@ -1,10 +1,10 @@
 import PySimpleGUI as sg
 
-from samples.gui.base_window import BaseWindow
-from samples.gui.gui_events import GuiEvents
-from samples.gui.obs_test import OBSTest
-from samples.gui.stt_test import STTTest
-from samples.gui.tts_test import TTSTest
+from susumu_toolbox.sample.common.gui_events import GuiEvents
+from susumu_toolbox.sample.common.obs_test import OBSTest
+from susumu_toolbox.sample.common.stt_test import STTTest
+from susumu_toolbox.sample.common.tts_test import TTSTest
+from susumu_toolbox.sample.gui.base_window import BaseWindow
 from susumu_toolbox.utility.config import Config
 
 

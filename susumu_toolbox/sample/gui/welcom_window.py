@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-from samples.gui.base_window import BaseWindow
+from susumu_toolbox.sample.gui.base_window import BaseWindow
 # noinspection PyMethodMayBeStatic
 from susumu_toolbox.utility.config import Config
 

@@ -1,10 +1,10 @@
 import PySimpleGUI as sg
 
-from samples.ai_tuber_sample import AiTuberSample
-from samples.gui.base_window import BaseWindow
-from samples.gui.settings_window import SettingsWindow
-from samples.text_chat_sample import TextChatSample
-from samples.voice_chat_sample import VoiceChatSample
+from susumu_toolbox.sample.ai_tuber_sample import AiTuberSample
+from susumu_toolbox.sample.gui.base_window import BaseWindow
+from susumu_toolbox.sample.gui.settings_window import SettingsWindow
+from susumu_toolbox.sample.text_chat_sample import TextChatSample
+from susumu_toolbox.sample.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.utility.config import Config
 
 
