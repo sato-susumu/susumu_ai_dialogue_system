@@ -1,3 +1,6 @@
+from susumu_toolbox.chat.base_chat import BaseChat
+from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
+from susumu_toolbox.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.obs.obs_client import OBSClient
@@ -12,6 +15,7 @@ from susumu_toolbox.tts.gtts_tts import GttsTTS
 from susumu_toolbox.tts.pyttsx3_tts import Pyttsx3TTS
 from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
 from susumu_toolbox.utility.config import Config
+from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 class GuiFunctionFactory:
@@ -28,6 +32,15 @@ class GuiFunctionFactory:
         elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
             return YoutubePseudSTT(config)
         raise ValueError(f"Invalid input_function: {input_function}")
+
+    @staticmethod
+    def create_chat(config: Config, system: SystemSettings) -> BaseChat:
+        chat_function = config.get_common_chat_function()
+        if chat_function == Config.CHAT_FUNCTION_PARLAI:
+            return ParlAIChat(config)
+        elif chat_function == Config.CHAT_FUNCTION_CHATGPT:
+            return ChatGPTChat(config, system.get_system_settings())
+        raise ValueError(f"Invalid chat_function: {chat_function}")
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:

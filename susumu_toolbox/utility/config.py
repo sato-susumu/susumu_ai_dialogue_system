@@ -19,6 +19,7 @@ class Config:
     KEY_YOUTUBE_LIVE_URL = "youtube_live_url"
     KEY_YOUTUBE_API_KEY = "youtube_api_key"
     KEY_COMMON_BASE_FUNCTION = "common_base_function"
+    KEY_COMMON_CHAT_FUNCTION = "common_chat_function"
     KEY_COMMON_INPUT_FUNCTION = "common_input_function"
     KEY_COMMON_OUTPUT_FUNCTION = "common_output_function"
     KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
@@ -34,6 +35,9 @@ class Config:
     INPUT_FUNCTION_GOOGLE_STREAMING = "google_streaming"
     INPUT_FUNCTION_YOUTUBE_PSEUD = "youtube_pseud"
 
+    CHAT_FUNCTION_CHATGPT = "chatgpt"
+    CHAT_FUNCTION_PARLAI = "parlai"
+
     OUTPUT_FUNCTION_PYTTSX3 = "pyttsx3"
     OUTPUT_FUNCTION_VOICEVOX = "voicevox"
     OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"
@@ -45,6 +49,7 @@ class Config:
             Common:
               common_base_function: "voice_dialogue"
               common_input_function: "sr_google"
+              common_chat_function: "chatgpt"
               common_output_function: "pyttsx3"
               common_obs_enabled: false
             DeepL:
@@ -214,6 +219,12 @@ class Config:
 
     def set_common_input_function(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION] = value
+
+    def get_common_chat_function(self) -> str:
+        return self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION]
+
+    def set_common_chat_function(self, value: str) -> None:
+        self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = value
 
     def get_common_output_function(self) -> str:
         return self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION]

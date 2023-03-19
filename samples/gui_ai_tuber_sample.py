@@ -3,7 +3,6 @@ import os
 from samples.ai_tuber_sample import AiTuberSample
 from samples.gui.gui_function_factory import GuiFunctionFactory
 from susumu_toolbox.chat.base_chat import BaseChat
-from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
@@ -19,11 +18,12 @@ class GuiAiTuberSample(AiTuberSample):
         super().__init__(config)
 
     def create_chat(self) -> BaseChat:
-        # TODO: ParlAIとの切り替え
         system = SystemSettings(self._config)
         path = os.path.join(system.get_config_dir(), "sample_system_settings.txt")
         system.load_settings(path)
-        return ChatGPTChat(self._config, system.get_system_settings())
+        chat = GuiFunctionFactory.create_chat(self._config, system)
+        print("chat:", chat)
+        return chat
 
     def create_stt(self, speech_contexts=None) -> BaseSTT:
         stt = GuiFunctionFactory.create_stt(self._config, speech_contexts)

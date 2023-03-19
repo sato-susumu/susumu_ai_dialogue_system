@@ -29,6 +29,10 @@ class SettingsWindow(BaseWindow):
         Config.INPUT_FUNCTION_GOOGLE_STREAMING: "Googleストリーミング音声認識 (追加設定が必要)",
         Config.INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
     }
+    _chat_function_items_dic = {
+        Config.CHAT_FUNCTION_CHATGPT: "ChatGPT API",
+        Config.CHAT_FUNCTION_PARLAI: "ParlAIクライント",
+    }
     _output_function_items_dic = {
         Config.OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
         Config.OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
@@ -45,6 +49,10 @@ class SettingsWindow(BaseWindow):
             sg.Radio(key=key, text=text, group_id='input', default=self._config.get_common_input_function() == key)
         ] for key, text in self._input_function_items_dic.items()]
 
+        chat_function_items = [[
+            sg.Radio(key=key, text=text, group_id='chat', default=self._config.get_common_chat_function() == key)
+        ] for key, text in self._chat_function_items_dic.items()]
+
         output_function_items = [[
             sg.Radio(key=key, text=text, group_id='output', default=self._config.get_common_output_function() == key)
         ] for key, text in self._output_function_items_dic.items()]
@@ -57,12 +65,20 @@ class SettingsWindow(BaseWindow):
             )],
         ]
 
-        common_tab_layout = [
-            [sg.Frame("ベース機能", base_function_items)],
-            [sg.Frame("入力", input_function_items)],
-            [sg.Frame("出力", output_function_items)],
-            [sg.Frame("その他", other_function_items)],
-        ]
+        common_tab_layout = [[
+            sg.Column([
+                [sg.Frame("ベース機能", base_function_items)],
+                [sg.Frame("入力", input_function_items)],
+                [sg.Frame("チャットエンジン", chat_function_items)],
+                [sg.Frame("出力", output_function_items)],
+                [sg.Frame("その他", other_function_items)],
+            ],
+                scrollable=True,
+                vertical_scroll_only=True,
+                expand_x=True,
+                expand_y=True,
+            ),
+        ]]
 
         api_keys_tab_layout = [
             [sg.Text("OpenAI APIキー"),
@@ -233,6 +249,8 @@ class SettingsWindow(BaseWindow):
                     [sg.Tab('その他', other_tab_layout, )],
                 ],
                 # tab_location='left',
+                expand_x=True,
+                expand_y=True,
             )],
             [sg.Column(buttons_layout, justification='center')],
         ]
@@ -323,8 +341,10 @@ class SettingsWindow(BaseWindow):
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
 
+        # 共通設定
         [target_config.set_common_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
         [target_config.set_common_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
+        [target_config.set_common_chat_function(key) for key in self._chat_function_items_dic.keys() if values[key]]
         [target_config.set_common_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
 
         target_config.set_common_obs_enabled(values[self._config.KEY_COMMON_OBS_ENABLED])

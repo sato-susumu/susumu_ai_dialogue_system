@@ -1,6 +1,7 @@
 Common:
   common_base_function: "voice_dialogue"
   common_input_function: "sr_google"
+  common_chat_function: "chatgpt"
   common_output_function: "pyttsx3"
   common_obs_enabled: false
 DeepL:
