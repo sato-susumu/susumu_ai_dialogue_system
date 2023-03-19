@@ -2,6 +2,7 @@ Common:
   common_base_function: "voice_dialogue"
   common_input_function: "sr_google"
   common_output_function: "pyttsx3"
+  common_obs_enabled: false
 DeepL:
   deepl_auth_key: ""
 OpenAI:

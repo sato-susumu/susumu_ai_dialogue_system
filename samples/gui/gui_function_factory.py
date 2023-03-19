@@ -1,3 +1,6 @@
+from susumu_toolbox.obs.base_obs_client import BaseOBSClient
+from susumu_toolbox.obs.dummy_obs_client import DummyOBSClient
+from susumu_toolbox.obs.obs_client import OBSClient
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.stt.google_streaming_stt import GoogleStreamingSTT
 from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
@@ -38,3 +41,10 @@ class GuiFunctionFactory:
         elif output_function == Config.OUTPUT_FUNCTION_VOICEVOX:
             return VoicevoxTTS(config)
         raise ValueError(f"Invalid output_function: {output_function}")
+
+    @staticmethod
+    def create_obs_client(config: Config) -> BaseOBSClient:
+        obs_enabled = config.get_common_obs_enabled()
+        if obs_enabled:
+            return OBSClient(config)
+        return DummyOBSClient(config)

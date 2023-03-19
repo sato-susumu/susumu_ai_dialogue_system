@@ -49,10 +49,19 @@ class SettingsWindow(BaseWindow):
             sg.Radio(key=key, text=text, group_id='output', default=self._config.get_common_output_function() == key)
         ] for key, text in self._output_function_items_dic.items()]
 
+        other_function_items = [
+            [sg.Checkbox(
+                text="OBS出力 (追加設定が必要)",
+                key=self._config.KEY_COMMON_OBS_ENABLED,
+                default=self._config.get_common_obs_enabled(),
+            )],
+        ]
+
         common_tab_layout = [
             [sg.Frame("ベース機能", base_function_items)],
             [sg.Frame("入力", input_function_items)],
             [sg.Frame("出力", output_function_items)],
+            [sg.Frame("その他", other_function_items)],
         ]
 
         api_keys_tab_layout = [
@@ -310,6 +319,8 @@ class SettingsWindow(BaseWindow):
         [target_config.set_common_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
         [target_config.set_common_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
         [target_config.set_common_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
+
+        target_config.set_common_obs_enabled(values[self._config.KEY_COMMON_OBS_ENABLED])
 
         return target_config
 

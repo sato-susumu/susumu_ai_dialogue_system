@@ -21,6 +21,7 @@ class Config:
     KEY_COMMON_BASE_FUNCTION = "common_base_function"
     KEY_COMMON_INPUT_FUNCTION = "common_input_function"
     KEY_COMMON_OUTPUT_FUNCTION = "common_output_function"
+    KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
 
     BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
@@ -43,6 +44,7 @@ class Config:
               common_base_function: "voice_dialogue"
               common_input_function: "sr_google"
               common_output_function: "pyttsx3"
+              common_obs_enabled: false
             DeepL:
               deepl_auth_key: ""
             OpenAI:
@@ -210,3 +212,9 @@ class Config:
 
     def set_common_output_function(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION] = value
+
+    def get_common_obs_enabled(self) -> bool:
+        return self._config["Common"][self.KEY_COMMON_OBS_ENABLED]
+
+    def set_common_obs_enabled(self, value: bool) -> None:
+        self._config["Common"][self.KEY_COMMON_OBS_ENABLED] = value

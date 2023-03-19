@@ -4,6 +4,7 @@ from samples.ai_tuber_sample import AiTuberSample
 from samples.gui.gui_function_factory import GuiFunctionFactory
 from susumu_toolbox.chat.base_chat import BaseChat
 from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
+from susumu_toolbox.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.stt.base_stt import BaseSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
 from susumu_toolbox.translation.dummy_translator import DummyTranslator
@@ -36,6 +37,11 @@ class GuiAiTuberSample(AiTuberSample):
         tts = GuiFunctionFactory.create_tts(self._config)
         print("tts:", tts)
         return tts
+
+    def create_obs_client(self) -> BaseOBSClient:
+        obs = GuiFunctionFactory.create_obs_client(self._config)
+        print("obs:", obs)
+        return obs
 
 
 if __name__ == "__main__":

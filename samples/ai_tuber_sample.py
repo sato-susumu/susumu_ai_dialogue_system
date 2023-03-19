@@ -7,7 +7,8 @@ from six.moves import queue
 from samples.base_voice_chat_sample import BaseVoiceChatSample
 from susumu_toolbox.chat.base_chat import ChatResult, BaseChat
 from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
-from susumu_toolbox.obs.obs_client import OBSClient
+from susumu_toolbox.obs.base_obs_client import BaseOBSClient
+from susumu_toolbox.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.stt.base_stt import STTResult, BaseSTT
 from susumu_toolbox.stt.youtube_pseud_stt import YoutubePseudSTT
 from susumu_toolbox.translation.base_translator import BaseTranslator
@@ -53,7 +54,7 @@ class AiTuberSample(BaseVoiceChatSample):
 
         self._translator = self.create_translator()
 
-        self._obs = OBSClient(self._config)
+        self._obs = self.create_obs_client()
 
     def _on_chat_open(self):
         print("_on_chat_open")
@@ -182,6 +183,9 @@ class AiTuberSample(BaseVoiceChatSample):
 
     def create_translator(self) -> BaseTranslator:
         return DummyTranslator(self._config)
+
+    def create_obs_client(self) -> BaseOBSClient:
+        return DummyOBSClient(self._config)
 
 
 if __name__ == "__main__":

@@ -3,11 +3,12 @@ from queue import Empty
 from obswebsocket import obsws, requests
 from six.moves import queue
 
+from susumu_toolbox.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.utility.config import Config
 
 
 # noinspection PyMethodMayBeStatic,PyShadowingNames
-class OBSClient:
+class OBSClient(BaseOBSClient):
     """OBS WebSocket Client
 
     利用にはOBS Studioの設定変更が必要です。
@@ -26,7 +27,7 @@ class OBSClient:
     """
 
     def __init__(self, config: Config):
-        self._config = config
+        super().__init__(config)
         self._ws = None
         self._connection_waiting_queue = queue.Queue()
 
