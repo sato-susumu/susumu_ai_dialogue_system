@@ -25,6 +25,7 @@ class Config:
     KEY_PARLAI_HOST = "parlai_host"
     KEY_PARLAI_PORT_NO = "parlai_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
+    KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
 
     BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
@@ -80,6 +81,8 @@ class Config:
               youtube_live_url: ""
             GoogleTextToSpeech:
               gcp_text_to_speech_api_key:
+            GoogleSpeechToText:
+              gcp_speech_to_text_api_key:
             PyAudio:
               # 標準スピーカー以外にも同時出力するかどうか
               pyaudio_second_output_enabled: false
@@ -205,6 +208,12 @@ class Config:
 
     def set_gcp_text_to_speech_api_key(self, value: str) -> None:
         self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_API_KEY] = value
+
+    def get_gcp_speech_to_text_api_key(self):
+        return self._config["GoogleSpeechToText"][self.KEY_GCP_SPEECH_TO_TEXT_API_KEY]
+
+    def set_gcp_speech_to_text_api_key(self, value: str) -> None:
+        self._config["GoogleSpeechToText"][self.KEY_GCP_SPEECH_TO_TEXT_API_KEY] = value
 
     def get_pyaudio_second_output_enabled(self) -> bool:
         return self._config["PyAudio"]["pyaudio_second_output_enabled"]

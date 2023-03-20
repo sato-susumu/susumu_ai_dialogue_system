@@ -23,8 +23,13 @@ class GoogleStreamingSTT(BaseSTT):
         self._language_code = language_code
         self._single_utterance = single_utterance
         self._stream = None
-        self._client = speech.SpeechClient()
-        self._config = self._get_streaming_config(speech_contexts or [])
+        # noinspection PyBroadException
+        try:
+            self._client = speech.SpeechClient()
+        except Exception:
+            api_key = self._config.get_gcp_speech_to_text_api_key()
+            self._client = speech.SpeechClient(client_options={"api_key": api_key})
+        self._streaming_config = self._get_streaming_config(speech_contexts or [])
 
     def _get_streaming_config(self, speech_contexts: list[str]):
         # Add the hard-coded leaf-node commands
@@ -112,7 +117,7 @@ class GoogleStreamingSTT(BaseSTT):
         # ストリーミング認識。何か返すべきものがあるまでブロッキング
         # メソッドの詳細は下記参照
         # https://cloud.google.com/python/docs/reference/speech/latest/google.cloud.speech_v1.services.speech.SpeechClient#google_cloud_speech_v1_services_speech_SpeechClient_streaming_recognize
-        response_generator = self._client.streaming_recognize(self._config, audio_generator_object)  # noqa
+        response_generator = self._client.streaming_recognize(self._streaming_config, audio_generator_object)  # noqa
 
         self._processing(response_generator)
         self._stream = None

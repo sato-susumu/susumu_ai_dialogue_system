@@ -128,6 +128,14 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_streaming_stt_items = [
+            [sg.Text('GCP Speech-to-TextのAPIキー'),
+             sg.InputText(default_text=self._config.get_gcp_speech_to_text_api_key(),
+                          key=self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY,
+                          password_char="*",
+                          size=self.INPUT_SIZE_LONG,
+                          )
+             ],
+            [sg.Text('GCP Speech-to-Textを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_STREAMING_STT_TEST)],
         ]
 
@@ -347,6 +355,7 @@ class SettingsWindow(BaseWindow):
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])
         target_config.set_gcp_youtube_data_api_key(values[self._config.KEY_GCP_YOUTUBE_DATA_API_KEY])
+        target_config.set_gcp_speech_to_text_api_key(values[self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY])
 
         # チャットエンジン
         target_config.set_parlai_host(values[self._config.KEY_PARLAI_HOST])
