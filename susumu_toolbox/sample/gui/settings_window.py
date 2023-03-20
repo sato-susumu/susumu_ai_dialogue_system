@@ -199,13 +199,21 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_cloud_tts_items = [
+            [sg.Text('GCP Text-to-SpeechのAPIキー'),
+             sg.InputText(default_text=self._config.get_gcp_text_to_speech_api_key(),
+                          key=self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY,
+                          password_char="*",
+                          size=self.INPUT_SIZE_LONG,
+                          )
+             ],
+            [sg.Text('GCP Text-to-Speechを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_CLOUD_TTS_TEST)],
         ]
 
         tts_tab_layout = [
             [sg.Frame("gTTS (動作確認用)", gtts_items, expand_x=True)],
             [sg.Frame("VOICEVOX", voicevox_items, expand_x=True)],
-            [sg.Frame("Google TTS", google_cloud_tts_items, expand_x=True)],
+            [sg.Frame("Google Text-to-Speech", google_cloud_tts_items, expand_x=True)],
             [sg.Frame("Pyttsx3", pyttsx3_items, expand_x=True)],
         ]
 
@@ -351,6 +359,7 @@ class SettingsWindow(BaseWindow):
             target_config.set_voicevox_port_no(int(values[self._config.KEY_VOICEVOX_PORT_NO]))
         if values[self._config.KEY_VOICEVOX_SPEAKER_NO] != "":
             target_config.set_voicevox_speaker_no(int(values[self._config.KEY_VOICEVOX_SPEAKER_NO]))
+        target_config.set_gcp_text_to_speech_api_key(values[self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY])
 
         # その他
         target_config.set_obs_host(values[self._config.KEY_OBS_HOST])

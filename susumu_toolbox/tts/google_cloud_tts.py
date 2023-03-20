@@ -9,7 +9,13 @@ from susumu_toolbox.utility.config import Config
 class GoogleCloudTTS(BaseTTS):
     def __init__(self, config: Config):
         super().__init__(config)
-        self.client = texttospeech.TextToSpeechClient()
+        # noinspection PyBroadException
+        try:
+            self.client = texttospeech.TextToSpeechClient()
+        except Exception:
+            # 認証に失敗した場合は、APIキーでリトライ
+            api_key = self._config.get_gcp_text_to_speech_api_key()
+            self.client = texttospeech.TextToSpeechClient(client_options={"api_key": api_key})
 
     def tts_play_sync(self, text: str) -> None:
         super().tts_play_sync(text)

@@ -24,6 +24,7 @@ class Config:
     KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
     KEY_PARLAI_HOST = "parlai_host"
     KEY_PARLAI_PORT_NO = "parlai_port_no"
+    KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
 
     BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
@@ -77,6 +78,8 @@ class Config:
               gcp_youtube_data_api_key: ""
               # YouTubeのライブ配信URL。例：https://www.youtube.com/watch?v=xxxxxxxxxxx
               youtube_live_url: ""
+            GoogleTextToSpeech:
+              gcp_text_to_speech_api_key:
             PyAudio:
               # 標準スピーカー以外にも同時出力するかどうか
               pyaudio_second_output_enabled: false
@@ -196,6 +199,12 @@ class Config:
 
     def set_youtube_live_url(self, value: str) -> None:
         self._config["YouTube"][self.KEY_YOUTUBE_LIVE_URL] = value
+
+    def get_gcp_text_to_speech_api_key(self) -> str:
+        return self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_API_KEY]
+
+    def set_gcp_text_to_speech_api_key(self, value: str) -> None:
+        self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_API_KEY] = value
 
     def get_pyaudio_second_output_enabled(self) -> bool:
         return self._config["PyAudio"]["pyaudio_second_output_enabled"]
