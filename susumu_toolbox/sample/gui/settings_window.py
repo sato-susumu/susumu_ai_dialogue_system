@@ -81,23 +81,18 @@ class SettingsWindow(BaseWindow):
         ]]
 
         openai_items = [
-            [sg.Text("OpenAI APIキー"),
+            [sg.Text("OpenAI API Key"),
              sg.InputText(
                  default_text=self._config.get_openai_api_key(),
                  key=self._config.KEY_OPENAI_API_KEY,
                  password_char="*",
                  size=self.INPUT_SIZE_LONG,
              )],
-            [sg.Text('DEEPL APIキー',
-                     visible=False,
-                     ),
-             sg.InputText(
-                 default_text=self._config.get_deepl_auth_key(),
-                 key=self._config.KEY_DEEPL_AUTH_KEY,
-                 password_char="*",
-                 size=self.INPUT_SIZE_LONG,
-                 visible=False,
-             )],
+            [sg.Text("API KeyはOpenAIでユーザー登録後、"),
+             self.create_linked_text("https://platform.openai.com/account/api-keys",
+                                     "https://platform.openai.com/account/api-keys"),
+             sg.Text("で作成できます。")],
+            [sg.Text("API Keyは他の人に知られないようにご注意ください。")],
         ]
         deepl_items = [
             [sg.Text('DEEPL APIキー',
@@ -119,6 +114,7 @@ class SettingsWindow(BaseWindow):
             [sg.Text('YouTube Data API v3キー'),
              sg.InputText(default_text=self._config.get_youtube_api_key(),
                           key=self._config.KEY_YOUTUBE_API_KEY,
+                          password_char="*",
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
@@ -308,6 +304,9 @@ class SettingsWindow(BaseWindow):
                          self._config.KEY_OBS_PORT_NO, self._config.KEY_PARLAI_PORT_NO):
                 self._input_validation_number_only(settings_window, event, values)
 
+            if self.is_linked_text_event(event):
+                self.open_linked_text_url(event)
+
         settings_window.close()
         return close_button_clicked
 
@@ -329,6 +328,7 @@ class SettingsWindow(BaseWindow):
         try:
             TTSTest(config).run()
         except Exception as e:
+            print(e)
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _update_config(self, values, target_config) -> Config:
@@ -386,6 +386,7 @@ class SettingsWindow(BaseWindow):
         try:
             STTTest(config).run()
         except Exception as e:
+            print(e)
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _obs_test(self, event, values):
@@ -394,6 +395,7 @@ class SettingsWindow(BaseWindow):
         try:
             OBSTest(config).run()
         except Exception as e:
+            print(e)
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _input_validation_number_only(self, window, event, values):
