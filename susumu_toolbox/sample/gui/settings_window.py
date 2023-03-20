@@ -111,9 +111,9 @@ class SettingsWindow(BaseWindow):
         ]
 
         youtube_pseud_stt_items = [
-            [sg.Text('YouTube Data API v3キー'),
-             sg.InputText(default_text=self._config.get_youtube_api_key(),
-                          key=self._config.KEY_YOUTUBE_API_KEY,
+            [sg.Text('GCP YouTube Data API v3のAPIキー'),
+             sg.InputText(default_text=self._config.get_gcp_youtube_data_api_key(),
+                          key=self._config.KEY_GCP_YOUTUBE_DATA_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
                           )
@@ -338,7 +338,7 @@ class SettingsWindow(BaseWindow):
 
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])
-        target_config.set_youtube_api_key(values[self._config.KEY_YOUTUBE_API_KEY])
+        target_config.set_gcp_youtube_data_api_key(values[self._config.KEY_GCP_YOUTUBE_DATA_API_KEY])
 
         # チャットエンジン
         target_config.set_parlai_host(values[self._config.KEY_PARLAI_HOST])

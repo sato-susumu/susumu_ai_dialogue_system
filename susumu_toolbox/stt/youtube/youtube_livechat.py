@@ -31,7 +31,7 @@ class YouTubeLiveChat:
     # もっと設計をしっかりするなら youtube_livechat_messages や pytchatを参考にする？
     def __init__(self, config: Config):
         self._next_page_token = None
-        self._api_key = config.get_youtube_api_key()
+        self._api_key = config.get_gcp_youtube_data_api_key()
         self._youtube_url = config.get_youtube_live_url()
         self._chat_id = None
         self._video_id = None

@@ -16,7 +16,7 @@ class Config:
     KEY_OBS_PORT_NO = "obs_port_no"
     KEY_OBS_PASSWORD = "obs_password"
     KEY_YOUTUBE_LIVE_URL = "youtube_live_url"
-    KEY_YOUTUBE_API_KEY = "youtube_api_key"
+    KEY_GCP_YOUTUBE_DATA_API_KEY = "gcp_youtube_data_api_key"
     KEY_COMMON_BASE_FUNCTION = "common_base_function"
     KEY_COMMON_CHAT_FUNCTION = "common_chat_function"
     KEY_COMMON_INPUT_FUNCTION = "common_input_function"
@@ -73,8 +73,8 @@ class Config:
               parlai_host: "127.0.0.1"
               parlai_port_no: 35496
             YouTube:
-              # YouTube Data API v3のAPIキー
-              youtube_api_key: ""
+              # GCP YouTube Data API v3のAPIキー
+              gcp_youtube_data_api_key: ""
               # YouTubeのライブ配信URL。例：https://www.youtube.com/watch?v=xxxxxxxxxxx
               youtube_live_url: ""
             PyAudio:
@@ -185,11 +185,11 @@ class Config:
     def set_parlai_port_no(self, value: int) -> None:
         self._config["ParlAI"][self.KEY_PARLAI_PORT_NO] = value
 
-    def get_youtube_api_key(self) -> str:
-        return self._config["YouTube"][self.KEY_YOUTUBE_API_KEY]
+    def get_gcp_youtube_data_api_key(self) -> str:
+        return self._config["YouTube"][self.KEY_GCP_YOUTUBE_DATA_API_KEY]
 
-    def set_youtube_api_key(self, value: str) -> None:
-        self._config["YouTube"][self.KEY_YOUTUBE_API_KEY] = value
+    def set_gcp_youtube_data_api_key(self, value: str) -> None:
+        self._config["YouTube"][self.KEY_GCP_YOUTUBE_DATA_API_KEY] = value
 
     def get_youtube_live_url(self) -> str:
         return self._config["YouTube"][self.KEY_YOUTUBE_LIVE_URL]
