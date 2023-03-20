@@ -26,7 +26,7 @@ class SettingsWindow(BaseWindow):
     _input_function_items_dic = {
         Config.INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
         Config.INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
-        Config.INPUT_FUNCTION_GOOGLE_STREAMING: "Googleストリーミング音声認識 (追加設定が必要)",
+        Config.INPUT_FUNCTION_GOOGLE_STREAMING: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
         Config.INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
     }
     _chat_function_items_dic = {
@@ -36,7 +36,7 @@ class SettingsWindow(BaseWindow):
     _output_function_items_dic = {
         Config.OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
         Config.OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
-        Config.OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google音声合成 (追加設定が必要)",
+        Config.OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google Text-to-Speech (追加設定が必要)",
         Config.OUTPUT_FUNCTION_GTTS: "サンプル音声合成 gTTS",
     }
 
@@ -128,14 +128,14 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_streaming_stt_items = [
-            [sg.Text('GCP Speech-to-TextのAPIキー'),
+            [sg.Text('Google Speech-to-TextのAPIキー'),
              sg.InputText(default_text=self._config.get_gcp_speech_to_text_api_key(),
                           key=self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [sg.Text('GCP Speech-to-Textを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
+            [sg.Text('Google Speech-to-Textを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_STREAMING_STT_TEST)],
         ]
 
@@ -150,7 +150,7 @@ class SettingsWindow(BaseWindow):
         stt_tab_layout = [
             [sg.Frame("SpeechRecognition(Google)", sr_google_stt_items, expand_x=True)],
             [sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
-            [sg.Frame("Googleストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
+            [sg.Frame("Google Speech-to-Text(ストリーミング音声認識)", google_streaming_stt_items, expand_x=True)],
             [sg.Frame("文字入力", stdin_pseud_stt_items, expand_x=True)],
         ]
 
@@ -207,14 +207,14 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_cloud_tts_items = [
-            [sg.Text('GCP Text-to-SpeechのAPIキー'),
+            [sg.Text('Google Text-to-SpeechのAPIキー'),
              sg.InputText(default_text=self._config.get_gcp_text_to_speech_api_key(),
                           key=self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [sg.Text('GCP Text-to-Speechを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
+            [sg.Text('Google Text-to-Speechを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_CLOUD_TTS_TEST)],
         ]
 
