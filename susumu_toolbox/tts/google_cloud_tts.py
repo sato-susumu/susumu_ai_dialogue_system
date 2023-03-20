@@ -1,5 +1,7 @@
 # あとまわし
 # noinspection PyPackageRequirements
+import time
+
 from google.cloud import texttospeech
 
 from susumu_toolbox.tts.base_tts import BaseTTS
@@ -59,8 +61,8 @@ class GoogleCloudTTS(BaseTTS):
             # 他にもオプションあり
         )
 
-        # TODO: 何らかの実装でパフォーマンス測定
-        # start = time.perf_counter()
+        before = time.perf_counter()
         response = self.client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
-        # print(time.perf_counter() - start)
+        after = time.perf_counter()
+        print(f"GoogleCloudTTS processing time={after - before:.3f} s")
         return response.audio_content
