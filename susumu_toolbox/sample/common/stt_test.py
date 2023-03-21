@@ -15,7 +15,7 @@ class STTTest:
 
     def run(self) -> None:
         speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
-        input_function = self._config.get_common_input_function()
+        input_function = self._config.get_common_input_function_key()
         if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
             self._stt = SRGoogleSyncSTT(self._config)
             self._start_message = "マイクに向かって何か話しかけてください"

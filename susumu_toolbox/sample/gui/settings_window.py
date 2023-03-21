@@ -19,44 +19,23 @@ class SettingsWindow(BaseWindow):
         self._config = self._update_config(values, self._config)
         self._config.save()
 
-    _base_function_items_dic = {
-        Config.BASE_FUNCTION_VOICE_DIALOGUE: "音声対話",
-        Config.BASE_FUNCTION_AI_TUBER: "AITuber",
-        Config.BASE_FUNCTION_TEXT_DIALOGUE: "文字対話",
-    }
-    _input_function_items_dic = {
-        Config.INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
-        Config.INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
-        Config.INPUT_FUNCTION_GOOGLE_STREAMING: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
-        Config.INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
-    }
-    _chat_function_items_dic = {
-        Config.CHAT_FUNCTION_CHATGPT: "ChatGPT API",
-        Config.CHAT_FUNCTION_PARLAI: "ParlAIクライント",
-    }
-    _output_function_items_dic = {
-        Config.OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
-        Config.OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
-        Config.OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google Text-to-Speech (追加設定が必要)",
-        Config.OUTPUT_FUNCTION_GTTS: "サンプル音声合成 gTTS",
-    }
-
     def display(self) -> bool:
         base_function_items = [[
-            sg.Radio(key=key, text=text, group_id='base', default=self._config.get_common_base_function() == key)
-        ] for key, text in self._base_function_items_dic.items()]
+            sg.Radio(key=key, text=text, group_id='base', default=self._config.get_common_base_function_key() == key)
+        ] for key, text in self._config.base_function_dict.items()]
 
         input_function_items = [[
-            sg.Radio(key=key, text=text, group_id='input', default=self._config.get_common_input_function() == key)
-        ] for key, text in self._input_function_items_dic.items()]
+            sg.Radio(key=key, text=text, group_id='input', default=self._config.get_common_input_function_key() == key)
+        ] for key, text in self._config.input_function_dict.items()]
 
         chat_function_items = [[
-            sg.Radio(key=key, text=text, group_id='chat', default=self._config.get_common_chat_function() == key)
-        ] for key, text in self._chat_function_items_dic.items()]
+            sg.Radio(key=key, text=text, group_id='chat', default=self._config.get_common_chat_function_key() == key)
+        ] for key, text in self._config.chat_function_dict.items()]
 
         output_function_items = [[
-            sg.Radio(key=key, text=text, group_id='output', default=self._config.get_common_output_function() == key)
-        ] for key, text in self._output_function_items_dic.items()]
+            sg.Radio(key=key, text=text, group_id='output',
+                     default=self._config.get_common_output_function_key() == key)
+        ] for key, text in self._config.output_function_dict.items()]
 
         other_function_items = [
             [sg.Checkbox(
@@ -356,13 +335,13 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.VOICEVOX_TEST:
-            config.set_common_output_function(Config.OUTPUT_FUNCTION_VOICEVOX)
+            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_VOICEVOX)
         elif event == GuiEvents.GTTS_TEST:
-            config.set_common_output_function(Config.OUTPUT_FUNCTION_GTTS)
+            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_GTTS)
         elif event == GuiEvents.GOOGLE_CLOUD_TTS_TEST:
-            config.set_common_output_function(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
+            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
         elif event == GuiEvents.PYTTSX3_TEST:
-            config.set_common_output_function(Config.OUTPUT_FUNCTION_PYTTSX3)
+            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_PYTTSX3)
         else:
             raise Exception("想定外のイベントです")
 
@@ -405,10 +384,14 @@ class SettingsWindow(BaseWindow):
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
 
         # 共通設定
-        [target_config.set_common_base_function(key) for key in self._base_function_items_dic.keys() if values[key]]
-        [target_config.set_common_input_function(key) for key in self._input_function_items_dic.keys() if values[key]]
-        [target_config.set_common_chat_function(key) for key in self._chat_function_items_dic.keys() if values[key]]
-        [target_config.set_common_output_function(key) for key in self._output_function_items_dic.keys() if values[key]]
+        [target_config.set_common_base_function_key(key) for key in self._config.base_function_dict.keys() if
+         values[key]]
+        [target_config.set_common_input_function_key(key) for key in self._config.input_function_dict.keys() if
+         values[key]]
+        [target_config.set_common_chat_function_key(key) for key in self._config.chat_function_dict.keys() if
+         values[key]]
+        [target_config.set_common_output_function_key(key)
+         for key in self._config.output_function_dict.keys() if values[key]]
 
         target_config.set_common_obs_enabled(values[self._config.KEY_COMMON_OBS_ENABLED])
 
@@ -419,13 +402,13 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
-            config.set_common_input_function(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
+            config.set_common_input_function_key(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
         elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
-            config.set_common_input_function(config.INPUT_FUNCTION_GOOGLE_STREAMING)
+            config.set_common_input_function_key(config.INPUT_FUNCTION_GOOGLE_STREAMING)
         elif event == GuiEvents.SR_GOOGLE_STT_TEST:
-            config.set_common_input_function(config.INPUT_FUNCTION_SR_GOOGLE)
+            config.set_common_input_function_key(config.INPUT_FUNCTION_SR_GOOGLE)
         elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
-            config.set_common_input_function(config.INPUT_FUNCTION_STDIN_PSEUD)
+            config.set_common_input_function_key(config.INPUT_FUNCTION_STDIN_PSEUD)
         else:
             raise Exception("想定外のイベントです")
 
@@ -435,6 +418,7 @@ class SettingsWindow(BaseWindow):
             print(e)
             sg.PopupError(e, title="エラー", keep_on_top=True)
 
+    # noinspection PyUnusedLocal
     def _obs_test(self, event, values):
         config = self._config.clone()
         config = self._update_config(values, config)

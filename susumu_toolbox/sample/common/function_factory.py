@@ -22,7 +22,7 @@ class FunctionFactory:
 
     @staticmethod
     def create_stt(config: Config, speech_contexts) -> BaseSTT:
-        input_function = config.get_common_input_function()
+        input_function = config.get_common_input_function_key()
         if input_function == Config.INPUT_FUNCTION_BASE:
             return BaseSTT(config)
         if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
@@ -37,7 +37,7 @@ class FunctionFactory:
 
     @staticmethod
     def create_chat(config: Config, system: SystemSettings) -> BaseChat:
-        chat_function = config.get_common_chat_function()
+        chat_function = config.get_common_chat_function_key()
         if chat_function == Config.CHAT_FUNCTION_PARLAI:
             return ParlAIChat(config)
         if chat_function == Config.CHAT_FUNCTION_CHATGPT:
@@ -46,7 +46,7 @@ class FunctionFactory:
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:
-        output_function = config.get_common_output_function()
+        output_function = config.get_common_output_function_key()
         if output_function == Config.OUTPUT_FUNCTION_BASE:
             return BaseTTS(config)
         if output_function == Config.OUTPUT_FUNCTION_GOOGLE_CLOUD:

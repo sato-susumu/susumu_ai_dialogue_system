@@ -54,6 +54,28 @@ class Config:
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "sample"
 
+    base_function_dict = {
+        BASE_FUNCTION_VOICE_DIALOGUE: "音声対話",
+        BASE_FUNCTION_AI_TUBER: "AITuber",
+        BASE_FUNCTION_TEXT_DIALOGUE: "文字対話",
+    }
+    input_function_dict = {
+        INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
+        INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
+        INPUT_FUNCTION_GOOGLE_STREAMING: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
+        INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
+    }
+    chat_function_dict = {
+        CHAT_FUNCTION_CHATGPT: "ChatGPT API",
+        CHAT_FUNCTION_PARLAI: "ParlAIクライント",
+    }
+    output_function_dict = {
+        OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
+        OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
+        OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google Text-to-Speech (追加設定が必要)",
+        OUTPUT_FUNCTION_GTTS: "サンプル音声合成 gTTS",
+    }
+
     def __init__(self):
         # 仕方なくここでimport
         from susumu_toolbox.utility.ai_config_list import AiConfigList
@@ -281,28 +303,44 @@ class Config:
     def clone(self):
         return copy.deepcopy(self)
 
-    def get_common_base_function(self) -> str:
+    def get_common_base_function_name(self) -> str:
+        key = self.get_common_base_function_key()
+        return self.base_function_dict[key]
+
+    def get_common_base_function_key(self) -> str:
         return self._config["Common"][self.KEY_COMMON_BASE_FUNCTION]
 
-    def set_common_base_function(self, value: str) -> None:
+    def set_common_base_function_key(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_BASE_FUNCTION] = value
 
-    def get_common_input_function(self) -> str:
+    def get_common_input_function_name(self) -> str:
+        key = self.get_common_input_function_key()
+        return self.input_function_dict[key]
+
+    def get_common_input_function_key(self) -> str:
         return self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION]
 
-    def set_common_input_function(self, value: str) -> None:
+    def set_common_input_function_key(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION] = value
 
-    def get_common_chat_function(self) -> str:
+    def get_common_chat_function_name(self) -> str:
+        key = self.get_common_chat_function_key()
+        return self.chat_function_dict[key]
+
+    def get_common_chat_function_key(self) -> str:
         return self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION]
 
-    def set_common_chat_function(self, value: str) -> None:
+    def set_common_chat_function_key(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = value
 
-    def get_common_output_function(self) -> str:
+    def get_common_output_function_name(self) -> str:
+        key = self.get_common_output_function_key()
+        return self.output_function_dict[key]
+
+    def get_common_output_function_key(self) -> str:
         return self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION]
 
-    def set_common_output_function(self, value: str) -> None:
+    def set_common_output_function_key(self, value: str) -> None:
         self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION] = value
 
     def get_common_obs_enabled(self) -> bool:

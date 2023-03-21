@@ -1,3 +1,5 @@
+import os
+
 import PySimpleGUI as sg
 
 from susumu_toolbox.sample.ai_tuber_sample import AiTuberSample
@@ -15,7 +17,7 @@ class MainWindow(BaseWindow):
         super().__init__(config)
 
     def _run(self) -> None:
-        base_function = self._config.get_common_base_function()
+        base_function = self._config.get_common_base_function_key()
         system_settings = SystemSettings(self._config)
         if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
             base = TextChatSample(self._config, system_settings)
@@ -27,6 +29,16 @@ class MainWindow(BaseWindow):
             raise ValueError(f"Invalid base_function: {base_function}")
         base.run_forever()
 
+    def _get_common_config_table(self) -> list:
+        common_config_table = [
+            ['ベース機能', self._config.get_common_base_function_name()],
+            ['入力', self._config.get_common_input_function_name()],
+            ['チャットエンジン', self._config.get_common_chat_function_name()],
+            ['出力', self._config.get_common_output_function_name()],
+            ['OBS出力', "有効" if self._config.get_common_obs_enabled() else "無効"],
+        ]
+        return common_config_table
+
     def display(self):
         # TODO:ボタン以外にも表示
         buttons_layout = [[
@@ -35,7 +47,19 @@ class MainWindow(BaseWindow):
             sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key="exit"),
         ]]
 
+        header = ['機能名', '設定値']
+        common_config_items = [
+            [sg.Table(self._get_common_config_table(),
+                      headings=header,
+                      hide_vertical_scroll=True,
+                      col_widths=[20, 50],
+                      justification='left',
+                      auto_size_columns=False,
+                      key="common_config_table",
+                      )],
+        ]
         window_layout = [
+            [sg.Frame("現在の設定", common_config_items, expand_x=True)],
             [sg.Column(buttons_layout, justification='center')],
         ]
 
@@ -56,5 +80,9 @@ class MainWindow(BaseWindow):
                 close_button_clicked = SettingsWindow(self._config).display()
                 if close_button_clicked:
                     break
+                _config_file_path = os.path.join(self._config.get_user_data_dir_path(), self._config.CONFIG_FILE_NAME)
+                if os.path.exists(_config_file_path):
+                    self._config.load(_config_file_path)
+                main_window["common_config_table"].update(values=self._get_common_config_table())
                 main_window.UnHide()
         main_window.close()
