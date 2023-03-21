@@ -1,22 +1,84 @@
-# AI音声対話サンプル
+<p align="center">
+[![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)<br>
+  AI音声対話/AITuberシステム
+</p>
 
-様々なモジュールを組み合わせて、ChatGPTやParlAIとボイスチャットができるサンプルです。
+<p align="center">
+  <a href="#特徴">特徴</a> •
+  <a href="#動作環境">動作環境</a> •
+  <a href="#実行方法">実行方法</a> •
+  <a href="#使い方">使い方</a> •
+  <a href="#カスタマイズ">カスタマイズ</a> •
+  <a href="#対応モジュール">対応モジュール</a><br>
+</p>
 
-[![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
+### 特徴
 
-## できること
+`susumu_toolbox` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AITuberシステムです。各機能の切り替えは設定画面でワンクリックで行えます。
 
-- ChatGPTを使ったボイスチャット、テキストチャット
+### 音声認識
 
-- ParlAIを使ったボイスチャット、テキストチャット
+`susumu_toolbox` は 高速な音声認識が行える `Google Speech-to-Text`ストリーミング音声認識、登録不要で手軽に試せる `SpeechRecognition(Google)` など複数の音声認識に対応しています。
 
-- 音声認識や音声合成のモジュールを入れ替えて実行
+### 音声合成
 
-- OBSを使った字幕表示
+`susumu_toolbox` は 無料で魅力的なキャラクターがいくつも使える`VOICEVOX`、正確な読みと落ち着いた声の`Google Text-to-Speech`など複数の音声合成に対応しています。
 
-## 対応モジュール
+### AI
+
+`susumu_toolbox` は `ChatGPT API`や`ParlAIクライアント`を活用して、回答を生成します。
+
+### AITuber
+
+`susumu_toolbox` は `OBS` を使った字幕更新、`YouTuber Data API v3` を使ったYouTubeライブ配信のコメント取得に対応しています。
+
+### 動作環境
+
+Windows 11のみ動作確認しています。Windowsに依存しない形で作っていますが、他の環境では動作確認はできていません。
+
+### 実行方法
+
+[リリースページ](https://github.com/sato-susumu/susumu_toolbox/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。ダウンロードしたzipを解凍し、 `susumu_toolbox.exe`を実行します。
+
+### 使い方
+#### クイックスタート
+
+`OpenAI API Key` を取得し `susumu_toolbox` に設定すれば、まずは最低限の音声対話が動作します。
+
+
+#### OpenAI API Keyを設定する
+
+`susumu_toolbox.exe` を起動すると、`設定` ボタンがあるのでクリックします。 `OpenAI API Key` を入力し、`保存して閉じる`をクリックすればAPI Keyの設定は完了です。
+
+#### 音声対話を使ってみる
+`OpenAI API Key` を設定すれば、あとは初期設定で音声対話を試すことができます。`起動`ボタンを押せば、音声対話が開始します。音声認識結果や `ChatGPT` からの応答はコンソール画面に表示されます。
+
+#### 音声認識や音声合成をリッチにする
+
+設定画面の `共通設定` タブで、どの音声認識や音声合成を使うか選択できます。使う機能によっては別のタブで設定を行ったり、別のアプリの起動が必要になる事もあります。
+
+#### AITuberを動かす
+
+`susumu_toolbox` を使えば、プログラミングを行わなくてもAITuber(絵や3Dキャラクターを除く)が動かすことができます。
+AITuberとして動かすためには次のステップを踏むだけ、、、ですが、正直なところ、初めてだと敷居がとても高いです。
+
+- `Google Cloud Platform`で `API Key` を発行し、`YouTubeコメント取得`に必要な設定を行う
+- `OBS Studio` をインストールし、字幕表示に必要な設定を行う
+- 設定画面の `共通設定` タブで、「ベース機能」は`AITuber`、「入力」は `YouTubeコメント取得` 、「その他」は `OBS出力` をONにする
+
+なお、`susumu_toolbox`には絵や3Dキャラクターを動かす機能はないため、 `VMagicMirror`などで別のアプリで3Dキャラクターなどを動かす必要があります。
+
+### カスタマイズ
+
+#### 簡単なカスタマイズ
+
+`ChatGPT` 使用時は、設定画面の `AI設定` タブで、プロンプトの内容を変更し、AIの性格や口調を変更できます。
+プログラムの挙動も含めてカスタマイズするためには、Pythonを使って `susumu_toolbox`を動かす必要があります。
+
+### 対応モジュール
 
 同じカテゴリのモジュールは簡単に入れ替えることができます。
+(現在、翻訳はソースコードを修正しないと動作しません。)
 
 | カテゴリ | モジュール | 条件        |
 | -------- | ---------- | ------------------ |
@@ -32,54 +94,16 @@
 | 翻訳 | [Googletrans](https://github.com/ssut/py-googletrans) |  |
 | 翻訳 | [DeepL API](https://www.deepl.com/) | API認証キーが必要 |
 
-## 実行手順
+### Pythonで動かす
 
-### 関連パッケージのインストール
-
+PythonやGitの知識があれば、次の方法で動かすことができます。
+Pythonの動作確認バージョンは3.10です。
 ```
-pip install -U -r requirements.txt
+git clone https://github.com/sato-susumu/susumu_toolbox.git
+cd susumu_toolbox
+pip install -r requirements.txt
+python main.py
 ```
-
-### config/config.yamlを作成
-
-1. config/sample_config.yaml をコピーする。
-2. コピーしたファイル名をconfig/config.yamlにする。
-3. config/config.yamlの中身を必要に応じて編集する。
-4. ChatGPTを使う場合は、openai_api_keyの内容を変更する。
-
-### サンプルを実行する
-
-#### ChatGPTを使った簡易ボイスチャットの場合
-
-1. コマンドラインでPythonスクリプトを実行する
-    ```
-    python samples/chatgpt_voice_chat_sample.py
-    ```
-
-#### ChatGPTを使ったリッチなボイスチャットの場合
-
-Googleストリーミング音声認識、VOICEVOX音声合成を使うボイスチャットです。
-
-1. VOICEVOXアプリを起動する  
-   音声合成にVOICEVOXサーバーが必要になります。  
-   VOICEVOXアプリにはサーバー機能も含まれているのでアプリを立ち上げればOKです。
-2. Googleの認証を設定する
-    ```
-    gcloud auth ほにゃらら 覚えてないです
-    ```
-3. コマンドラインでPythonスクリプトを実行する
-    ```
-    python samples/chatgpt_voice_chat_sample2.py
-    ```
-
-## 動作確認環境
-
-Windows 11
-
-Python 3.10
-
-## 補足
 
 Windows環境でビルドするためには、事前に[Microsoft C++ Build Tools](https://visualstudio.microsoft.com/ja/visual-cpp-build-tools/)
 のインストールが必要です。
-
