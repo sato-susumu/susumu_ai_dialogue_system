@@ -9,7 +9,6 @@ if __name__ == "__main__":
     # TODO:(低)設定画面のテーマ変更
     sg.theme('Bright Colors')
     # TODO:ログ出力対応
-    # TODO:EXEを作成
     # TODO:GUIに合わせてドキュメントも更新
     _config = Config()
     _config_file_path = _config.get_default_config_path()
