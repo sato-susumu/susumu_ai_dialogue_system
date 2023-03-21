@@ -112,8 +112,8 @@ AITuberとして動かすためには次のステップを踏むだけ、、、�
 | チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要 |
 | 音声認識 | Googleストリーミング音声認識 | Googleの認証必要 |
 | 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |  |
-| 音声認識 | 標準入力を使った擬似的な音声認識モジュール |  |
-| 音声認識 | YouTubeコメント取得による擬似的な音声認識モジュール |  |
+| 音声認識 | 標準入力を使った<br>擬似的な音声認識モジュール |  |
+| 音声認識 | YouTubeコメント取得による<br>擬似的な音声認識モジュール |  |
 | 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要 |
 | 音声合成 | Google音声合成 | Googleの認証必要 |
 | 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |  |
