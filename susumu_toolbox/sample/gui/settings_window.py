@@ -274,12 +274,12 @@ class SettingsWindow(BaseWindow):
             [sg.TabGroup(
                 [
                     [sg.Tab('共通設定', common_tab_layout)],
-                    [sg.Tab('API KEY', api_keys_tab_layout)],
+                    [sg.Tab('API KEY', api_keys_tab_layout, key="api_keys_tab")],
                     [sg.Tab('AI設定', ai_tab_layout)],
                     [sg.Tab('入力', stt_tab_layout)],
                     [sg.Tab('チャットエンジン', chat_tab_layout)],
                     [sg.Tab('出力', tts_tab_layout)],
-                    [sg.Tab('その他', other_tab_layout, )],
+                    [sg.Tab('その他', other_tab_layout)],
                 ],
                 # tab_location='left',
                 expand_x=True,
@@ -290,8 +290,10 @@ class SettingsWindow(BaseWindow):
 
         settings_window = sg.Window("設定画面", window_layout,
                                     size=self.WINDOW_SIZE,
+                                    finalize=True,
                                     # modal=True,
                                     )
+        settings_window["api_keys_tab"].select()
 
         while True:
             event, values = settings_window.read()

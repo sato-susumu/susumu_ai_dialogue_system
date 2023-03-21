@@ -17,11 +17,12 @@ class WelcomeWindow(BaseWindow):
         ]
 
         window_layout = [
-            [sg.Text("初期設定画面")],
+            [sg.Text("このアプリを使用するにはOpenAIのAPI Keyが必要です。")],
+            [sg.Text("まずは、設定ボタンを押し、OpenAIのAPI Keyを設定してください。")],
             [sg.Column(buttons_layout, justification='center')],
         ]
 
-        welcome_window = sg.Window("設定画面", window_layout,
+        welcome_window = sg.Window("初期画面", window_layout,
                                    size=self.WINDOW_SIZE,
                                    # modal=True,
                                    )

@@ -40,7 +40,6 @@ class MainWindow(BaseWindow):
         return common_config_table
 
     def display(self):
-        # TODO:ボタン以外にも表示
         buttons_layout = [[
             sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key="settings"),
             sg.Button('起動', size=self.BUTTON_SIZE_NORMAL, key="run"),
@@ -65,7 +64,13 @@ class MainWindow(BaseWindow):
 
         # TODO:(低)タイトルの設定ファイル化
         main_window = sg.Window("susumu_toolkit GUI", window_layout,
-                                size=self.WINDOW_SIZE)
+                                size=self.WINDOW_SIZE,
+                                finalize=True,
+                                )
+        path = self._config.get_current_config_path()
+        if not os.path.exists(path):
+            sg.popup_ok("このアプリを使用するにはOpenAIのAPI Keyの設定が必要です。\nまずは、設定ボタンを押し、OpenAIのAPI Keyを設定してください。",
+                        title="OpenAIのAPI Keyが設定されていません。")
 
         while True:
             event, values = main_window.read()
