@@ -17,7 +17,7 @@
   <br>
 </p>
 
-### 特徴
+## 特徴
 
 `susumu_toolbox` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AITuberシステムです。  
 各モジュールの切り替えは設定画面でワンクリックで行えます。
@@ -36,14 +36,14 @@
 
 ### AITuber
 
-`susumu_toolbox` は `OBS` を使った字幕更新、`YouTuber Data API v3` を使ったYouTubeライブ配信のコメント取得に対応しています。
+AITuberを作るために必要ないくつかの機能をプログラミング不要で実現します。具体的には `YouTuber Data API v3` を使ったYouTubeライブ配信のコメント取得、 `OBS` を使った字幕更新に対応しています。
   
 <br/>
   
 ## 動作環境
 
 Windows 11のみ  
-Windowsに依存しない形で作っていますが、他の環境では動作確認はできていません。
+Windowsに依存しない形で作っていますが、他の環境では動作確認ができていません。
 
 <br/>
 
@@ -60,24 +60,31 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 `OpenAI API Key` を取得し `susumu_toolbox` に設定すれば、まずは最低限の音声対話が動作します。
 
+<br/>
 
 ### OpenAI API Keyを設定する
 
 `susumu_toolbox.exe` を起動すると、`設定` ボタンがあるのでクリックします。 `OpenAI API Key` を入力し、`保存して閉じる`をクリックすればAPI Keyの設定は完了です。
 
+<br/>
+
 ### 音声対話を使ってみる
 `OpenAI API Key` を設定すれば、あとは初期設定で音声対話を試すことができます。`起動`ボタンを押せば、音声対話が開始します。音声認識結果や `ChatGPT` からの応答はコンソール画面に表示されます。
+
+<br/>
 
 ### 音声認識や音声合成をリッチにする
 
 設定画面の `共通設定` タブで、どの音声認識や音声合成を使うか選択できます。使う機能によっては別のタブで設定を行ったり、別のアプリの起動が必要になる事もあります。
 
+<br/>
+
 ### AITuberを動かす
 
-`susumu_toolbox` を使えば、プログラミングを行わなくてもAITuber(絵や3Dキャラクターを除く)が動かすことができます。
+`susumu_toolbox` を使えば、プログラミングを行わなくてもAITuber(絵や3Dキャラクターを除く)を動かすことができます。
 AITuberとして動かすためには次のステップを踏むだけ、、、ですが、正直なところ、初めてだと敷居がとても高いです。
 
-- `Google Cloud Platform`で `API Key` を発行し、`YouTubeコメント取得`に必要な設定を行う
+- `Google Cloud Platform`で `API Key` を発行し、設定画面で `YouTubeコメント取得` に必要な設定を行う
 - `OBS Studio` をインストールし、字幕表示に必要な設定を行う
 - 設定画面の `共通設定` タブで、「ベース機能」は`AITuber`、「入力」は `YouTubeコメント取得` 、「その他」は `OBS出力` をONにする
 
@@ -105,7 +112,8 @@ AITuberとして動かすためには次のステップを踏むだけ、、、�
 | チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要 |
 | 音声認識 | Googleストリーミング音声認識 | Googleの認証必要 |
 | 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |  |
-| 音声認識 | 標準入力を使った擬似的な音声認識 |  |
+| 音声認識 | 標準入力を使った擬似的な音声認識モジュール |  |
+| 音声認識 | YouTubeコメント取得による擬似的な音声認識モジュール |  |
 | 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要 |
 | 音声合成 | Google音声合成 | Googleの認証必要 |
 | 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |  |
