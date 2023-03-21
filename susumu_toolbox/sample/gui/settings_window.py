@@ -149,9 +149,10 @@ class SettingsWindow(BaseWindow):
         ]
 
         stt_tab_layout = [
-            [sg.Frame("SpeechRecognition(Google)", sr_google_stt_items, expand_x=True)],
+            [sg.Text('テスト実行時の内容はコンソールに表示されます。')],
+            [sg.Frame("SpeechRecognition 音声認識(動作確認用)", sr_google_stt_items, expand_x=True)],
+            [sg.Frame("Google Speech-to-Text ストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
             [sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
-            [sg.Frame("Google Speech-to-Text(ストリーミング音声認識)", google_streaming_stt_items, expand_x=True)],
             [sg.Frame("文字入力", stdin_pseud_stt_items, expand_x=True)],
         ]
 
@@ -220,10 +221,10 @@ class SettingsWindow(BaseWindow):
         ]
 
         tts_tab_layout = [
-            [sg.Frame("gTTS (動作確認用)", gtts_items, expand_x=True)],
-            [sg.Frame("VOICEVOX", voicevox_items, expand_x=True)],
-            [sg.Frame("Google Text-to-Speech", google_cloud_tts_items, expand_x=True)],
-            [sg.Frame("Pyttsx3", pyttsx3_items, expand_x=True)],
+            [sg.Frame("gTTS 音声合成(動作確認用)", gtts_items, expand_x=True)],
+            [sg.Frame("VOICEVOX 音声合成", voicevox_items, expand_x=True)],
+            [sg.Frame("Google Text-to-Speech 音声合成", google_cloud_tts_items, expand_x=True)],
+            [sg.Frame("Pyttsx3 音声合成", pyttsx3_items, expand_x=True)],
         ]
 
         obs_items = [
@@ -298,7 +299,7 @@ class SettingsWindow(BaseWindow):
                     [sg.Tab('AI設定', ai_tab_layout)],
                     [sg.Tab('入力', stt_tab_layout)],
                     [sg.Tab('チャットエンジン', chat_tab_layout)],
-                    [sg.Tab('音声合成', tts_tab_layout)],
+                    [sg.Tab('出力', tts_tab_layout)],
                     [sg.Tab('その他', other_tab_layout, )],
                 ],
                 # tab_location='left',
