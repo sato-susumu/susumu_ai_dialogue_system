@@ -39,7 +39,7 @@ class MainWindow(BaseWindow):
             [sg.Column(buttons_layout, justification='center')],
         ]
 
-        # TODO:タイトルの設定ファイル化
+        # TODO:(低)タイトルの設定ファイル化
         main_window = sg.Window("susumu_toolkit GUI", window_layout,
                                 size=self.WINDOW_SIZE)
 

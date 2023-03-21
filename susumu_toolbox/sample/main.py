@@ -6,10 +6,12 @@ from susumu_toolbox.sample.gui.main_window import MainWindow
 from susumu_toolbox.utility.config import Config
 
 if __name__ == "__main__":
+    # TODO:(低)設定画面のテーマ変更
     sg.theme('Bright Colors')
     # TODO:ログ出力対応
     # TODO:EXEを作成
     # TODO:GUIに合わせてドキュメントも更新
+    # TODO:WelcomeWindowの作成
     _config = Config()
     _config_file_path = os.path.join(_config.get_user_data_dir_path(), _config.CONFIG_FILE_NAME)
     _config.set_config_path(_config_file_path)
