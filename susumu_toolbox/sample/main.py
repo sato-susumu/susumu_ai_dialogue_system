@@ -13,8 +13,8 @@ if __name__ == "__main__":
     # TODO:GUIに合わせてドキュメントも更新
     # TODO:WelcomeWindowの作成
     _config = Config()
-    _config_file_path = os.path.join(_config.get_user_data_dir_path(), _config.CONFIG_FILE_NAME)
-    _config.set_config_path(_config_file_path)
+    _config_file_path = _config.get_default_config_path()
+    _config.set_current_config_path(_config_file_path)
     if os.path.exists(_config_file_path):
         _config.load(_config_file_path)
     MainWindow(_config).display()

@@ -7,7 +7,7 @@ from omegaconf import OmegaConf
 
 # noinspection PyMethodMayBeStatic
 class Config:
-    CONFIG_FILE_NAME = "config.yaml"
+    _CONFIG_FILE_NAME = "config.yaml"
     KEY_OPENAI_API_KEY = "openai_api_key"
     KEY_DEEPL_AUTH_KEY = "deepl_auth_key"
     KEY_AI_SYSTEM_SETTINGS_TEXT = "ai_system_settings_text"
@@ -123,20 +123,24 @@ class Config:
               pyaudio_second_output_device_name: "VB-Audio Virtual C"
         """
         self._config = OmegaConf.create(default_yaml)
-        self._config_path = None
+        self._current_config_path = None
         self._ai_config_list = AiConfigList(self)
 
     def save(self) -> None:
-        assert self._config_path is not None
-        config_dir = os.path.dirname(self._config_path)
+        assert self._current_config_path is not None
+        config_dir = os.path.dirname(self._current_config_path)
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
-        OmegaConf.save(self._config, self._config_path)
+        OmegaConf.save(self._config, self._current_config_path)
         self._ai_config_list.save()
 
     # noinspection DuplicatedCode
     def search_and_load(self) -> None:
-        file_path = os.path.join(self.search_config_dir(), self.CONFIG_FILE_NAME)
+        """設定ファイルを検索して読み込む
+
+        GUI以外から起動したとき、GUIで保存した設定ファイルを読み込むために使用する
+        """
+        file_path = os.path.join(self.search_config_dir(), self._CONFIG_FILE_NAME)
         self.load(file_path)
 
     def load(self, file_path: str) -> None:
@@ -145,8 +149,14 @@ class Config:
         if self._ai_config_list.exist_ai_config_file():
             self._ai_config_list.load()
 
-    def set_config_path(self, file_path: str) -> None:
-        self._config_path = file_path
+    def set_current_config_path(self, file_path: str) -> None:
+        self._current_config_path = file_path
+
+    def get_current_config_path(self) -> str:
+        return self._current_config_path
+
+    def get_default_config_path(self) -> str:
+        return os.path.join(self.get_user_data_dir_path(), self._CONFIG_FILE_NAME)
 
     def get_user_data_dir_path(self) -> str:
         return f"./{self.USER_DATA_DIR_NAME}/"
@@ -184,9 +194,9 @@ class Config:
             f"../../{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
         ]
         for dir_path in dir_path_list:
-            if os.path.exists(os.path.join(dir_path, self.CONFIG_FILE_NAME)):
+            if os.path.exists(os.path.join(dir_path, self._CONFIG_FILE_NAME)):
                 return dir_path
-        raise FileNotFoundError(f"{self.CONFIG_FILE_NAME} not found.")
+        raise FileNotFoundError(f"{self._CONFIG_FILE_NAME} not found.")
 
     def get_deepl_auth_key(self) -> str:
         return self._config["DeepL"][self.KEY_DEEPL_AUTH_KEY]

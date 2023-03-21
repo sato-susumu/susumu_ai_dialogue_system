@@ -80,7 +80,7 @@ class MainWindow(BaseWindow):
                 close_button_clicked = SettingsWindow(self._config).display()
                 if close_button_clicked:
                     break
-                _config_file_path = os.path.join(self._config.get_user_data_dir_path(), self._config.CONFIG_FILE_NAME)
+                _config_file_path = self._config.get_current_config_path()
                 if os.path.exists(_config_file_path):
                     self._config.load(_config_file_path)
                 main_window["common_config_table"].update(values=self._get_common_config_table())
