@@ -225,7 +225,6 @@ class SettingsWindow(BaseWindow):
             [sg.Frame("Pyttsx3", pyttsx3_items, expand_x=True)],
         ]
 
-        # TODO:セリフ用テキストとユーザー発話用テキストの設定方法を明確にする
         obs_items = [
             [sg.Text('アドレス'),
              sg.InputText(default_text=self._config.get_obs_host(),
@@ -244,6 +243,24 @@ class SettingsWindow(BaseWindow):
              sg.InputText(default_text=self._config.get_obs_password(),
                           key=self._config.KEY_OBS_PASSWORD,
                           password_char="*",
+                          size=self.INPUT_SIZE_LONG,
+                          ),
+             ],
+            [sg.Text('表示するシーン名'),
+             sg.InputText(default_text=self._config.get_obs_scene_name(),
+                          key=self._config.KEY_OBS_SCENE_NAME,
+                          size=self.INPUT_SIZE_LONG,
+                          ),
+             ],
+            [sg.Text('AIの発話を表示するテキスト(GDI+)ソース名'),
+             sg.InputText(default_text=self._config.get_obs_ai_utterance_source_name(),
+                          key=self._config.KEY_OBS_AI_UTTERANCE_SOURCE_NAME,
+                          size=self.INPUT_SIZE_LONG,
+                          ),
+             ],
+            [sg.Text('ユーザーの発話を表示するテキスト(GDI+)ソース名'),
+             sg.InputText(default_text=self._config.get_obs_user_utterance_source_name(),
+                          key=self._config.KEY_OBS_USER_UTTERANCE_SOURCE_NAME,
                           size=self.INPUT_SIZE_LONG,
                           ),
              ],

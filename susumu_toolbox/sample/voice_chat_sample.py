@@ -59,7 +59,7 @@ class VoiceChatSample(BaseChatSample):
         else:
             message = "ME(マイクに向かって何か話してください): "
         print(message)
-        self._obs.set_text("scene1", "text1", message)
+        self._obs.set_user_utterance_text(message)
 
     def _on_stt_end(self):
         print("音声認識 終了")
@@ -74,7 +74,7 @@ class VoiceChatSample(BaseChatSample):
         else:
             print('stt not final:' + result.text)
 
-        self._obs.set_text("scene1", "text1", result.text)
+        self._obs.set_user_utterance_text(result.text)
 
     def _on_stt_debug_message(self, x):
         # # デバッグ出力
@@ -107,8 +107,8 @@ class VoiceChatSample(BaseChatSample):
         # noinspection PyBroadException
         try:
             self._obs.connect()
-            self._obs.set_text("scene1", "text1", "")
-            self._obs.set_text("scene1", "text2", "")
+            self._obs.set_user_utterance_text("")
+            self._obs.set_ai_utterance_text("")
             self._chat.connect()
 
             while self._chat.is_connecting():
@@ -123,12 +123,12 @@ class VoiceChatSample(BaseChatSample):
                 message_text = chat_message.text
                 message_text = self._translator.translate(message_text, self._translator.LANG_CODE_JA_JP)
                 print("Bot: " + message_text)
-                self._obs.set_text("scene1", "text2", message_text)
+                self._obs.set_ai_utterance_text(message_text)
                 self._tts.tts_play_sync(message_text)
 
                 input_text = self._wait_input()
 
-                self._obs.set_text("scene1", "text2", "(考え中。。。)")
+                self._obs.set_ai_utterance_text("(考え中。。。)")
                 if input_text == "bye":
                     self._chat.disconnect()
                 else:
@@ -140,8 +140,8 @@ class VoiceChatSample(BaseChatSample):
             print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
-            self._obs.set_text("scene1", "text1", "")
-            self._obs.set_text("scene1", "text2", "")
+            self._obs.set_user_utterance_text("")
+            self._obs.set_ai_utterance_text("")
             self._obs.disconnect()
             self._chat.disconnect()
 

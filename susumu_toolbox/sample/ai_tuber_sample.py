@@ -103,8 +103,8 @@ class AiTuberSample(BaseChatSample):
         # noinspection PyBroadException
         try:
             self._obs.connect()
-            self._obs.set_text("scene1", "text1", "")
-            self._obs.set_text("scene1", "text2", "")
+            self._obs.set_user_utterance_text("")
+            self._obs.set_ai_utterance_text("")
             self._chat.connect()
 
             while self._chat.is_connecting():
@@ -129,8 +129,8 @@ class AiTuberSample(BaseChatSample):
                         time.sleep(0.1)
 
                 # OBSにはこの時点で提示
-                self._obs.set_text("scene1", "text1", input_text)
-                self._obs.set_text("scene1", "text2", message_text)
+                self._obs.set_user_utterance_text(input_text)
+                self._obs.set_ai_utterance_text(message_text)
 
                 # 音声合成の非同期再生
                 self._tts.tts_play_async(message_text)
@@ -148,8 +148,8 @@ class AiTuberSample(BaseChatSample):
             print(traceback.format_exc())  # いつものTracebackが表示される
             print("エラーが発生しましたが処理を継続します！")
         finally:
-            self._obs.set_text("scene1", "text1", "")
-            self._obs.set_text("scene1", "text2", "")
+            self._obs.set_user_utterance_text("")
+            self._obs.set_ai_utterance_text("")
             self._obs.disconnect()
             self._chat.disconnect()
 

@@ -13,8 +13,8 @@ class OBSTest:
         client = OBSClient(self._config)
         client.connect()
         for i in range(10):
-            client.set_text("scene1", "text1", f"テキスト1の内容 No.{i}")
-            client.set_text("scene1", "text2", f"テキスト2の内容 No.{i}")
+            client.set_user_utterance_text(f"テキスト1の内容 No.{i}")
+            client.set_ai_utterance_text(f"テキスト2の内容 No.{i}")
             time.sleep(1)
         client.disconnect()
 
