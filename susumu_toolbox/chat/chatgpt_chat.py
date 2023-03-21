@@ -4,17 +4,17 @@ import openai
 
 from susumu_toolbox.chat.base_chat import BaseChat, ChatResult
 from susumu_toolbox.utility.config import Config
-# noinspection PyUnusedLocal,PyMethodMayBeStatic,PyShadowingNames
 from susumu_toolbox.utility.system_setting import SystemSettings
 
 
+# noinspection PyUnusedLocal,PyMethodMayBeStatic,PyShadowingNames
 class ChatGPTChat(BaseChat):
     def __init__(self, config: Config, system_settings: SystemSettings):
         super().__init__(config)
         openai.api_key = config.get_openai_api_key()
         self._system_settings = system_settings
         self._messages = []
-        system_settings_text = self._system_settings.get_system_settings()
+        system_settings_text = self._system_settings.get_text()
         if len(system_settings_text) != 0:
             self._append_message("system", system_settings_text)
 

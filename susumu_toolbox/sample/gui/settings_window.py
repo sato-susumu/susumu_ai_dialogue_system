@@ -13,6 +13,7 @@ class SettingsWindow(BaseWindow):
 
     def __init__(self, config: Config):
         super().__init__(config)
+        self._current_ai_id = config.get_ai_id_list()[0]
 
     def _save(self, values: dict) -> None:
         self._config = self._update_config(values, self._config)
@@ -271,9 +272,15 @@ class SettingsWindow(BaseWindow):
             [sg.Frame("OBS", obs_items, expand_x=True)],
         ]
 
-        # TODO: AI関連の設定追加
+        # TODO: (低)AI設定の複数対応
         ai_tab_layout = [
-            [sg.Text('タブ5のコンテンツ')]
+            [sg.Text('プロンプト')],
+            [sg.Multiline(
+                default_text=self._config.get_system_settings_text(self._current_ai_id),
+                key=self._config.KEY_AI_SYSTEM_SETTINGS_TEXT,
+                expand_x=True,
+                expand_y=True
+            )]
         ]
 
         buttons_layout = [
@@ -288,7 +295,7 @@ class SettingsWindow(BaseWindow):
                 [
                     [sg.Tab('共通設定', common_tab_layout)],
                     [sg.Tab('API KEY', api_keys_tab_layout)],
-                    # [sg.Tab('AI設定', ai_tab_layout)],
+                    [sg.Tab('AI設定', ai_tab_layout)],
                     [sg.Tab('入力', stt_tab_layout)],
                     [sg.Tab('チャットエンジン', chat_tab_layout)],
                     [sg.Tab('音声合成', tts_tab_layout)],
@@ -368,6 +375,9 @@ class SettingsWindow(BaseWindow):
         # API KEY
         target_config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
         target_config.set_deepl_auth_key(values[self._config.KEY_DEEPL_AUTH_KEY])
+
+        # AI設定
+        target_config.set_system_settings_text(self._current_ai_id, values[self._config.KEY_AI_SYSTEM_SETTINGS_TEXT])
 
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])

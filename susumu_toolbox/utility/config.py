@@ -1,5 +1,6 @@
 import copy
 import os
+from typing import List
 
 from omegaconf import OmegaConf
 
@@ -9,6 +10,7 @@ class Config:
     CONFIG_FILE_NAME = "config.yaml"
     KEY_OPENAI_API_KEY = "openai_api_key"
     KEY_DEEPL_AUTH_KEY = "deepl_auth_key"
+    KEY_AI_SYSTEM_SETTINGS_TEXT = "ai_system_settings_text"
     KEY_VOICEVOX_HOST = "voicevox_host"
     KEY_VOICEVOX_PORT_NO = "voicevox_port_no"
     KEY_VOICEVOX_SPEAKER_NO = "voicevox_speaker_no"
@@ -53,6 +55,8 @@ class Config:
     SAMPLE_DIR_NAME = "sample"
 
     def __init__(self):
+        # 仕方なくここでimport
+        from susumu_toolbox.utility.ai_config_list import AiConfigList
         # 辞書からコンフィグを読み込む
         default_yaml = """
             Common:
@@ -98,6 +102,7 @@ class Config:
         """
         self._config = OmegaConf.create(default_yaml)
         self._config_path = None
+        self._ai_config_list = AiConfigList(self)
 
     def save(self) -> None:
         assert self._config_path is not None
@@ -105,6 +110,7 @@ class Config:
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
         OmegaConf.save(self._config, self._config_path)
+        self._ai_config_list.save()
 
     # noinspection DuplicatedCode
     def search_and_load(self) -> None:
@@ -114,12 +120,36 @@ class Config:
     def load(self, file_path: str) -> None:
         loaded_config = OmegaConf.load(file_path)
         self._config = OmegaConf.merge(self._config, loaded_config)
+        if self._ai_config_list.exist_ai_config_file():
+            self._ai_config_list.load()
 
     def set_config_path(self, file_path: str) -> None:
         self._config_path = file_path
 
     def get_user_data_dir_path(self) -> str:
         return f"./{self.USER_DATA_DIR_NAME}/"
+
+    def get_ai_config_file_path(self, ai_id: str) -> str:
+        return f"./{self.USER_DATA_DIR_NAME}/ai_config_{ai_id}.yaml"
+
+    def get_ai_system_settings_file_path(self, ai_id: str) -> str:
+        return f"./{self.USER_DATA_DIR_NAME}/ai_system_settings_{ai_id}.txt"
+
+    def make_ai_config_dir_if_needed(self) -> None:
+        dir_path = self.get_user_data_dir_path()
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+
+    def get_ai_id_list(self) -> List[str]:
+        return self._ai_config_list.get_ai_id_list()
+
+    def get_system_settings_text(self, ai_id: str) -> str:
+        ai_config = self._ai_config_list.get_ai_config(ai_id)
+        return ai_config.get_system_settings().get_text()
+
+    def set_system_settings_text(self, ai_id: str, text: str) -> None:
+        ai_config = self._ai_config_list.get_ai_config(ai_id)
+        return ai_config.get_system_settings().set_text(text)
 
     def search_config_dir(self) -> str:
         dir_path_list = [

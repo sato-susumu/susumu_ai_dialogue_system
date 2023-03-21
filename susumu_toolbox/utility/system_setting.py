@@ -6,7 +6,7 @@ from susumu_toolbox.utility.config import Config
 
 class SystemSettings:
     def __init__(self, config: Config):
-        self._setting = """
+        self._text = """
 ある女性を相手にした対話のシミュレーションを行います。
 彼女の発言サンプルを以下に列挙します。
 
@@ -29,12 +29,23 @@ class SystemSettings:
 
 上記例を参考に、彼女の性格や口調、言葉の作り方を模倣し、３０文字以内の短い文章で回答を構築してください。質問には真面目に答えないでください。
 ではシミュレーションを開始！
-        """
+        """.strip()
         self._config = config
 
     def load_settings(self, file_path: Optional[str] = None) -> None:
         with open(file_path, encoding='utf-8') as file:
-            self._setting = file.read()
+            self._text = file.read()
 
-    def get_system_settings(self) -> str:
-        return self._setting
+    def get_text(self) -> str:
+        return self._text
+
+    def set_text(self, setting: str) -> None:
+        self._text = setting
+
+    def save(self, file_path: str) -> None:
+        with open(file_path, mode='w', encoding='utf-8') as file:
+            file.write(self._text)
+
+    def load(self, file_path) -> None:
+        with open(file_path, encoding='utf-8') as file:
+            self._text = file.read()
