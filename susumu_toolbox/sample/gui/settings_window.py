@@ -293,7 +293,8 @@ class SettingsWindow(BaseWindow):
                                     finalize=True,
                                     # modal=True,
                                     )
-        settings_window["api_keys_tab"].select()
+        if self._config.get_openai_api_key() == "":
+            settings_window["api_keys_tab"].select()
 
         while True:
             event, values = settings_window.read()
