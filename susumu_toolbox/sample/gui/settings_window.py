@@ -247,9 +247,13 @@ class SettingsWindow(BaseWindow):
              ],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.OBS_TEST)],
         ]
+        status_items = [
+            [sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
+        ]
 
         other_tab_layout = [
             [sg.Frame("OBS", obs_items, expand_x=True)],
+            [sg.Frame("APIステータス", status_items, expand_x=True)],
         ]
 
         # TODO: (低)AI設定の複数対応
