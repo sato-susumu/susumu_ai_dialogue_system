@@ -31,6 +31,8 @@ class Config:
     KEY_PARLAI_PORT_NO = "parlai_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
     KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
+    KEY_GUI_APP_TITLE = "gui_app_title"
+    KEY_GUI_THEME_NAME = "gui_theme_name"
 
     BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
     BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
@@ -121,6 +123,9 @@ class Config:
               # 名前の一部でもいい
               pyaudio_second_output_host_api_name: "MME"
               pyaudio_second_output_device_name: "VB-Audio Virtual C"
+            GUI:
+              gui_app_title: "susumu_toolbox"
+              gui_theme_name: "Bright Colors"   
         """
         self._config = OmegaConf.create(default_yaml)
         self._current_config_path = None
@@ -358,3 +363,9 @@ class Config:
 
     def set_common_obs_enabled(self, value: bool) -> None:
         self._config["Common"][self.KEY_COMMON_OBS_ENABLED] = value
+
+    def get_gui_app_title(self) -> str:
+        return self._config["GUI"][self.KEY_GUI_APP_TITLE]
+
+    def get_gui_theme_name(self) -> str:
+        return self._config["GUI"][self.KEY_GUI_THEME_NAME]
