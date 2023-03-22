@@ -62,8 +62,8 @@ class MainWindow(BaseWindow):
             [sg.Column(buttons_layout, justification='center')],
         ]
 
-        # TODO:(低)タイトルの設定ファイル化
-        main_window = sg.Window("susumu_toolkit GUI", window_layout,
+        main_window = sg.Window(self._config.get_gui_app_title(),
+                                window_layout,
                                 size=self.WINDOW_SIZE,
                                 finalize=True,
                                 )
