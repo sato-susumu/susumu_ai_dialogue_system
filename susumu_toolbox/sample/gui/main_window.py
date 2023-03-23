@@ -8,8 +8,9 @@ from susumu_toolbox.sample.gui.settings_window import SettingsWindow
 from susumu_toolbox.sample.text_chat_sample import TextChatSample
 from susumu_toolbox.sample.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.utility.config import Config
+
+
 # noinspection PyMethodMayBeStatic
-from susumu_toolbox.utility.system_setting import SystemSettings
 
 
 class MainWindow(BaseWindow):
@@ -18,7 +19,10 @@ class MainWindow(BaseWindow):
 
     def _run(self) -> None:
         base_function = self._config.get_common_base_function_key()
-        system_settings = SystemSettings(self._config)
+        current_ai_id = self._config.get_ai_id_list()[0]
+        ai_config = self._config._ai_config_list.get_ai_config(current_ai_id)
+        system_settings = ai_config.get_system_settings()
+
         if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
             base = TextChatSample(self._config, system_settings)
         elif base_function == Config.BASE_FUNCTION_VOICE_DIALOGUE:
