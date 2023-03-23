@@ -429,6 +429,7 @@ class SettingsWindow(BaseWindow):
     def _obs_test(self, event, values):
         config = self._config.clone()
         config = self._update_config(values, config)
+        config.set_common_obs_enabled(True)
         try:
             OBSTest(config).run()
         except Exception as e:

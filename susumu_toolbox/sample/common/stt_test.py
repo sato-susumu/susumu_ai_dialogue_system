@@ -1,8 +1,5 @@
+from susumu_toolbox.sample.common.function_factory import FunctionFactory
 from susumu_toolbox.stt.base_stt import STTResult
-from susumu_toolbox.stt.google_streaming_stt import GoogleStreamingSTT
-from susumu_toolbox.stt.sr_google_sync_stt import SRGoogleSyncSTT
-from susumu_toolbox.stt.stdin_pseud_stt import StdinPseudSTT
-from susumu_toolbox.stt.youtube_pseud_stt import YoutubePseudSTT
 from susumu_toolbox.utility.config import Config
 
 
@@ -16,17 +13,16 @@ class STTTest:
     def run(self) -> None:
         speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
         input_function = self._config.get_common_input_function_key()
+        self._stt = FunctionFactory.create_stt(self._config, speech_contexts)
+
+        # TODO: (低)start_messageは別に定義する？
         if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
-            self._stt = SRGoogleSyncSTT(self._config)
             self._start_message = "マイクに向かって何か話しかけてください"
         elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
-            self._stt = StdinPseudSTT(self._config)
             self._start_message = "このウィンドウで何か入力して、リターンキーを押してください"
         elif input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
-            self._stt = GoogleStreamingSTT(self._config, speech_contexts=speech_contexts)
             self._start_message = "マイクに向かって何か話しかけてください"
         elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
-            self._stt = YoutubePseudSTT(self._config)
             self._start_message = "YouTubeライブチャットのコメント入力待ち"
         else:
             raise ValueError(f"Invalid input_function: {input_function}")
