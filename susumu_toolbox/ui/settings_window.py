@@ -265,7 +265,7 @@ class SettingsWindow(BaseWindow):
         ai_tab_layout = [
             [sg.Text('プロンプト')],
             [sg.Multiline(
-                default_text=self._config.get_system_settings_text(self._current_ai_id),
+                default_text=self._config.get_ai_system_settings_text(self._current_ai_id),
                 key=self._config.KEY_AI_SYSTEM_SETTINGS_TEXT,
                 expand_x=True,
                 expand_y=True
@@ -370,7 +370,7 @@ class SettingsWindow(BaseWindow):
         target_config.set_deepl_auth_key(values[self._config.KEY_DEEPL_AUTH_KEY])
 
         # AI設定
-        target_config.set_system_settings_text(self._current_ai_id, values[self._config.KEY_AI_SYSTEM_SETTINGS_TEXT])
+        target_config.set_ai_system_settings_text(self._current_ai_id, values[self._config.KEY_AI_SYSTEM_SETTINGS_TEXT])
 
         # 入力
         target_config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])

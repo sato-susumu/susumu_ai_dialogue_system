@@ -6,7 +6,6 @@ from susumu_toolbox.application.ai_tuber_sample import AiTuberSample
 from susumu_toolbox.application.text_chat_sample import TextChatSample
 from susumu_toolbox.application.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.ui.base_window import BaseWindow
 from susumu_toolbox.ui.settings_window import SettingsWindow
 
@@ -17,8 +16,10 @@ class MainWindow(BaseWindow):
         super().__init__(config)
 
     def _run(self) -> None:
+        current_ai_id = self._config.get_ai_id_list()[0]
+        system_settings = self._config.get_ai_system_settings(current_ai_id)
+
         base_function = self._config.get_common_base_function_key()
-        system_settings = SystemSettings(self._config)
         if base_function == Config.BASE_FUNCTION_TEXT_DIALOGUE:
             base = TextChatSample(self._config, system_settings)
         elif base_function == Config.BASE_FUNCTION_VOICE_DIALOGUE:

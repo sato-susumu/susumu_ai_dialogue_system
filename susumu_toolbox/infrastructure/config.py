@@ -1,6 +1,6 @@
 import copy
 import os
-from typing import List
+from typing import List, Any
 
 from omegaconf import OmegaConf
 
@@ -130,6 +130,7 @@ class Config:
               gui_theme_name: "Bright Colors"   
         """
         self._config = OmegaConf.create(default_yaml)
+        # 設定ファイルのパス。初回保存前だとファイルが存在しないこともあるので注意
         self._current_config_path = None
         self._ai_config_list = AiConfigList(self)
 
@@ -182,13 +183,15 @@ class Config:
     def get_ai_id_list(self) -> List[str]:
         return self._ai_config_list.get_ai_id_list()
 
-    def get_system_settings_text(self, ai_id: str) -> str:
+    def get_ai_system_settings(self, ai_id: str) -> Any:
         ai_config = self._ai_config_list.get_ai_config(ai_id)
-        return ai_config.get_system_settings().get_text()
+        return ai_config.get_system_settings()
 
-    def set_system_settings_text(self, ai_id: str, text: str) -> None:
-        ai_config = self._ai_config_list.get_ai_config(ai_id)
-        return ai_config.get_system_settings().set_text(text)
+    def get_ai_system_settings_text(self, ai_id: str) -> str:
+        return self.get_ai_system_settings(ai_id).get_text()
+
+    def set_ai_system_settings_text(self, ai_id: str, text: str) -> None:
+        return self.get_ai_system_settings(ai_id).set_text(text)
 
     def search_config_dir(self) -> str:
         dir_path_list = [
