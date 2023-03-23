@@ -2,8 +2,8 @@ import os
 
 import PySimpleGUI as sg
 
-from susumu_toolbox.sample.gui.main_window import MainWindow
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.ui.main_window import MainWindow
+from susumu_toolbox.infrastructure.config import Config
 
 if __name__ == "__main__":
     # TODO:ログ出力対応
