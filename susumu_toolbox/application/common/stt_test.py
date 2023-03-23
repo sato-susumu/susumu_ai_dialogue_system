@@ -16,12 +16,11 @@ class STTTest:
         self._stt = FunctionFactory.create_stt(self._config, speech_contexts)
 
         # TODO: (低)start_messageは別に定義する？
-        if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
+        if input_function in (Config.INPUT_FUNCTION_GOOGLE_STREAMING, Config.INPUT_FUNCTION_SR_GOOGLE,
+                              Config.INPUT_FUNCTION_WHISPER_API):
             self._start_message = "マイクに向かって何か話しかけてください"
         elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
             self._start_message = "このウィンドウで何か入力して、リターンキーを押してください"
-        elif input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
-            self._start_message = "マイクに向かって何か話しかけてください"
         elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
             self._start_message = "YouTubeライブチャットのコメント入力待ち"
         else:

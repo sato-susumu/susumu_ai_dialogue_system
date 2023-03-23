@@ -7,5 +7,6 @@ class GuiEvents:
     GOOGLE_STREAMING_STT_TEST = "google_streaming_stt_test"
     SR_GOOGLE_STT_TEST = "sr_google_stt_test"
     STDIN_PSEUD_STT_TEST = "stdin_pseud_stt_test"
+    WHISPER_API_STT_TEST = "whisper_api_stt_test"
     OBS_TEST = "obs_test"
     PARLAI_TEST = "parlai_test"

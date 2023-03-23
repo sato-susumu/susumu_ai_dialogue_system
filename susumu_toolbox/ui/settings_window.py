@@ -127,10 +127,15 @@ class SettingsWindow(BaseWindow):
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.STDIN_PSEUD_STT_TEST)],
         ]
 
+        whisper_api_stt_items = [
+            [sg.Button("テスト", size=(15, 1), key=GuiEvents.WHISPER_API_STT_TEST)],
+        ]
+
         stt_tab_layout = [
             [sg.Text('テスト実行時の内容はコンソールに表示されます。')],
             [sg.Frame("SpeechRecognition 音声認識(動作確認用)", sr_google_stt_items, expand_x=True)],
             [sg.Frame("Google Speech-to-Text ストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
+            [sg.Frame("Whisper API 音声認識", whisper_api_stt_items, expand_x=True)],
             [sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
             [sg.Frame("文字入力", stdin_pseud_stt_items, expand_x=True)],
         ]
@@ -322,7 +327,8 @@ class SettingsWindow(BaseWindow):
                     GuiEvents.PYTTSX3_TEST):
                 self._tts_test(event, values)
             if event in (GuiEvents.YOUTUBE_PSEUD_STT_TEST, GuiEvents.GOOGLE_STREAMING_STT_TEST,
-                         GuiEvents.SR_GOOGLE_STT_TEST, GuiEvents.STDIN_PSEUD_STT_TEST):
+                         GuiEvents.SR_GOOGLE_STT_TEST, GuiEvents.STDIN_PSEUD_STT_TEST,
+                         GuiEvents.WHISPER_API_STT_TEST):
                 self._stt_test(event, values)
             if event == GuiEvents.OBS_TEST:
                 self._obs_test(event, values)
@@ -416,6 +422,8 @@ class SettingsWindow(BaseWindow):
             config.set_common_input_function_key(config.INPUT_FUNCTION_SR_GOOGLE)
         elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
             config.set_common_input_function_key(config.INPUT_FUNCTION_STDIN_PSEUD)
+        elif event == GuiEvents.WHISPER_API_STT_TEST:
+            config.set_common_input_function_key(config.INPUT_FUNCTION_WHISPER_API)
         else:
             raise Exception("想定外のイベントです")
 

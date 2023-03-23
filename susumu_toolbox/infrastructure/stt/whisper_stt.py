@@ -7,7 +7,7 @@ from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult
 
 
-class WhisperSTT(BaseSTT):
+class WhisperApiSTT(BaseSTT):
     def __init__(self, config: Config):
         super().__init__(config)
         openai.api_key = config.get_openai_api_key()
