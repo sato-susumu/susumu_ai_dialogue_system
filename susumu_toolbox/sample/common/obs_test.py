@@ -1,7 +1,7 @@
 import logging
 import time
 
-from susumu_toolbox.obs.obs_client import OBSClient
+from susumu_toolbox.sample.common.function_factory import FunctionFactory
 from susumu_toolbox.utility.config import Config
 
 
@@ -10,7 +10,7 @@ class OBSTest:
         self._config = config
 
     def run(self):
-        client = OBSClient(self._config)
+        client = FunctionFactory.create_obs_client(self._config)
         client.connect()
         for i in range(10):
             client.set_user_utterance_text(f"テキスト1の内容 No.{i}")
