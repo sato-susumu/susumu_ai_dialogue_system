@@ -9,6 +9,7 @@ from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT
 from susumu_toolbox.infrastructure.stt.google_streaming_stt import GoogleStreamingSTT
 from susumu_toolbox.infrastructure.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.infrastructure.stt.stdin_pseud_stt import StdinPseudSTT
+from susumu_toolbox.infrastructure.stt.whisper_stt import WhisperApiSTT
 from susumu_toolbox.infrastructure.stt.youtube_pseud_stt import YoutubePseudSTT
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS
@@ -33,6 +34,8 @@ class FunctionFactory:
             return GoogleStreamingSTT(config, speech_contexts=speech_contexts)
         if input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
             return YoutubePseudSTT(config)
+        if input_function == Config.INPUT_FUNCTION_WHISPER_API:
+            return WhisperApiSTT(config)
         raise ValueError(f"Invalid input_function: {input_function}")
 
     @staticmethod

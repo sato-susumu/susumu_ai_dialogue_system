@@ -43,6 +43,7 @@ class Config:
     INPUT_FUNCTION_STDIN_PSEUD = "stdin_pseud"
     INPUT_FUNCTION_GOOGLE_STREAMING = "google_streaming"
     INPUT_FUNCTION_YOUTUBE_PSEUD = "youtube_pseud"
+    INPUT_FUNCTION_WHISPER_API = "whisper_api"
 
     CHAT_FUNCTION_CHATGPT = "chatgpt"
     CHAT_FUNCTION_PARLAI = "parlai"
@@ -65,11 +66,12 @@ class Config:
         INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
         INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
         INPUT_FUNCTION_GOOGLE_STREAMING: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
+        INPUT_FUNCTION_WHISPER_API: "Whisper API音声認識 (OpenAI API Key設定が必要)",
         INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
     }
     chat_function_dict = {
-        CHAT_FUNCTION_CHATGPT: "ChatGPT API",
-        CHAT_FUNCTION_PARLAI: "ParlAIクライント",
+        CHAT_FUNCTION_CHATGPT: "ChatGPT API (OpenAI API Key設定が必要)",
+        CHAT_FUNCTION_PARLAI: "ParlAIクライント (追加設定が必要)",
     }
     output_function_dict = {
         OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
