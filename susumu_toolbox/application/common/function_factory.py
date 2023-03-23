@@ -13,6 +13,7 @@ from susumu_toolbox.infrastructure.stt.whisper_stt import WhisperApiSTT
 from susumu_toolbox.infrastructure.stt.youtube_pseud_stt import YoutubePseudSTT
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS
+from susumu_toolbox.infrastructure.tts.dummy_tts import DummyTTS
 from susumu_toolbox.infrastructure.tts.google_cloud_tts import GoogleCloudTTS
 from susumu_toolbox.infrastructure.tts.gtts_tts import GttsTTS
 from susumu_toolbox.infrastructure.tts.pyttsx3_tts import Pyttsx3TTS
@@ -60,6 +61,8 @@ class FunctionFactory:
             return Pyttsx3TTS(config)
         if output_function == Config.OUTPUT_FUNCTION_VOICEVOX:
             return VoicevoxTTS(config)
+        if output_function == Config.OUTPUT_FUNCTION_NONE:
+            return DummyTTS(config)
         raise ValueError(f"Invalid output_function: {output_function}")
 
     @staticmethod

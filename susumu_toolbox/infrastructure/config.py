@@ -49,6 +49,7 @@ class Config:
     CHAT_FUNCTION_PARLAI = "parlai"
 
     OUTPUT_FUNCTION_BASE = "base_tts"
+    OUTPUT_FUNCTION_NONE = "none"
     OUTPUT_FUNCTION_PYTTSX3 = "pyttsx3"
     OUTPUT_FUNCTION_VOICEVOX = "voicevox"
     OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"
@@ -74,6 +75,7 @@ class Config:
         CHAT_FUNCTION_PARLAI: "ParlAIクライント (追加設定が必要)",
     }
     output_function_dict = {
+        OUTPUT_FUNCTION_NONE: "なし",
         OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
         OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
         OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google Text-to-Speech (追加設定が必要)",
