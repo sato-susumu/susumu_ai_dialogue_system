@@ -1,5 +1,5 @@
-from susumu_toolbox.chat.base_chat import BaseChat
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.infrastructure.chat.base_chat import BaseChat
+from susumu_toolbox.infrastructure.config import Config
 
 
 def test_chat_connect_1():

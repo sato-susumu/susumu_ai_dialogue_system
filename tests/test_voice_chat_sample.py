@@ -1,9 +1,9 @@
 import threading
 import time
 
-from susumu_toolbox.sample.voice_chat_sample import VoiceChatSample
-from susumu_toolbox.utility.config import Config
-from susumu_toolbox.utility.system_setting import SystemSettings
+from susumu_toolbox.application.voice_chat_sample import VoiceChatSample
+from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 
 
