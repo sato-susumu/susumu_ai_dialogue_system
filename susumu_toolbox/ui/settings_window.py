@@ -108,6 +108,7 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_streaming_stt_items = [
+            [sg.Text('・利用には別途GCP認証もしくは下記APIキーの設定が必要です。')],
             [sg.Text('Google Speech-to-TextのAPIキー'),
              sg.InputText(default_text=self._config.get_gcp_speech_to_text_api_key(),
                           key=self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY,
@@ -115,7 +116,6 @@ class SettingsWindow(BaseWindow):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [sg.Text('Google Speech-to-Textを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_STREAMING_STT_TEST)],
         ]
 
@@ -128,11 +128,12 @@ class SettingsWindow(BaseWindow):
         ]
 
         whisper_api_stt_items = [
+            [sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.WHISPER_API_STT_TEST)],
         ]
 
         stt_tab_layout = [
-            [sg.Text('テスト実行時の内容はコンソールに表示されます。')],
+            [sg.Text('・テスト実行時の内容はコンソールに表示されます。')],
             [sg.Frame("SpeechRecognition 音声認識(動作確認用)", sr_google_stt_items, expand_x=True)],
             [sg.Frame("Google Speech-to-Text ストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
             [sg.Frame("Whisper API 音声認識", whisper_api_stt_items, expand_x=True)],
@@ -141,6 +142,7 @@ class SettingsWindow(BaseWindow):
         ]
 
         parlai_items = [
+            [sg.Text('・利用には ParlAI Chat Server の起動が必要です。')],
             [sg.Text('アドレス'),
              sg.InputText(key=self._config.KEY_PARLAI_HOST,
                           default_text=self._config.get_parlai_host(),
@@ -156,11 +158,17 @@ class SettingsWindow(BaseWindow):
              ],
         ]
 
+        chat_gpt_items = [
+            [sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
+        ]
+
         chat_tab_layout = [
+            [sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
             [sg.Frame("ParlAI", parlai_items, expand_x=True)],
         ]
 
         voicevox_items = [
+            [sg.Text('・利用にはVOICEVOXの起動が必要です。')],
             [sg.Text('アドレス'),
              sg.InputText(default_text=self._config.get_voicevox_host(),
                           key=self._config.KEY_VOICEVOX_HOST,
@@ -193,6 +201,7 @@ class SettingsWindow(BaseWindow):
         ]
 
         google_cloud_tts_items = [
+            [sg.Text('・利用には別途GCP認証もしくは下記APIキーの設定が必要です。')],
             [sg.Text('Google Text-to-SpeechのAPIキー'),
              sg.InputText(default_text=self._config.get_gcp_text_to_speech_api_key(),
                           key=self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY,
@@ -200,7 +209,6 @@ class SettingsWindow(BaseWindow):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [sg.Text('Google Text-to-Speechを使用するには、GCPの認証もしくは上記APIキーが必要です。')],
             [sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_CLOUD_TTS_TEST)],
         ]
 
@@ -212,6 +220,9 @@ class SettingsWindow(BaseWindow):
         ]
 
         obs_items = [
+            [sg.Text('・obs-websocket 4.xのみ動作確認しています。')],
+            [sg.Text('・利用には OBS Studio の起動が必要です。')],
+            [sg.Text('・OBS Studioの ツール > obs-websocket設定 で「ウェブサーバーを有効にする」を有効にしてください。')],
             [sg.Text('アドレス'),
              sg.InputText(default_text=self._config.get_obs_host(),
                           key=self._config.KEY_OBS_HOST,
@@ -263,6 +274,7 @@ class SettingsWindow(BaseWindow):
 
         # TODO: (低)AI設定の複数対応
         ai_tab_layout = [
+            [sg.Text('・チャットエンジンが ChatGPTの場合のみプロンプトを利用します。')],
             [sg.Text('プロンプト')],
             [sg.Multiline(
                 default_text=self._config.get_ai_system_settings_text(self._current_ai_id),
