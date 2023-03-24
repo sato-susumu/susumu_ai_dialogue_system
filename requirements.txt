@@ -22,3 +22,8 @@ webrtcvad
 python-dateutil
 pyinstaller
 omegaconf
+transformers
+fugashi
+ipadic
+torch
+numpy
