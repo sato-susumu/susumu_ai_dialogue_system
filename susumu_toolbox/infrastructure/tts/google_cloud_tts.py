@@ -1,7 +1,6 @@
-# あとまわし
-# noinspection PyPackageRequirements
 import time
 
+# noinspection PyPackageRequirements
 from google.cloud import texttospeech
 
 from susumu_toolbox.infrastructure.config import Config
