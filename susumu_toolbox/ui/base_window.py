@@ -1,6 +1,6 @@
 import webbrowser
 
-import PySimpleGUI as sg
+import PySimpleGUI as Sg
 
 from susumu_toolbox.infrastructure.config import Config
 
@@ -27,5 +27,5 @@ class BaseWindow:
 
     def create_linked_text(self, text: str, url: str):
         font = ('Arial', 10, "underline")
-        return sg.Text(text, tooltip=url, enable_events=True, font=font, key=f'URL {url}',
+        return Sg.Text(text, tooltip=url, enable_events=True, font=font, key=f'URL {url}',
                        pad=(0, 0), text_color="blue")

@@ -1,6 +1,6 @@
 import os
 
-import PySimpleGUI as sg
+import PySimpleGUI as Sg
 
 from susumu_toolbox.application.ai_tuber_sample import AiTuberSample
 from susumu_toolbox.application.text_chat_sample import TextChatSample
@@ -42,14 +42,14 @@ class MainWindow(BaseWindow):
 
     def display(self):
         buttons_layout = [[
-            sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key="settings"),
-            sg.Button('起動', size=self.BUTTON_SIZE_NORMAL, key="run"),
-            sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key="exit"),
+            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key="settings"),
+            Sg.Button('起動', size=self.BUTTON_SIZE_NORMAL, key="run"),
+            Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key="exit"),
         ]]
 
         header = ['機能名', '設定値']
         common_config_items = [
-            [sg.Table(self._get_common_config_table(),
+            [Sg.Table(self._get_common_config_table(),
                       headings=header,
                       hide_vertical_scroll=True,
                       col_widths=[20, 50],
@@ -59,23 +59,23 @@ class MainWindow(BaseWindow):
                       )],
         ]
         window_layout = [
-            [sg.Frame("現在の設定", common_config_items, expand_x=True)],
-            [sg.Column(buttons_layout, justification='center')],
+            [Sg.Frame("現在の設定", common_config_items, expand_x=True)],
+            [Sg.Column(buttons_layout, justification='center')],
         ]
 
-        main_window = sg.Window(self._config.get_gui_app_title(),
+        main_window = Sg.Window(self._config.get_gui_app_title(),
                                 window_layout,
                                 size=self.WINDOW_SIZE,
                                 finalize=True,
                                 )
         path = self._config.get_current_config_path()
         if not os.path.exists(path):
-            sg.popup_ok("このアプリを使用するにはOpenAIのAPI Keyの設定が必要です。\nまずは、設定ボタンを押し、OpenAIのAPI Keyを設定してください。",
+            Sg.popup_ok("このアプリを使用するにはOpenAIのAPI Keyの設定が必要です。\nまずは、設定ボタンを押し、OpenAIのAPI Keyを設定してください。",
                         title="OpenAIのAPI Keyが設定されていません。")
 
         while True:
             event, values = main_window.read()
-            if event in (sg.WIN_CLOSED, 'exit'):
+            if event in (Sg.WIN_CLOSED, 'exit'):
                 break
             if event == "run":
                 main_window.Hide()
