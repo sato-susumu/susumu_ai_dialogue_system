@@ -3,12 +3,6 @@ from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 
 
 class BaseEmotionModel:
-    HAPPY = 'happy'
-    SAD = 'sad'
-    SURPRISED = 'surprised'
-    ANGRY = 'angry'
-    RELAXED = 'relaxed'
-
     def __init__(self, config: Config):
         self._config = config
 
