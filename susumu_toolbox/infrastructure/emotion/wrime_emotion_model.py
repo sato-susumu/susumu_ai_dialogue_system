@@ -3,6 +3,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.emotion.base_emotion_model import BaseEmotionModel
+from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 
 
 # noinspection PyMethodMayBeStatic
@@ -29,11 +30,11 @@ class WrimeEmotionModel(BaseEmotionModel):
 
     def _convert_emotion_dict(self, in_dict: dict):
         out_dict = {
-            self.HAPPY: max(in_dict.get('Joy'), in_dict.get('Trust')),
-            self.SAD: max(in_dict.get('Sadness'), in_dict.get('Fear')),
-            self.SURPRISED: in_dict.get('Surprise'),
-            self.ANGRY: in_dict.get('Anger'),
-            self.RELAXED: 0.0,
+            Emotion.HAPPY.value: max(in_dict.get('Joy'), in_dict.get('Trust')),
+            Emotion.SAD.value: max(in_dict.get('Sadness'), in_dict.get('Fear')),
+            Emotion.SURPRISED.value: in_dict.get('Surprise'),
+            Emotion.ANGRY.value: in_dict.get('Anger'),
+            Emotion.RELAXED.value: 0.0,
         }
         return out_dict
 

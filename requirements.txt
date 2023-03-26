@@ -27,3 +27,5 @@ fugashi
 ipadic
 torch
 numpy
+mido
+python-rtmidi

@@ -1,5 +1,6 @@
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.emotion.base_emotion_model import BaseEmotionModel
+from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 
 
 class DummyEmotionModel(BaseEmotionModel):
@@ -8,5 +9,4 @@ class DummyEmotionModel(BaseEmotionModel):
 
     # noinspection PyMethodMayBeStatic
     def get_max_emotion(self, text: str) -> (dict, dict):
-        return {self.HAPPY, 0.0}, {self.HAPPY, 0.0}
-
+        return {Emotion.HAPPY.value, 0.0}, {Emotion.HAPPY.value, 0.0}
