@@ -1,8 +1,8 @@
 from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 
 
 class BaseEmotionModel:
-    # https://vrm.dev/vrm1/changed.html#vrmc-vrm-expression
     HAPPY = 'happy'
     SAD = 'sad'
     SURPRISED = 'surprised'
@@ -12,5 +12,5 @@ class BaseEmotionModel:
     def __init__(self, config: Config):
         self._config = config
 
-    def get_max_emotion(self, text: str):
-        return {self.HAPPY, 0.0}, {self.HAPPY, 0.0}
+    def get_max_emotion(self, text: str) -> (dict, dict):
+        return {Emotion.HAPPY.value, 0.0}, {Emotion.HAPPY.value.HAPPY, 0.0}
