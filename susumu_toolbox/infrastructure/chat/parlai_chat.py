@@ -6,7 +6,7 @@ from typing import Optional
 
 import websocket
 
-from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult
+from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatState
 from susumu_toolbox.infrastructure.config import Config
 
 
@@ -44,13 +44,13 @@ class ParlAIChat(BaseChat):
         self._event_channel.publish(self.EVENT_CHAT_ERROR, error)
 
     def _on_open(self, ws_app) -> None:
-        self._set_state(self._STATE_CONNECTED)
+        self._set_state(ChatState.CONNECTED)
         self._event_channel.publish(self.EVENT_CHAT_OPEN)
         # オープン時に適当に送信
         self._send_message_to_server("")
 
     def _on_close(self, ws_app, status_code: Optional[int], close_msg: Optional[str]) -> None:
-        self._set_state(self._STATE_INIT)
+        self._set_state(ChatState.INIT)
         self._event_channel.publish(self.EVENT_CHAT_CLOSE, status_code, close_msg)
 
     def _send_message_to_server(self, text: str) -> None:
@@ -61,7 +61,7 @@ class ParlAIChat(BaseChat):
     def connect(self) -> None:
         if not self.is_init():
             return
-        self._set_state(self._STATE_CONNECTING)
+        self._set_state(ChatState.CONNECTING)
 
         self._ws_app = websocket.WebSocketApp(
             f"ws://{self._host}:{self._port_no}/websocket",
@@ -79,14 +79,14 @@ class ParlAIChat(BaseChat):
     def disconnect(self) -> None:
         if not self.is_connected():
             return
-        self._set_state(self._STATE_CLOSING)
+        self._set_state(ChatState.CLOSING)
         # 終了時には[DONE] と EXITの両方を送る必要があるらしい。
         self._send_message_to_server("[DONE]")
         # 元のサンプルでも2秒待っていたので、2秒待つ
         time.sleep(2)
         self._send_message_to_server("exit")
         self._ws_app.close()
-        self._set_state(self._STATE_INIT)
+        self._set_state(ChatState.INIT)
 
     def send_message(self, text) -> None:
         if not self.is_connected():
