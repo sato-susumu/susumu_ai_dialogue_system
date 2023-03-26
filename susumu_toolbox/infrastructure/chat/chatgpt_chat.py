@@ -2,7 +2,7 @@ import time
 
 import openai
 
-from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult
+from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
@@ -37,8 +37,8 @@ class ChatGPTChat(BaseChat):
             )
         except openai.error.RateLimitError as e:
             print("RateLimitError: OpenAI APIのリクエスト制限に達しました。")
-            self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult("", []))
-            self._event_channel.publish(self.EVENT_CHAT_ERROR, e)
+            self._event_publish(ChatEvent.MESSAGE, ChatResult("", []))
+            self._event_publish(ChatEvent.ERROR, e)
             raise
 
         after = time.perf_counter()
@@ -47,4 +47,4 @@ class ChatGPTChat(BaseChat):
         result_text = result.choices[0].message.content
         self._append_message("assistant", result_text)
 
-        self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult(result_text, []))
+        self._event_publish(ChatEvent.MESSAGE, ChatResult(result_text, []))
