@@ -1,6 +1,6 @@
 from susumu_toolbox.application.common.function_factory import FunctionFactory
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.stt.base_stt import STTResult
+from susumu_toolbox.infrastructure.stt.base_stt import STTResult, STTEvent
 
 
 # noinspection PyMethodMayBeStatic
@@ -27,11 +27,11 @@ class STTTest:
             raise ValueError(f"Invalid input_function: {input_function}")
 
         # noinspection DuplicatedCode
-        self._stt.subscribe(self._stt.EVENT_STT_START, self._on_stt_start)
-        self._stt.subscribe(self._stt.EVENT_STT_END, self._on_stt_end)
-        self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result)
-        self._stt.subscribe(self._stt.EVENT_STT_DEBUG_MESSAGE, self._on_stt_debug_message)
-        self._stt.subscribe(self._stt.EVENT_STT_ERROR, self._on_stt_error)
+        self._stt.event_subscribe(STTEvent.START, self._on_stt_start)
+        self._stt.event_subscribe(STTEvent.END, self._on_stt_end)
+        self._stt.event_subscribe(STTEvent.RESULT, self._on_stt_result)
+        self._stt.event_subscribe(STTEvent.DEBUG_MESSAGE, self._on_stt_debug_message)
+        self._stt.event_subscribe(STTEvent.ERROR, self._on_stt_error)
         self._stt.recognize()
 
     def _on_stt_start(self):

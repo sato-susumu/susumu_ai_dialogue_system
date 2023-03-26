@@ -1,5 +1,5 @@
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult
+from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult, STTEvent
 
 
 class StdinPseudSTT(BaseSTT):
@@ -8,6 +8,6 @@ class StdinPseudSTT(BaseSTT):
 
     @BaseSTT.recognize_decorator
     def recognize(self):
-        self._event_channel.publish(self.EVENT_STT_START)
+        self._event_publish(STTEvent.START)
         input_text = input()
-        self._event_channel.publish(self.EVENT_STT_RESULT, STTResult(input_text, True))
+        self._event_publish(STTEvent.RESULT, STTResult(input_text, True))

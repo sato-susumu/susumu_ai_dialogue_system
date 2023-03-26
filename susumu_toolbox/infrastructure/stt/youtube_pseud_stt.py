@@ -3,7 +3,7 @@ import time
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.limited_fifo import LimitedFIFO
-from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult
+from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult, STTEvent
 from susumu_toolbox.infrastructure.stt.youtube.message_filter import MessageFilter
 from susumu_toolbox.infrastructure.stt.youtube.youtube_livechat import YouTubeLiveChat
 
@@ -33,14 +33,14 @@ class YoutubePseudSTT(BaseSTT):
 
     @BaseSTT.recognize_decorator
     def recognize(self):
-        self._event_channel.publish(self.EVENT_STT_START)
+        self._event_publish(STTEvent.START)
         self._fetch_message()
         if self._fifo.is_empty():
-            self._event_channel.publish(self.EVENT_STT_RESULT, STTResult("", True))
+            self._event_publish(STTEvent.RESULT, STTResult("", True))
         else:
             message = self._fifo.get()
             # print(f"message={message.message}")
-            self._event_channel.publish(self.EVENT_STT_RESULT, STTResult(message.message, True))
+            self._event_publish(STTEvent.RESULT, STTResult(message.message, True))
 
 
 if __name__ == '__main__':

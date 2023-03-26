@@ -6,7 +6,7 @@ from six.moves import queue
 from susumu_toolbox.application.base_chat_sample import BaseChatSample
 from susumu_toolbox.infrastructure.chat.base_chat import ChatResult, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.stt.base_stt import STTResult
+from susumu_toolbox.infrastructure.stt.base_stt import STTResult, STTEvent
 from susumu_toolbox.infrastructure.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
@@ -27,11 +27,11 @@ class VoiceChatSample(BaseChatSample):
         speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
 
         self._stt = self.create_stt(speech_contexts=speech_contexts)
-        self._stt.subscribe(self._stt.EVENT_STT_START, self._on_stt_start)
-        self._stt.subscribe(self._stt.EVENT_STT_END, self._on_stt_end)
-        self._stt.subscribe(self._stt.EVENT_STT_RESULT, self._on_stt_result)
-        self._stt.subscribe(self._stt.EVENT_STT_DEBUG_MESSAGE, self._on_stt_debug_message)
-        self._stt.subscribe(self._stt.EVENT_STT_ERROR, self._on_stt_error)
+        self._stt.event_subscribe(STTEvent.START, self._on_stt_start)
+        self._stt.event_subscribe(STTEvent.END, self._on_stt_end)
+        self._stt.event_subscribe(STTEvent.RESULT, self._on_stt_result)
+        self._stt.event_subscribe(STTEvent.DEBUG_MESSAGE, self._on_stt_debug_message)
+        self._stt.event_subscribe(STTEvent.ERROR, self._on_stt_error)
 
         self._tts = self.create_tts()
 
