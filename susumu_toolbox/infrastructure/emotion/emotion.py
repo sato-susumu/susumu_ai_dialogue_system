@@ -8,3 +8,6 @@ class Emotion(Enum):
     SURPRISED = 'surprised'
     ANGRY = 'angry'
     RELAXED = 'relaxed'
+
+    # extended
+    NEUTRAL = 'neutral'
