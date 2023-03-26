@@ -1,7 +1,7 @@
 from susumu_toolbox.infrastructure.chat.base_chat import BaseChat
 from susumu_toolbox.infrastructure.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.infrastructure.chat.parlai_chat import ParlAIChat
-from susumu_toolbox.infrastructure.config import Config, OutputFunction
+from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
@@ -24,27 +24,27 @@ class FunctionFactory:
 
     @staticmethod
     def create_stt(config: Config, speech_contexts) -> BaseSTT:
-        input_function = config.get_common_input_function_key()
-        if input_function == Config.INPUT_FUNCTION_BASE:
+        input_function = config.get_common_input_function()
+        if input_function == InputFunction.BASE:
             return BaseSTT(config)
-        if input_function == Config.INPUT_FUNCTION_SR_GOOGLE:
+        if input_function == InputFunction.SR_GOOGLE:
             return SRGoogleSyncSTT(config)
-        if input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
+        if input_function == InputFunction.STDIN_PSEUD:
             return StdinPseudSTT(config)
-        if input_function == Config.INPUT_FUNCTION_GOOGLE_STREAMING:
+        if input_function == InputFunction.GOOGLE_STREAMING:
             return GoogleStreamingSTT(config, speech_contexts=speech_contexts)
-        if input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
+        if input_function == InputFunction.YOUTUBE_PSEUD:
             return YoutubePseudSTT(config)
-        if input_function == Config.INPUT_FUNCTION_WHISPER_API:
+        if input_function == InputFunction.WHISPER_API:
             return WhisperApiSTT(config)
         raise ValueError(f"Invalid input_function: {input_function}")
 
     @staticmethod
     def create_chat(config: Config, system: SystemSettings) -> BaseChat:
-        chat_function = config.get_common_chat_function_key()
-        if chat_function == Config.CHAT_FUNCTION_PARLAI:
+        chat_function = config.get_common_chat_function()
+        if chat_function == ChatFunction.PARLAI:
             return ParlAIChat(config)
-        if chat_function == Config.CHAT_FUNCTION_CHATGPT:
+        if chat_function == ChatFunction.CHATGPT:
             return ChatGPTChat(config, system)
         raise ValueError(f"Invalid chat_function: {chat_function}")
 

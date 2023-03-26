@@ -22,6 +22,47 @@ class OutputFunction(Enum):
         raise ValueError(f"{function_str} is not found in OutputFunction.")
 
 
+class InputFunction(Enum):
+    BASE = "base_stt"
+    SR_GOOGLE = "sr_google"
+    STDIN_PSEUD = "stdin_pseud"
+    GOOGLE_STREAMING = "google_streaming"
+    YOUTUBE_PSEUD = "youtube_pseud"
+    WHISPER_API = "whisper_api"
+
+    @classmethod
+    def str2function(cls, function_str: str) -> Any:
+        for function in InputFunction:
+            if function.value == function_str:
+                return function
+        raise ValueError(f"{function_str} is not found in InputFunction.")
+
+
+class BaseFunction(Enum):
+    VOICE_DIALOGUE = "voice_dialogue"
+    TEXT_DIALOGUE = "text_dialogue"
+    AI_TUBER = "ai_tuber"
+
+    @classmethod
+    def str2function(cls, function_str: str) -> Any:
+        for function in BaseFunction:
+            if function.value == function_str:
+                return function
+        raise ValueError(f"{function_str} is not found in BaseFunction.")
+
+
+class ChatFunction(Enum):
+    CHATGPT = "chatgpt"
+    PARLAI = "parlai"
+
+    @classmethod
+    def str2function(cls, function_str: str) -> Any:
+        for function in ChatFunction:
+            if function.value == function_str:
+                return function
+        raise ValueError(f"{function_str} is not found in ChatFunction.")
+
+
 # noinspection PyMethodMayBeStatic
 class Config:
     _CONFIG_FILE_NAME = "config.yaml"
@@ -51,38 +92,24 @@ class Config:
     KEY_GUI_APP_TITLE = "gui_app_title"
     KEY_GUI_THEME_NAME = "gui_theme_name"
 
-    BASE_FUNCTION_VOICE_DIALOGUE = "voice_dialogue"
-    BASE_FUNCTION_TEXT_DIALOGUE = "text_dialogue"
-    BASE_FUNCTION_AI_TUBER = "ai_tuber"
-
-    INPUT_FUNCTION_BASE = "base_stt"
-    INPUT_FUNCTION_SR_GOOGLE = "sr_google"
-    INPUT_FUNCTION_STDIN_PSEUD = "stdin_pseud"
-    INPUT_FUNCTION_GOOGLE_STREAMING = "google_streaming"
-    INPUT_FUNCTION_YOUTUBE_PSEUD = "youtube_pseud"
-    INPUT_FUNCTION_WHISPER_API = "whisper_api"
-
-    CHAT_FUNCTION_CHATGPT = "chatgpt"
-    CHAT_FUNCTION_PARLAI = "parlai"
-
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
 
     base_function_dict = {
-        BASE_FUNCTION_VOICE_DIALOGUE: "音声対話",
-        BASE_FUNCTION_AI_TUBER: "AITuber",
-        BASE_FUNCTION_TEXT_DIALOGUE: "文字対話",
+        BaseFunction.VOICE_DIALOGUE.value: "音声対話",
+        BaseFunction.AI_TUBER.value: "AITuber",
+        BaseFunction.TEXT_DIALOGUE.value: "文字対話",
     }
     input_function_dict = {
-        INPUT_FUNCTION_SR_GOOGLE: "サンプル音声認識",
-        INPUT_FUNCTION_STDIN_PSEUD: "文字入力",
-        INPUT_FUNCTION_GOOGLE_STREAMING: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
-        INPUT_FUNCTION_WHISPER_API: "Whisper API音声認識 (OpenAI API Key設定が必要)",
-        INPUT_FUNCTION_YOUTUBE_PSEUD: "YouTubeコメント取得 (追加設定が必要)",
+        InputFunction.SR_GOOGLE.value: "サンプル音声認識",
+        InputFunction.STDIN_PSEUD.value: "文字入力",
+        InputFunction.GOOGLE_STREAMING.value: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
+        InputFunction.WHISPER_API.value: "Whisper API音声認識 (OpenAI API Key設定が必要)",
+        InputFunction.YOUTUBE_PSEUD.value: "YouTubeコメント取得 (追加設定が必要)",
     }
     chat_function_dict = {
-        CHAT_FUNCTION_CHATGPT: "ChatGPT API (OpenAI API Key設定が必要)",
-        CHAT_FUNCTION_PARLAI: "ParlAIクライント (追加設定が必要)",
+        ChatFunction.CHATGPT.value: "ChatGPT API (OpenAI API Key設定が必要)",
+        ChatFunction.PARLAI.value: "ParlAIクライント (追加設定が必要)",
     }
     output_function_dict = {
         OutputFunction.NONE.value: "なし",
@@ -337,34 +364,37 @@ class Config:
         return copy.deepcopy(self)
 
     def get_common_base_function_name(self) -> str:
-        key = self.get_common_base_function_key()
-        return self.base_function_dict[key]
+        key = self.get_common_base_function()
+        return self.base_function_dict[key.value]
 
-    def get_common_base_function_key(self) -> str:
-        return self._config["Common"][self.KEY_COMMON_BASE_FUNCTION]
+    def get_common_base_function(self) -> BaseFunction:
+        value = self._config["Common"][self.KEY_COMMON_BASE_FUNCTION]
+        return BaseFunction.str2function(value)
 
-    def set_common_base_function_key(self, value: str) -> None:
-        self._config["Common"][self.KEY_COMMON_BASE_FUNCTION] = value
+    def set_common_base_function(self, function: BaseFunction) -> None:
+        self._config["Common"][self.KEY_COMMON_BASE_FUNCTION] = function.value
 
     def get_common_input_function_name(self) -> str:
-        key = self.get_common_input_function_key()
-        return self.input_function_dict[key]
+        key = self.get_common_input_function()
+        return self.input_function_dict[key.value]
 
-    def get_common_input_function_key(self) -> str:
-        return self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION]
+    def get_common_input_function(self) -> InputFunction:
+        value = self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION]
+        return InputFunction.str2function(value)
 
-    def set_common_input_function_key(self, value: str) -> None:
-        self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION] = value
+    def set_common_input_function(self, function: InputFunction) -> None:
+        self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION] = function.value
 
     def get_common_chat_function_name(self) -> str:
-        key = self.get_common_chat_function_key()
-        return self.chat_function_dict[key]
+        key = self.get_common_chat_function()
+        return self.chat_function_dict[key.value]
 
-    def get_common_chat_function_key(self) -> str:
-        return self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION]
+    def get_common_chat_function(self) -> ChatFunction:
+        value = self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION]
+        return ChatFunction.str2function(value)
 
-    def set_common_chat_function_key(self, value: str) -> None:
-        self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = value
+    def set_common_chat_function(self, function: ChatFunction) -> None:
+        self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = function.value
 
     def get_common_output_function_name(self) -> str:
         function = self.get_common_output_function()
