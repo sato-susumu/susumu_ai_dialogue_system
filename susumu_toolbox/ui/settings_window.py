@@ -44,6 +44,11 @@ class SettingsWindow(BaseWindow):
                 key=self._config.KEY_COMMON_OBS_ENABLED,
                 default=self._config.get_common_obs_enabled(),
             )],
+            [Sg.Checkbox(
+                text="感情解析とVMagicMirror連携 (追加設定が必要)",
+                key=self._config.KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED,
+                default=self._config.get_common_v_magic_mirror_connection_enabled(),
+            )],
         ]
 
         common_tab_layout = [[
@@ -264,12 +269,23 @@ class SettingsWindow(BaseWindow):
              ],
             [Sg.Button("テスト", size=(15, 1), key=GuiEvents.OBS_TEST)],
         ]
+
+        emotion_items = [
+            [Sg.Text('・感情解析のモデル入手と配置が必要です。')],
+        ]
+
+        v_magic_mirror_items = [
+            [Sg.Text('・VMagicMirrorの起動と事前の設定が必要です。')],
+        ]
+
         status_items = [
             [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
         ]
 
         other_tab_layout = [
             [Sg.Frame("OBS", obs_items, expand_x=True)],
+            [Sg.Frame("感情解析", emotion_items, expand_x=True)],
+            [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
             [Sg.Frame("APIステータス", status_items, expand_x=True)],
         ]
 
@@ -423,6 +439,8 @@ class SettingsWindow(BaseWindow):
          for key in self._config.output_function_dict.keys() if values[key]]
 
         target_config.set_common_obs_enabled(values[self._config.KEY_COMMON_OBS_ENABLED])
+        target_config.set_common_v_magic_mirror_connection_enabled(
+            values[self._config.KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED])
 
         return target_config
 

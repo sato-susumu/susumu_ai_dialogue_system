@@ -85,6 +85,7 @@ class Config:
     KEY_COMMON_INPUT_FUNCTION = "common_input_function"
     KEY_COMMON_OUTPUT_FUNCTION = "common_output_function"
     KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
+    KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED = "common_v_magic_mirror_connection_enabled"
     KEY_PARLAI_HOST = "parlai_host"
     KEY_PARLAI_PORT_NO = "parlai_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
@@ -131,6 +132,7 @@ class Config:
               common_chat_function: "chatgpt"
               common_output_function: "pyttsx3"
               common_obs_enabled: false
+              common_v_magic_mirror_connection_enabled: false
             DeepL:
               deepl_auth_key: ""
             OpenAI:
@@ -412,6 +414,12 @@ class Config:
 
     def set_common_obs_enabled(self, value: bool) -> None:
         self._config["Common"][self.KEY_COMMON_OBS_ENABLED] = value
+
+    def get_common_v_magic_mirror_connection_enabled(self) -> bool:
+        return self._config["Common"][self.KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED]
+
+    def set_common_v_magic_mirror_connection_enabled(self, value: bool) -> None:
+        self._config["Common"][self.KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED] = value
 
     def get_gui_app_title(self) -> str:
         return self._config["GUI"][self.KEY_GUI_APP_TITLE]

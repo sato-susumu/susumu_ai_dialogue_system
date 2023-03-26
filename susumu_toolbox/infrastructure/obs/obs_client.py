@@ -2,6 +2,7 @@ from queue import Empty
 
 from obswebsocket import obsws, requests
 from six.moves import queue
+from websocket import WebSocketConnectionClosedException
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
@@ -37,6 +38,7 @@ class OBSClient(BaseOBSClient):
 
     def _on_disconnect(self, ws_app) -> None:
         print("on_disconnect({})".format(ws_app))
+        self._ws = None
 
     def connect(self) -> None:
         host = self._config.get_obs_host()
@@ -56,8 +58,17 @@ class OBSClient(BaseOBSClient):
 
     def disconnect(self) -> None:
         self._ws.disconnect()
+        self._ws = None
 
     def set_text(self, scene_name: str, source: str, text: str) -> None:
+        if self._ws is None:
+            return
         print("OBS: set_text(scene_name={}, source={}, text={})".format(scene_name, source, text))
-        self._ws.call(
-            requests.SetTextGDIPlusProperties(scene_name=scene_name, source=source, text=text))
+        try:
+            self._ws.call(
+                requests.SetTextGDIPlusProperties(scene_name=scene_name, source=source, text=text))
+        except WebSocketConnectionClosedException:
+            # Ignore exceptions after disconnect.
+            if self._ws is None:
+                return
+            raise
