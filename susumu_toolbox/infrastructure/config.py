@@ -135,6 +135,7 @@ class Config:
         # 設定ファイルのパス。初回保存前だとファイルが存在しないこともあるので注意
         self._current_config_path = None
         self._ai_config_list = AiConfigList(self)
+        self._wrime_model_dir_path = "./model_data/wrime_model.pth"
 
     def save(self) -> None:
         assert self._current_config_path is not None
@@ -376,3 +377,12 @@ class Config:
 
     def get_gui_theme_name(self) -> str:
         return self._config["GUI"][self.KEY_GUI_THEME_NAME]
+
+    def get_wrime_model_dir_path(self) -> str:
+        return self._wrime_model_dir_path
+
+    def set_wrime_model_dir_path(self, value: str) -> None:
+        self._wrime_model_dir_path = value
+
+    def exists_wrime_model_dir(self) -> bool:
+        return os.path.exists(self._wrime_model_dir_path)
