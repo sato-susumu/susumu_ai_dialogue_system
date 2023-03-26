@@ -1,5 +1,5 @@
 from susumu_toolbox.application.common.function_factory import FunctionFactory
-from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.config import Config, InputFunction
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult, STTEvent
 
 
@@ -12,16 +12,16 @@ class STTTest:
 
     def run(self) -> None:
         speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
-        input_function = self._config.get_common_input_function_key()
+        input_function = self._config.get_common_input_function()
         self._stt = FunctionFactory.create_stt(self._config, speech_contexts)
 
         # TODO: (低)start_messageは別に定義する？
-        if input_function in (Config.INPUT_FUNCTION_GOOGLE_STREAMING, Config.INPUT_FUNCTION_SR_GOOGLE,
-                              Config.INPUT_FUNCTION_WHISPER_API):
+        if input_function in (InputFunction.GOOGLE_STREAMING, InputFunction.SR_GOOGLE,
+                              InputFunction.WHISPER_API):
             self._start_message = "マイクに向かって何か話しかけてください"
-        elif input_function == Config.INPUT_FUNCTION_STDIN_PSEUD:
+        elif input_function == InputFunction.STDIN_PSEUD:
             self._start_message = "このウィンドウで何か入力して、リターンキーを押してください"
-        elif input_function == Config.INPUT_FUNCTION_YOUTUBE_PSEUD:
+        elif input_function == InputFunction.YOUTUBE_PSEUD:
             self._start_message = "YouTubeライブチャットのコメント入力待ち"
         else:
             raise ValueError(f"Invalid input_function: {input_function}")

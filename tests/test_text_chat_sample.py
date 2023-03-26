@@ -3,14 +3,14 @@ import time
 
 from susumu_toolbox.application.text_chat_sample import TextChatSample
 from susumu_toolbox.infrastructure.chat.base_chat import ChatResult
-from susumu_toolbox.infrastructure.config import Config, OutputFunction
+from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 def start_sample():
     _config = Config()
-    _config.set_common_input_function_key(_config.INPUT_FUNCTION_BASE)
+    _config.set_common_input_function(InputFunction.BASE)
     _config.set_common_output_function(OutputFunction.BASE)
     _config.set_common_obs_enabled(False)
     _system_settings = SystemSettings(_config)

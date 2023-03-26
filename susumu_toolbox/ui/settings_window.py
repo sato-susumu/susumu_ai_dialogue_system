@@ -3,7 +3,7 @@ import PySimpleGUI as Sg
 from susumu_toolbox.application.common.obs_test import OBSTest
 from susumu_toolbox.application.common.stt_test import STTTest
 from susumu_toolbox.application.common.tts_test import TTSTest
-from susumu_toolbox.infrastructure.config import Config, OutputFunction
+from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction, BaseFunction, ChatFunction
 from susumu_toolbox.ui.base_window import BaseWindow
 from susumu_toolbox.ui.gui_events import GuiEvents
 
@@ -21,15 +21,16 @@ class SettingsWindow(BaseWindow):
 
     def display(self) -> bool:
         base_function_items = [[
-            Sg.Radio(key=key, text=text, group_id='base', default=self._config.get_common_base_function_key() == key)
+            Sg.Radio(key=key, text=text, group_id='base', default=self._config.get_common_base_function().value == key)
         ] for key, text in self._config.base_function_dict.items()]
 
         input_function_items = [[
-            Sg.Radio(key=key, text=text, group_id='input', default=self._config.get_common_input_function_key() == key)
+            Sg.Radio(key=key, text=text, group_id='input',
+                     default=self._config.get_common_input_function().value == key)
         ] for key, text in self._config.input_function_dict.items()]
 
         chat_function_items = [[
-            Sg.Radio(key=key, text=text, group_id='chat', default=self._config.get_common_chat_function_key() == key)
+            Sg.Radio(key=key, text=text, group_id='chat', default=self._config.get_common_chat_function().value == key)
         ] for key, text in self._config.chat_function_dict.items()]
 
         output_function_items = [[
@@ -409,11 +410,14 @@ class SettingsWindow(BaseWindow):
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
 
         # 共通設定
-        [target_config.set_common_base_function_key(key) for key in self._config.base_function_dict.keys() if
+        [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in
+         self._config.base_function_dict.keys() if
          values[key]]
-        [target_config.set_common_input_function_key(key) for key in self._config.input_function_dict.keys() if
+        [target_config.set_common_input_function(InputFunction.str2function(key)) for key in
+         self._config.input_function_dict.keys() if
          values[key]]
-        [target_config.set_common_chat_function_key(key) for key in self._config.chat_function_dict.keys() if
+        [target_config.set_common_chat_function(ChatFunction.str2function(key)) for key in
+         self._config.chat_function_dict.keys() if
          values[key]]
         [target_config.set_common_output_function(OutputFunction.str2function(key))
          for key in self._config.output_function_dict.keys() if values[key]]
@@ -427,15 +431,15 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
-            config.set_common_input_function_key(config.INPUT_FUNCTION_YOUTUBE_PSEUD)
+            config.set_common_input_function(InputFunction.YOUTUBE_PSEUD)
         elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
-            config.set_common_input_function_key(config.INPUT_FUNCTION_GOOGLE_STREAMING)
+            config.set_common_input_function(InputFunction.GOOGLE_STREAMING)
         elif event == GuiEvents.SR_GOOGLE_STT_TEST:
-            config.set_common_input_function_key(config.INPUT_FUNCTION_SR_GOOGLE)
+            config.set_common_input_function(InputFunction.SR_GOOGLE)
         elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
-            config.set_common_input_function_key(config.INPUT_FUNCTION_STDIN_PSEUD)
+            config.set_common_input_function(InputFunction.STDIN_PSEUD)
         elif event == GuiEvents.WHISPER_API_STT_TEST:
-            config.set_common_input_function_key(config.INPUT_FUNCTION_WHISPER_API)
+            config.set_common_input_function(InputFunction.WHISPER_API)
         else:
             raise Exception("想定外のイベントです")
 
