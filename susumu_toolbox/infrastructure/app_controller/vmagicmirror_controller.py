@@ -46,6 +46,8 @@ class VMagicMirrorController(BaseAppController):
         self._mido_output = None
 
     def set_emotion(self, emotion: Emotion):
+        if emotion == Emotion.NEUTRAL:
+            return
         note = self._mapping[emotion]
         msg = mido.Message('note_on', note=note, velocity=127, time=0)
         print("Sending message: {}".format(msg))
