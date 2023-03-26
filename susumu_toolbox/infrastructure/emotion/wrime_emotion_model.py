@@ -19,8 +19,7 @@ class WrimeEmotionModel(BaseEmotionModel):
         num_labels = len(self._emotion_names)
         model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=num_labels)
 
-        # TODO: パス管理を一元化する
-        self._model = model.from_pretrained("./model_data/wrime_model.pth")
+        self._model = model.from_pretrained(self._config.get_wrime_model_dir_path())
         # 推論モード
         self._model.eval()
 
@@ -50,32 +49,35 @@ class WrimeEmotionModel(BaseEmotionModel):
         raw_emotion_dict = {n: p for n, p in zip(self._emotion_names, probability)}
         return raw_emotion_dict
 
-#
-# if __name__ == '__main__':
-#     _config = Config()
-#     _model = WrimeEmotionModel(_config)
-#
-#
-#     def func(text: str):
-#         out_dict, raw_dict = _model.get_emotion(text)
-#         max_key = max(out_dict, key=out_dict.get)
-#         max_value = out_dict[max_key]
-#         print(text)
-#         print(out_dict)
-#         print(raw_dict)
-#         print(max_key, max_value)
-#         print("")
-#
-#
-#     func("大好きな人が遠くへ行ってしまった")
-#     func("誰がこんなことをしたんだ！？もう許せない。")
-#     func("いい加減にしてくれ！もう限界だ！")
-#     func("何度も言ってるのに、何も聞いてくれない。もう腹が立つ！")
-#     func("喧嘩したけど仲直りできた！")
-#     func("友達と喧嘩した。泣きそう。")
-#     func("我慢せずに食べまくる。倍返しだ。")
-#     func("好きなアーティストのコンサートだったのに。。。")
-#     func("私が立ち上がった時、世界は回っていると思った。後で気がついたら、私が回っていたのだとわかった。")
-#     func('もう怒った!')
-#     func('ああ、もうやだ')
-#     func('頼りになりますね！')
+
+if __name__ == '__main__':
+    _config = Config()
+    _config.set_wrime_model_dir_path("../../../model_data/wrime_model.pth")
+    if not _config.exists_wrime_model_dir():
+        raise FileNotFoundError("WRIME model not found.")
+    _model = WrimeEmotionModel(_config)
+
+
+    def func(text: str):
+        out_dict, raw_dict = _model.get_emotion(text)
+        max_key = max(out_dict, key=out_dict.get)
+        max_value = out_dict[max_key]
+        print(text)
+        print(out_dict)
+        print(raw_dict)
+        print(max_key, max_value)
+        print("")
+
+
+    func("大好きな人が遠くへ行ってしまった")
+    func("誰がこんなことをしたんだ！？もう許せない。")
+    func("いい加減にしてくれ！もう限界だ！")
+    func("何度も言ってるのに、何も聞いてくれない。もう腹が立つ！")
+    func("喧嘩したけど仲直りできた！")
+    func("友達と喧嘩した。泣きそう。")
+    func("我慢せずに食べまくる。倍返しだ。")
+    func("好きなアーティストのコンサートだったのに。。。")
+    func("私が立ち上がった時、世界は回っていると思った。後で気がついたら、私が回っていたのだとわかった。")
+    func('もう怒った!')
+    func('ああ、もうやだ')
+    func('頼りになりますね！')
