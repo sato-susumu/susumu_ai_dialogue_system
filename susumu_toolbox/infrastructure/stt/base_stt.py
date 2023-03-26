@@ -1,3 +1,5 @@
+from enum import Enum
+
 import pyaudio
 from event_channel.threaded_event_channel import ThreadedEventChannel
 from six.moves import queue
@@ -88,29 +90,34 @@ class MicrophoneStream(object):
             yield b"".join(data)
 
 
-# noinspection PyMethodMayBeStatic
-class BaseSTT:
+class STTEvent(Enum):
     # 音声認識(単発)の開始イベント
-    EVENT_STT_START = "stt_start"
+    START = "stt_start"
     # 音声認識(単発)の終了イベント
-    EVENT_STT_END = "stt_end"
+    END = "stt_end"
     # 音声認識(単発)の結果を知らせるイベント
     #   次のケースがある
     #     音声認識の途中経過
     #     音声認識の最終結果
     #     タイムアウトによる音声認識の最終結果
-    EVENT_STT_RESULT = "stt_result"
+    RESULT = "stt_result"
     # 音声認識(単発)のデバッグメッセージイベント
-    EVENT_STT_DEBUG_MESSAGE = "stt_debug_message"
+    DEBUG_MESSAGE = "stt_debug_message"
     # 音声認識(単発)のエラーイベント
-    EVENT_STT_ERROR = "stt_error"
+    ERROR = "stt_error"
 
+
+# noinspection PyMethodMayBeStatic
+class BaseSTT:
     def __init__(self, config: Config):
         self._config = config
-        self._event_channel = ThreadedEventChannel(blocking=False)
+        self.__event_channel = ThreadedEventChannel(blocking=False)
 
-    def subscribe(self, event_name: str, func):
-        self._event_channel.subscribe(event_name, func)
+    def event_subscribe(self, event_name: STTEvent, func):
+        self.__event_channel.subscribe(event_name.value, func)
+
+    def _event_publish(self, event: STTEvent, *args, **kwargs):
+        self.__event_channel.publish(event.value, *args, **kwargs)
 
     def recognize(self):
         pass
@@ -121,11 +128,11 @@ class BaseSTT:
             try:
                 result = func(self, *args, **kwargs)
             except Exception as e:
-                self._event_channel.publish(self.EVENT_STT_RESULT, STTResult("", True))
-                self._event_channel.publish(self.EVENT_STT_ERROR, e)
+                self._event_publish(STTEvent.RESULT, STTResult("", True))
+                self._event_publish(STTEvent.ERROR, e)
                 raise
             finally:
-                self._event_channel.publish(self.EVENT_STT_END)
+                self._event_publish(STTEvent.END)
 
             return result
 
