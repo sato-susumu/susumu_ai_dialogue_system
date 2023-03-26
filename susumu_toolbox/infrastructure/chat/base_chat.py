@@ -19,25 +19,30 @@ class ChatState(Enum):
     CLOSING = 3
 
 
+class ChatEvent(Enum):
+    # チャットモジュールが利用できる状態になったことを知らせるイベント
+    OPEN = "chat_open"
+    # チャットモジュールが利用できない状態になったことを知らせるイベント
+    CLOSE = "chat_close"
+    # チャットモジュールからのメッセージイベント
+    MESSAGE = "chat_message"
+    # チャットモジュールからのエラーイベント
+    ERROR = "chat_error"
+
+
 class BaseChat:
     lock = threading.Lock()
-
-    # チャットモジュールが利用できる状態になったことを知らせるイベント
-    EVENT_CHAT_OPEN = "chat_open"
-    # チャットモジュールが利用できない状態になったことを知らせるイベント
-    EVENT_CHAT_CLOSE = "chat_close"
-    # チャットモジュールからのメッセージイベント
-    EVENT_CHAT_MESSAGE = "chat_message"
-    # チャットモジュールからのエラーイベント
-    EVENT_CHAT_ERROR = "chat_error"
 
     def __init__(self, config: Config):
         self._config = config
         self.state: ChatState = ChatState.INIT
         self._event_channel = ThreadedEventChannel(blocking=False)
 
-    def subscribe(self, event_name: str, func) -> None:
-        self._event_channel.subscribe(event_name, func)
+    def event_subscribe(self, event_name: ChatEvent, func) -> None:
+        self._event_channel.subscribe(event_name.value, func)
+
+    def _event_publish(self, event: ChatEvent, *args, **kwargs):
+        self._event_channel.publish(event.value, *args, **kwargs)
 
     def _set_state(self, new_state: ChatState) -> None:
         with self.lock:
@@ -61,10 +66,10 @@ class BaseChat:
         # BaseChatには接続先サーバーがないため、この時点で接続完了に関する処理を行う
         self._set_state(ChatState.CONNECTING)
         self._set_state(ChatState.CONNECTED)
-        self._event_channel.publish(self.EVENT_CHAT_OPEN)
+        self._event_publish(ChatEvent.OPEN)
         # 接続先サーバーがある場合は、接続時にサーバーからメッセージを受け取り、そのメッセージを通知する
         # BaseChatには接続先サーバーがないため、空メッセージを通知する
-        self._event_channel.publish(self.EVENT_CHAT_MESSAGE, ChatResult("", []))
+        self._event_publish(ChatEvent.MESSAGE, ChatResult("", []))
 
     def disconnect(self) -> None:
         if not self.is_connected():
@@ -73,7 +78,7 @@ class BaseChat:
         self._set_state(ChatState.CLOSING)
         self._set_state(ChatState.INIT)
         # BaseChatには接続先サーバーがないため、ダミーの通知を行う
-        self._event_channel.publish(self.EVENT_CHAT_CLOSE, None, None)
+        self._event_publish(ChatEvent.CLOSE, None, None)
 
     def send_message(self, text) -> None:
         pass

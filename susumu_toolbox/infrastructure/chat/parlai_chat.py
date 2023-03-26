@@ -6,7 +6,7 @@ from typing import Optional
 
 import websocket
 
-from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatState
+from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatState, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
 
 
@@ -38,20 +38,20 @@ class ParlAIChat(BaseChat):
         #            ' or [RESET] to reset the dialogue history.':
         #     incoming_message['text'] = "hello"
         chat_result = ChatResult(text, incoming_message.get('quick_replies'))
-        self._event_channel.publish(self.EVENT_CHAT_MESSAGE, chat_result)
+        self._event_publish(ChatEvent.MESSAGE, chat_result)
 
     def _on_error(self, ws_app, error: Exception) -> None:
-        self._event_channel.publish(self.EVENT_CHAT_ERROR, error)
+        self._event_publish(ChatEvent.ERROR, error)
 
     def _on_open(self, ws_app) -> None:
         self._set_state(ChatState.CONNECTED)
-        self._event_channel.publish(self.EVENT_CHAT_OPEN)
+        self._event_publish(ChatEvent.OPEN)
         # オープン時に適当に送信
         self._send_message_to_server("")
 
     def _on_close(self, ws_app, status_code: Optional[int], close_msg: Optional[str]) -> None:
         self._set_state(ChatState.INIT)
-        self._event_channel.publish(self.EVENT_CHAT_CLOSE, status_code, close_msg)
+        self._event_publish(ChatEvent.CLOSE, status_code, close_msg)
 
     def _send_message_to_server(self, text: str) -> None:
         data = {'id': self._uuid, 'text': text}

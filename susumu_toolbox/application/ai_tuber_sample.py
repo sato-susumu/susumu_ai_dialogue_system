@@ -4,7 +4,7 @@ import traceback
 from six.moves import queue
 
 from susumu_toolbox.application.base_chat_sample import BaseChatSample
-from susumu_toolbox.infrastructure.chat.base_chat import ChatResult
+from susumu_toolbox.infrastructure.chat.base_chat import ChatResult, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
@@ -26,10 +26,10 @@ class AiTuberSample(BaseChatSample):
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
         self._chat = self.create_chat()
-        self._chat.subscribe(self._chat.EVENT_CHAT_OPEN, self._on_chat_open)
-        self._chat.subscribe(self._chat.EVENT_CHAT_CLOSE, self._on_chat_close)
-        self._chat.subscribe(self._chat.EVENT_CHAT_MESSAGE, self._on_chat_message)
-        self._chat.subscribe(self._chat.EVENT_CHAT_ERROR, self._on_chat_error)
+        self._chat.event_subscribe(ChatEvent.OPEN, self._on_chat_open)
+        self._chat.event_subscribe(ChatEvent.CLOSE, self._on_chat_close)
+        self._chat.event_subscribe(ChatEvent.MESSAGE, self._on_chat_message)
+        self._chat.event_subscribe(ChatEvent.ERROR, self._on_chat_error)
 
         speech_contexts = []
 
