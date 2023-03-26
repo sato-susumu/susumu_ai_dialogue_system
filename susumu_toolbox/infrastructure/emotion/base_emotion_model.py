@@ -12,5 +12,5 @@ class BaseEmotionModel:
     def __init__(self, config: Config):
         self._config = config
 
-    def get_max_emotion(self, text: str) -> (dict, dict):
-        return {Emotion.HAPPY.value, 0.0}, {Emotion.HAPPY.value.HAPPY, 0.0}
+    def get_max_emotion(self, text: str) -> (Emotion, float, dict):
+        return Emotion.HAPPY, 0.0, {Emotion.HAPPY.value: 0.0}

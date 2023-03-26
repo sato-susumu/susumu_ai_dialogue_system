@@ -24,17 +24,22 @@ class WrimeEmotionModel(BaseEmotionModel):
         # 推論モード
         self._model.eval()
 
+    def get_max_emotion(self, text: str) -> (Emotion, float, dict):
+        result_dict, raw_dict = self.get_emotion(text)
+        max_emotion = max(result_dict, key=result_dict.get)
+        return max_emotion, result_dict[max_emotion], result_dict
+
     def get_emotion(self, text: str) -> (dict, dict):
         result_dict = self.get_raw_emotion(text)
         return self._convert_emotion_dict(result_dict), result_dict
 
     def _convert_emotion_dict(self, in_dict: dict):
         out_dict = {
-            Emotion.HAPPY.value: max(in_dict.get('Joy'), in_dict.get('Trust')),
-            Emotion.SAD.value: max(in_dict.get('Sadness'), in_dict.get('Fear')),
-            Emotion.SURPRISED.value: in_dict.get('Surprise'),
-            Emotion.ANGRY.value: in_dict.get('Anger'),
-            Emotion.RELAXED.value: 0.0,
+            Emotion.HAPPY: max(in_dict.get('Joy'), in_dict.get('Trust')),
+            Emotion.SAD: max(in_dict.get('Sadness'), in_dict.get('Fear')),
+            Emotion.SURPRISED: in_dict.get('Surprise'),
+            Emotion.ANGRY: in_dict.get('Anger'),
+            Emotion.RELAXED: 0.0,
         }
         return out_dict
 

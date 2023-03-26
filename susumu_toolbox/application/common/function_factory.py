@@ -1,7 +1,12 @@
+from susumu_toolbox.infrastructure.app_controller.dummy_app_contorller import DummyAppController
+from susumu_toolbox.infrastructure.app_controller.threaded_app_controller import ThreadedAppController
+from susumu_toolbox.infrastructure.app_controller.vmagicmirror_controller import VMagicMirrorController
 from susumu_toolbox.infrastructure.chat.base_chat import BaseChat
 from susumu_toolbox.infrastructure.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.infrastructure.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
+from susumu_toolbox.infrastructure.emotion.dummy_emotion_model import DummyEmotionModel
+from susumu_toolbox.infrastructure.emotion.wrime_emotion_model import WrimeEmotionModel
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
@@ -71,3 +76,18 @@ class FunctionFactory:
         if obs_enabled:
             return OBSClient(config)
         return DummyOBSClient(config)
+
+    @staticmethod
+    def create_emotion_model(config: Config):
+        value = config.get_common_v_magic_mirror_connection_enabled()
+        if value:
+            return WrimeEmotionModel(config)
+        return DummyEmotionModel(config)
+
+    @staticmethod
+    def create_app_controller(config: Config):
+        value = config.get_common_v_magic_mirror_connection_enabled()
+        if value:
+            source_controller = VMagicMirrorController(config)
+            return ThreadedAppController(config, source_controller)
+        return DummyAppController(config)

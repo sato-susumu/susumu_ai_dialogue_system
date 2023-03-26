@@ -37,6 +37,8 @@ class MainWindow(BaseWindow):
             ['チャットエンジン', self._config.get_common_chat_function_name()],
             ['出力', self._config.get_common_output_function_name()],
             ['OBS出力', "有効" if self._config.get_common_obs_enabled() else "無効"],
+            ['感情解析とVMagicMirror連携',
+             "有効" if self._config.get_common_v_magic_mirror_connection_enabled() else "無効"],
         ]
         return common_config_table
 

@@ -22,7 +22,8 @@ class VMagicMirrorController(BaseAppController):
     def _get_loop_midi_output_port_mame(self) -> str:
         # noinspection PyUnresolvedReferences
         port_name_list = mido.get_output_names()
-        print(port_name_list)
+        # TODO: デバッグログで出力する
+        # print(port_name_list)
 
         # "loopMIDI"を含む最初の要素を取得する
         loop_midi_port = next((s for s in port_name_list if 'loopMIDI' in s), None)
@@ -50,7 +51,8 @@ class VMagicMirrorController(BaseAppController):
             return
         note = self._mapping[emotion]
         msg = mido.Message('note_on', note=note, velocity=127, time=0)
-        print("Sending message: {}".format(msg))
+        # TODO: デバッグログで出力する
+        # print("Sending message: {}".format(msg))
         self._mido_output.send(msg)
 
 
