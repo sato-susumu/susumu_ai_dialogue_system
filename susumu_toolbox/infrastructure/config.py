@@ -1,8 +1,25 @@
 import copy
 import os
+from enum import Enum
 from typing import List, Any
 
 from omegaconf import OmegaConf
+
+
+class OutputFunction(Enum):
+    BASE = "base_tts"
+    NONE = "none"
+    PYTTSX3 = "pyttsx3"
+    VOICEVOX = "voicevox"
+    GOOGLE_CLOUD = "google_cloud"
+    GTTS = "gtts"
+
+    @classmethod
+    def str2function(cls, function_str: str) -> Any:
+        for function in OutputFunction:
+            if function.value == function_str:
+                return function
+        raise ValueError(f"{function_str} is not found in OutputFunction.")
 
 
 # noinspection PyMethodMayBeStatic
@@ -48,13 +65,6 @@ class Config:
     CHAT_FUNCTION_CHATGPT = "chatgpt"
     CHAT_FUNCTION_PARLAI = "parlai"
 
-    OUTPUT_FUNCTION_BASE = "base_tts"
-    OUTPUT_FUNCTION_NONE = "none"
-    OUTPUT_FUNCTION_PYTTSX3 = "pyttsx3"
-    OUTPUT_FUNCTION_VOICEVOX = "voicevox"
-    OUTPUT_FUNCTION_GOOGLE_CLOUD = "google_cloud"
-    OUTPUT_FUNCTION_GTTS = "gtts"
-
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
 
@@ -75,11 +85,11 @@ class Config:
         CHAT_FUNCTION_PARLAI: "ParlAIクライント (追加設定が必要)",
     }
     output_function_dict = {
-        OUTPUT_FUNCTION_NONE: "なし",
-        OUTPUT_FUNCTION_PYTTSX3: "サンプル音声合成 pyttsx3",
-        OUTPUT_FUNCTION_VOICEVOX: "VOICEVOX (VOICEVOXアプリ起動が必要)",
-        OUTPUT_FUNCTION_GOOGLE_CLOUD: "Google Text-to-Speech (追加設定が必要)",
-        OUTPUT_FUNCTION_GTTS: "サンプル音声合成 gTTS",
+        OutputFunction.NONE.value: "なし",
+        OutputFunction.PYTTSX3.value: "サンプル音声合成 pyttsx3",
+        OutputFunction.VOICEVOX.value: "VOICEVOX (VOICEVOXアプリ起動が必要)",
+        OutputFunction.GOOGLE_CLOUD.value: "Google Text-to-Speech (追加設定が必要)",
+        OutputFunction.GTTS.value: "サンプル音声合成 gTTS",
     }
 
     def __init__(self):
@@ -357,14 +367,15 @@ class Config:
         self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = value
 
     def get_common_output_function_name(self) -> str:
-        key = self.get_common_output_function_key()
-        return self.output_function_dict[key]
+        function = self.get_common_output_function()
+        return self.output_function_dict[function.value]
 
-    def get_common_output_function_key(self) -> str:
-        return self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION]
+    def get_common_output_function(self) -> OutputFunction:
+        value = self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION]
+        return OutputFunction.str2function(value)
 
-    def set_common_output_function_key(self, value: str) -> None:
-        self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION] = value
+    def set_common_output_function(self, function: OutputFunction) -> None:
+        self._config["Common"][self.KEY_COMMON_OUTPUT_FUNCTION] = function.value
 
     def get_common_obs_enabled(self) -> bool:
         return self._config["Common"][self.KEY_COMMON_OBS_ENABLED]

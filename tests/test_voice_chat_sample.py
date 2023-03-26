@@ -2,7 +2,7 @@ import threading
 import time
 
 from susumu_toolbox.application.voice_chat_sample import VoiceChatSample
-from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.config import Config, OutputFunction
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 
@@ -10,7 +10,7 @@ from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 def start_sample():
     _config = Config()
     _config.set_common_input_function_key(_config.INPUT_FUNCTION_BASE)
-    _config.set_common_output_function_key(_config.OUTPUT_FUNCTION_BASE)
+    _config.set_common_output_function(OutputFunction.BASE)
     _config.set_common_obs_enabled(False)
     _system_settings = SystemSettings(_config)
     voice_chat_sample = VoiceChatSample(_config, _system_settings)

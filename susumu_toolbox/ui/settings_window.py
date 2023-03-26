@@ -3,7 +3,7 @@ import PySimpleGUI as Sg
 from susumu_toolbox.application.common.obs_test import OBSTest
 from susumu_toolbox.application.common.stt_test import STTTest
 from susumu_toolbox.application.common.tts_test import TTSTest
-from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.config import Config, OutputFunction
 from susumu_toolbox.ui.base_window import BaseWindow
 from susumu_toolbox.ui.gui_events import GuiEvents
 
@@ -34,7 +34,7 @@ class SettingsWindow(BaseWindow):
 
         output_function_items = [[
             Sg.Radio(key=key, text=text, group_id='output',
-                     default=self._config.get_common_output_function_key() == key)
+                     default=self._config.get_common_output_function().value == key)
         ] for key, text in self._config.output_function_dict.items()]
 
         other_function_items = [
@@ -360,13 +360,13 @@ class SettingsWindow(BaseWindow):
         config = self._update_config(values, config)
 
         if event == GuiEvents.VOICEVOX_TEST:
-            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_VOICEVOX)
+            config.set_common_output_function(OutputFunction.VOICEVOX)
         elif event == GuiEvents.GTTS_TEST:
-            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_GTTS)
+            config.set_common_output_function(OutputFunction.GTTS)
         elif event == GuiEvents.GOOGLE_CLOUD_TTS_TEST:
-            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_GOOGLE_CLOUD)
+            config.set_common_output_function(OutputFunction.GOOGLE_CLOUD)
         elif event == GuiEvents.PYTTSX3_TEST:
-            config.set_common_output_function_key(Config.OUTPUT_FUNCTION_PYTTSX3)
+            config.set_common_output_function(OutputFunction.PYTTSX3)
         else:
             raise Exception("想定外のイベントです")
 
@@ -415,7 +415,7 @@ class SettingsWindow(BaseWindow):
          values[key]]
         [target_config.set_common_chat_function_key(key) for key in self._config.chat_function_dict.keys() if
          values[key]]
-        [target_config.set_common_output_function_key(key)
+        [target_config.set_common_output_function(OutputFunction.str2function(key))
          for key in self._config.output_function_dict.keys() if values[key]]
 
         target_config.set_common_obs_enabled(values[self._config.KEY_COMMON_OBS_ENABLED])

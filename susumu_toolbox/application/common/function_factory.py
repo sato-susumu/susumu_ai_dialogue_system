@@ -1,7 +1,7 @@
 from susumu_toolbox.infrastructure.chat.base_chat import BaseChat
 from susumu_toolbox.infrastructure.chat.chatgpt_chat import ChatGPTChat
 from susumu_toolbox.infrastructure.chat.parlai_chat import ParlAIChat
-from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.config import Config, OutputFunction
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
@@ -50,18 +50,18 @@ class FunctionFactory:
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:
-        output_function = config.get_common_output_function_key()
-        if output_function == Config.OUTPUT_FUNCTION_BASE:
+        output_function = config.get_common_output_function()
+        if output_function == OutputFunction.BASE:
             return BaseTTS(config)
-        if output_function == Config.OUTPUT_FUNCTION_GOOGLE_CLOUD:
+        if output_function == OutputFunction.GOOGLE_CLOUD:
             return GoogleCloudTTS(config)
-        if output_function == Config.OUTPUT_FUNCTION_GTTS:
+        if output_function == OutputFunction.GTTS:
             return GttsTTS(config)
-        if output_function == Config.OUTPUT_FUNCTION_PYTTSX3:
+        if output_function == OutputFunction.PYTTSX3:
             return Pyttsx3TTS(config)
-        if output_function == Config.OUTPUT_FUNCTION_VOICEVOX:
+        if output_function == OutputFunction.VOICEVOX:
             return VoicevoxTTS(config)
-        if output_function == Config.OUTPUT_FUNCTION_NONE:
+        if output_function == OutputFunction.NONE:
             return DummyTTS(config)
         raise ValueError(f"Invalid output_function: {output_function}")
 
