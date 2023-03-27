@@ -12,7 +12,7 @@ from susumu_toolbox.infrastructure.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.translation.base_translator import BaseTranslator
 from susumu_toolbox.infrastructure.translation.dummy_translator import DummyTranslator
-from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS
+from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS, TTSEvent
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
@@ -39,6 +39,9 @@ class BaseChatSample:
         self._chat.event_subscribe(ChatEvent.CLOSE, self._on_chat_close)
         self._chat.event_subscribe(ChatEvent.MESSAGE, self._on_chat_message)
         self._chat.event_subscribe(ChatEvent.ERROR, self._on_chat_error)
+
+        self._tts.event_subscribe(TTSEvent.START, self._on_tts_start)
+        self._tts.event_subscribe(TTSEvent.END, self._on_tts_end)
 
     def create_chat(self) -> BaseChat:
         chat = FunctionFactory.create_chat(self._config, self._system_settings)
@@ -72,6 +75,13 @@ class BaseChatSample:
         controller = FunctionFactory.create_app_controller(self._config)
         print("app controller:", controller)
         return controller
+
+    def _on_tts_start(self):
+        print("_on_tts_start")
+
+    def _on_tts_end(self):
+        print("_on_tts_end")
+        self._app_controller.set_emotion(Emotion.NEUTRAL)
 
     def _on_chat_open(self):
         print("_on_chat_open")
