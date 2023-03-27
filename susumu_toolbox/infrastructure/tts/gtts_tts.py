@@ -27,6 +27,7 @@ class GttsTTS(BaseTTS):
         self._play_sync(text)
 
     def _play_sync(self, text: str) -> None:
+        self._start_event_publish()
         fp = BytesIO()
         gTTS(text=text, lang='ja').write_to_fp(fp)
         fp.seek(0)
@@ -34,6 +35,7 @@ class GttsTTS(BaseTTS):
         # 速度を上げて再生
         af = AudioSegment.from_file(fp, format="mp3").speedup(playback_speed=1.5)
         play(af)
+        self._end_event_publish()
 
     def tts_save_mp3(self, text: str, file_path: str) -> None:
         # tts_playと違って等倍速で保存

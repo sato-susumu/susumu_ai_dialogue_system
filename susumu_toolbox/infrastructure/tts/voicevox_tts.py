@@ -14,12 +14,20 @@ class VoicevoxTTS(BaseTTS):
     def tts_play_sync(self, text: str) -> None:
         super().tts_play_sync(text)
         audio_content = self._synthesize(text)
-        self._wav_play_sync(audio_content)
+        self._start_event_publish()
+        self._wav_play_sync(audio_content, self._on_playback_completed, self._on_error)
 
     def tts_play_async(self, text: str) -> None:
         super().tts_play_async(text)
         audio_content = self._synthesize(text)
-        self._wav_play_async(audio_content)
+        self._start_event_publish()
+        self._wav_play_async(audio_content, self._on_playback_completed, self._on_error)
+
+    def _on_playback_completed(self):
+        self._end_event_publish()
+
+    def _on_error(self, e: Exception):
+        self._error_event_publish(e)
 
     def tts_save_wav(self, text: str, file_path: str) -> None:
         audio_content = self._synthesize(text)

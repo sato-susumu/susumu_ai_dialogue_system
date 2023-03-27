@@ -19,8 +19,10 @@ class Pyttsx3TTS(BaseTTS):
         self._play_sync(text)
 
     def _play_sync(self, text: str) -> None:
+        self._start_event_publish()
         self.engine.say(text)
         self.engine.runAndWait()
+        self._end_event_publish()
 
     def tts_save_mp3(self, text: str, file_path: str) -> None:
         pass

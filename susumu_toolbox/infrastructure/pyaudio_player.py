@@ -30,7 +30,8 @@ class PyAudioPlayer:
         )
         return second_output_device_id
 
-    def _play_bytes(self, audio_content: bytes, output_no: int, output_device_id) -> None:
+    def _play_bytes(self, audio_content: bytes, output_no: int,
+                    output_device_id, on_playback_completed, on_error) -> None:
         wf = None
         stream = None
         try:
@@ -62,34 +63,41 @@ class PyAudioPlayer:
                 data = wf.readframes(chunk_size)
                 if self._stop_requested_event.is_set():
                     break
+        except Exception as e:
+            if on_error:
+                on_error(e)
         finally:
             if stream:
                 stream.stop_stream()
                 stream.close()
             if wf:
                 wf.close()
+            if on_playback_completed:
+                on_playback_completed()
 
-    def play_bytes_async(self, audio_content: bytes) -> None:
+    def play_bytes_async(self, audio_content: bytes, on_playback_completed, on_error) -> None:
         second_output_device_id = self._get_second_output_device_id()
-        self._thread1 = threading.Thread(target=self._play_bytes, args=(audio_content, 0, 0))
-        self._thread2 = threading.Thread(target=self._play_bytes, args=(audio_content, 1, second_output_device_id))
+        self._thread1 = threading.Thread(target=self._play_bytes, args=(audio_content, 0, 0,
+                                                                        on_playback_completed, on_error))
+        self._thread2 = threading.Thread(target=self._play_bytes,
+                                         args=(audio_content, 1, second_output_device_id, None, on_error))
 
         self._stop_requested_event.clear()
 
         self._thread1.start()
         self._thread2.start()
 
-    def play_bytes_sync(self, audio_content: bytes) -> None:
-        self.play_bytes_async(audio_content)
+    def play_bytes_sync(self, audio_content: bytes, on_playback_completed, on_error) -> None:
+        self.play_bytes_async(audio_content, on_playback_completed, on_error)
         self._thread1.join()
         self._thread2.join()
         self._thread1 = None
         self._thread2 = None
 
-    def play_wav_file(self, file_path: str):
+    def play_wav_file(self, file_path: str, on_playback_completed, on_error):
         with open(file_path, 'rb') as wf:
             data = wf.read()
-        self.play_bytes_sync(data)
+        self.play_bytes_sync(data, on_playback_completed, on_error)
 
     def stop(self):
         if self._thread1 or self._thread2:
@@ -112,4 +120,4 @@ if __name__ == "__main__":
     _config = Config()
     _config.search_and_load()
     player = PyAudioPlayer(_config)
-    player.play_wav_file("test.wav")
+    player.play_wav_file("test.wav", None, None)
