@@ -8,7 +8,7 @@ from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class AiTuberSample(BaseChatSample):
+class AiVTuberSample(BaseChatSample):
     def __init__(self, config: Config, system_settings: SystemSettings):
         super().__init__(config, system_settings)
         self._stt.event_subscribe(STTEvent.START, self._on_stt_start)
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     _config.search_and_load()
     _system_settings = SystemSettings(_config)
     _config.set_wrime_model_dir_path("../../model_data/wrime_model.pth")
-    AiTuberSample(_config, _system_settings).run_forever()
+    AiVTuberSample(_config, _system_settings).run_forever()

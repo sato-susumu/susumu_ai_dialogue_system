@@ -2,7 +2,7 @@ import os
 
 import PySimpleGUI as Sg
 
-from susumu_toolbox.application.ai_tuber_sample import AiTuberSample
+from susumu_toolbox.application.ai_tuber_sample import AiVTuberSample
 from susumu_toolbox.application.text_chat_sample import TextChatSample
 from susumu_toolbox.application.voice_chat_sample import VoiceChatSample
 from susumu_toolbox.infrastructure.config import Config, BaseFunction
@@ -25,7 +25,7 @@ class MainWindow(BaseWindow):
         elif base_function == BaseFunction.VOICE_DIALOGUE:
             base = VoiceChatSample(self._config, system_settings)
         elif base_function == BaseFunction.AI_TUBER:
-            base = AiTuberSample(self._config, system_settings)
+            base = AiVTuberSample(self._config, system_settings)
         else:
             raise ValueError(f"Invalid base_function: {base_function}")
         base.run_forever()
