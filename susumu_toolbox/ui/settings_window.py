@@ -10,6 +10,26 @@ from susumu_toolbox.ui.gui_events import GuiEvents
 
 # noinspection PyMethodMayBeStatic
 class SettingsWindow(BaseWindow):
+    _VOICEVOX_SPEAKER_COMBO_KEY = 'voicevox_speaker_combo_key'
+    # VOICEVOXのスピーカーリスト。動的に取得したほうがいい？。アプリが立ち上がっていない場合は？
+    _voicevox_speaker_dic = {'四国めたん-ノーマル': 2, '四国めたん-あまあま': 0, '四国めたん-ツンツン': 6,
+                             '四国めたん-セクシー': 4, '四国めたん-ささやき': 36, '四国めたん-ヒソヒソ': 37,
+                             'ずんだもん-ノーマル': 3, 'ずんだもん-あまあま': 1, 'ずんだもん-ツンツン': 7,
+                             'ずんだもん-セクシー': 5, 'ずんだもん-ささやき': 22, 'ずんだもん-ヒソヒソ': 38,
+                             '春日部つむぎ-ノーマル': 8, '雨晴はう-ノーマル': 10, '波音リツ-ノーマル': 9,
+                             '玄野武宏-ノーマル': 11, '玄野武宏-喜び': 39, '玄野武宏-ツンギレ': 40,
+                             '玄野武宏-悲しみ': 41, '白上虎太郎-ふつう': 12, '白上虎太郎-わーい': 32,
+                             '白上虎太郎-びくびく': 33, '白上虎太郎-おこ': 34, '白上虎太郎-びえーん': 35,
+                             '青山龍星-ノーマル': 13, '冥鳴ひまり-ノーマル': 14, '九州そら-ノーマル': 16,
+                             '九州そら-あまあま': 15, '九州そら-ツンツン': 18, '九州そら-セクシー': 17,
+                             '九州そら-ささやき': 19, 'もち子さん-ノーマル': 20, '剣崎雌雄-ノーマル': 21,
+                             'WhiteCUL-ノーマル': 23, 'WhiteCUL-たのしい': 24, 'WhiteCUL-かなしい': 25,
+                             'WhiteCUL-びえーん': 26, '後鬼-人間ver.': 27, '後鬼-ぬいぐるみver.': 28,
+                             'No.7-ノーマル': 29, 'No.7-アナウンス': 30, 'No.7-読み聞かせ': 31,
+                             'ちび式じい-ノーマル': 42, '櫻歌ミコ-ノーマル': 43,
+                             '櫻歌ミコ-第二形態': 44, '櫻歌ミコ-ロリ': 45, '小夜/SAYO-ノーマル': 46,
+                             'ナースロボ＿タイプＴ-ノーマル': 47, 'ナースロボ＿タイプＴ-楽々': 48,
+                             'ナースロボ＿タイプＴ-恐怖': 49, 'ナースロボ＿タイプＴ-内緒話': 50}
 
     def __init__(self, config: Config):
         super().__init__(config)
@@ -173,6 +193,9 @@ class SettingsWindow(BaseWindow):
             [Sg.Frame("ParlAI", parlai_items, expand_x=True)],
         ]
 
+        default_speaker_no = self._config.get_voicevox_speaker_no()
+        default_speaker_key = [k for k, v in self._voicevox_speaker_dic.items() if v == default_speaker_no][0]
+
         voicevox_items = [
             [Sg.Text('・利用にはVOICEVOXの起動が必要です。')],
             [Sg.Text('アドレス'),
@@ -188,12 +211,12 @@ class SettingsWindow(BaseWindow):
                           enable_events=True,
                           ),
              ],
-            [Sg.Text('スピーカー番号'),
-             Sg.InputText(default_text=self._config.get_voicevox_speaker_no(),
-                          key=self._config.KEY_VOICEVOX_SPEAKER_NO,
-                          size=self.INPUT_SIZE_SHORT,
-                          enable_events=True,
-                          ),
+            [Sg.Combo(list(self._voicevox_speaker_dic.keys()),
+                      default_value=default_speaker_key,
+                      key=self._VOICEVOX_SPEAKER_COMBO_KEY,
+                      size=(30, 1),
+                      readonly=True,
+                      ),
              ],
             [Sg.Button("テスト", size=(15, 1), key=GuiEvents.VOICEVOX_TEST)],
         ]
@@ -415,8 +438,9 @@ class SettingsWindow(BaseWindow):
         target_config.set_voicevox_host(values[self._config.KEY_VOICEVOX_HOST])
         if values[self._config.KEY_VOICEVOX_PORT_NO] != "":
             target_config.set_voicevox_port_no(int(values[self._config.KEY_VOICEVOX_PORT_NO]))
-        if values[self._config.KEY_VOICEVOX_SPEAKER_NO] != "":
-            target_config.set_voicevox_speaker_no(int(values[self._config.KEY_VOICEVOX_SPEAKER_NO]))
+        selected_speaker_key = values[self._VOICEVOX_SPEAKER_COMBO_KEY]
+        selected_speaker_value = self._voicevox_speaker_dic[selected_speaker_key]
+        target_config.set_voicevox_speaker_no(selected_speaker_value)
         target_config.set_gcp_text_to_speech_api_key(values[self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY])
 
         # その他
