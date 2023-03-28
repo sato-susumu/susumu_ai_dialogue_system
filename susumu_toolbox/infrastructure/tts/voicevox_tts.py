@@ -54,7 +54,7 @@ class VoicevoxTTS(BaseTTS):
         response.raise_for_status()
         return response.json()
 
-    def get_speakers(self) -> list:
+    def get_speakers(self) -> dict:
         json_list = self.get_raw_speakers()
         result = {}
         for entry in json_list:
@@ -86,7 +86,7 @@ class VoicevoxTTS(BaseTTS):
 
 
 if __name__ == "__main__":
-    config = Config()
-    tts = VoicevoxTTS(config)
+    _config = Config()
+    tts = VoicevoxTTS(_config)
     print(tts.get_version())
     print(tts.get_speakers())
