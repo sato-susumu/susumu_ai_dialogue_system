@@ -11,7 +11,8 @@ from susumu_toolbox.ui.gui_events import GuiEvents
 # noinspection PyMethodMayBeStatic
 class SettingsWindow(BaseWindow):
     _VOICEVOX_SPEAKER_COMBO_KEY = 'voicevox_speaker_combo_key'
-    # VOICEVOXのスピーカーリスト。動的に取得したほうがいい？。アプリが立ち上がっていない場合は？
+    # VOICEVOXのスピーカーリスト。
+    # TODO: 選択した名前はconfigに保存し、Windowに表示する。設定ボタンを追加し、押したときに動的にスピーカーを取得する
     _voicevox_speaker_dic = {'四国めたん-ノーマル': 2, '四国めたん-あまあま': 0, '四国めたん-ツンツン': 6,
                              '四国めたん-セクシー': 4, '四国めたん-ささやき': 36, '四国めたん-ヒソヒソ': 37,
                              'ずんだもん-ノーマル': 3, 'ずんだもん-あまあま': 1, 'ずんだもん-ツンツン': 7,
