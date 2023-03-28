@@ -47,18 +47,21 @@ class VoicevoxTTS(BaseTTS):
         response.raise_for_status()
         return response.text.replace("\"", "")
 
-    def get_speakers(self) -> dict:
+    def get_raw_speakers(self) -> list:
         host = self._config.get_voicevox_host()
         port_no = self._config.get_voicevox_port_no()
         response = requests.get(f"http://{host}:{port_no}/speakers")
         response.raise_for_status()
-        response_json = response.json()
-        speakers = {}
-        for item in response_json:
-            speakers[item["name"]] = {}
-            for style in item["styles"]:
-                speakers[item["name"]][style["name"]] = style["id"]
-        return speakers
+        return response.json()
+
+    def get_speakers(self) -> list:
+        json_list = self.get_raw_speakers()
+        result = {}
+        for entry in json_list:
+            for style in entry['styles']:
+                key = f"{entry['name']}-{style['name']}"
+                result[key] = style['id']
+        return result
 
     def _synthesize(self, text: str) -> bytes:
         # before = perf_counter()
@@ -80,3 +83,10 @@ class VoicevoxTTS(BaseTTS):
         # after = perf_counter()
         # self._latest_performance_metrics = f"{after - before:.3f} s"
         return response.content
+
+
+if __name__ == "__main__":
+    config = Config()
+    tts = VoicevoxTTS(config)
+    print(tts.get_version())
+    print(tts.get_speakers())
