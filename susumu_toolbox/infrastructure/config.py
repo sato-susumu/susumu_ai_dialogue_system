@@ -98,7 +98,7 @@ class Config:
 
     base_function_dict = {
         BaseFunction.VOICE_DIALOGUE.value: "音声対話",
-        BaseFunction.AI_TUBER.value: "AITuber",
+        BaseFunction.AI_TUBER.value: "AI VTuber",
         BaseFunction.TEXT_DIALOGUE.value: "文字対話",
     }
     input_function_dict = {
