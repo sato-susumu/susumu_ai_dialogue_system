@@ -7,6 +7,7 @@ from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult, STTEv
 class SRGoogleSyncSTT(BaseSTT):
     def __init__(self, config: Config):
         super().__init__(config)
+
         self._recognizer = sr.Recognizer()
 
     @BaseSTT.recognize_decorator

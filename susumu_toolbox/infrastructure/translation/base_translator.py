@@ -1,9 +1,10 @@
-# noinspection PyMethodMayBeStatic,PyUnusedLocal
+import logging
 from typing import Optional
 
 from susumu_toolbox.infrastructure.config import Config
 
 
+# noinspection PyMethodMayBeStatic,PyUnusedLocal
 class BaseTranslator:
     # どの派生クラスでも使える標準的な言語指定方法が決まっていない。
     # 下記定数を使うことで変更なく使えるようにしたい。
@@ -12,6 +13,7 @@ class BaseTranslator:
 
     def __init__(self, config: Config):
         self._config = config
+        self._logger = logging.getLogger(__name__)
 
     def translate(self, text: str, target_lang: str, base_lang: Optional[str] = None) -> str:
         return text

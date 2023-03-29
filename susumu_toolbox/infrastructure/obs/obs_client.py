@@ -33,11 +33,11 @@ class OBSClient(BaseOBSClient):
         self._connection_waiting_queue = queue.Queue()
 
     def _on_connect(self, ws_app) -> None:
-        print("on_connect({})".format(ws_app))
+        self._logger.debug("on_connect({})".format(ws_app))
         self._connection_waiting_queue.put(True)
 
     def _on_disconnect(self, ws_app) -> None:
-        print("on_disconnect({})".format(ws_app))
+        self._logger.debug("on_disconnect({})".format(ws_app))
         self._ws = None
 
     def connect(self) -> None:
@@ -63,7 +63,7 @@ class OBSClient(BaseOBSClient):
     def set_text(self, scene_name: str, source: str, text: str) -> None:
         if self._ws is None:
             return
-        print("OBS: set_text(scene_name={}, source={}, text={})".format(scene_name, source, text))
+        self._logger.debug("OBS: set_text(scene_name={}, source={}, text={})".format(scene_name, source, text))
         try:
             self._ws.call(
                 requests.SetTextGDIPlusProperties(scene_name=scene_name, source=source, text=text))

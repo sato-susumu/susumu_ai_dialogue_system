@@ -1,3 +1,4 @@
+import logging
 import os
 
 from omegaconf import OmegaConf
@@ -10,6 +11,8 @@ from susumu_toolbox.infrastructure.system_setting import SystemSettings
 class AiConfig:
     def __init__(self, config: Config, ai_id: str):
         self._config = config
+        self._logger = logging.getLogger(__name__)
+
         self._system_settings = SystemSettings(config)
         self._ai_id = ai_id
         self._ai_name = "default"

@@ -1,3 +1,5 @@
+import logging
+
 import pyaudio
 import webrtcvad
 
@@ -27,6 +29,9 @@ class WebRtcVad(BaseVad):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+
+    _logger = logging.getLogger(__name__)
     pa = pyaudio.PyAudio()
 
     # マイクから入力するオーディオストリームを開く
@@ -39,26 +44,26 @@ if __name__ == '__main__':
         # noinspection DuplicatedCode
         stream = pa.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=chunk_size)
 
-        print("音声検出待ち")
+        _logger.debug("音声検出待ち")
         while True:
             data = stream.read(chunk_size)
             result = vad.detect(data)
-            print("result=" + str(result))
+            _logger.debug("result=" + str(result))
             if result >= vad.get_threshold():
                 break
-        print("")
+        _logger.debug("")
 
-        print("音声検出")
+        _logger.debug("音声検出")
         reset_count = 0
         while True:
             data = stream.read(chunk_size)
             result = vad.detect(data)
-            print("result=" + str(result))
+            _logger.debug("result=" + str(result))
             if result < vad.get_threshold():
                 break
-        print("")
+        _logger.debug("")
 
-        print("音声終了")
+        _logger.debug("音声終了")
 
         stream.stop_stream()
         stream.close()

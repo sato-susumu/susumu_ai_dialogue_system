@@ -1,3 +1,4 @@
+import logging
 from threading import Thread, Event
 
 from susumu_toolbox.infrastructure.app_controller.base_app_contorller import BaseAppController
@@ -8,6 +9,7 @@ from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 class ThreadedAppController(BaseAppController):
     def __init__(self, config: Config, source_controller: BaseAppController):
         super().__init__(config)
+
         self._source_controller = source_controller
         self._thread = None
         self._current_emotion = Emotion.NEUTRAL
@@ -39,6 +41,9 @@ if __name__ == '__main__':
     import random
     from time import sleep
 
+    logging.basicConfig(level=logging.DEBUG)
+
+    _logger = logging.getLogger(__name__)
     _config = Config()
     _source_controller = VMagicMirrorController(_config)
     _controller = ThreadedAppController(_config, _source_controller)
@@ -46,7 +51,7 @@ if __name__ == '__main__':
     try:
         while True:
             _emotion = random.choice(list(Emotion))
-            print(_emotion)
+            _logger.debug(_emotion)
             _controller.set_emotion(_emotion)
             sleep(5)
     finally:

@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from susumu_toolbox.infrastructure.config import Config
@@ -6,6 +7,9 @@ from susumu_toolbox.infrastructure.config import Config
 # noinspection PyMethodMayBeStatic
 class SystemSettings:
     def __init__(self, config: Config):
+        self._config = config
+        self._logger = logging.getLogger(__name__)
+
         self._text = """
 ある女性を相手にした対話のシミュレーションを行います。
 彼女の発言サンプルを以下に列挙します。
@@ -30,7 +34,6 @@ class SystemSettings:
 上記例を参考に、彼女の性格や口調、言葉の作り方を模倣し、３０文字以内の短い文章で回答を構築してください。質問には真面目に答えないでください。
 ではシミュレーションを開始！
         """.strip()
-        self._config = config
 
     def load_settings(self, file_path: Optional[str] = None) -> None:
         with open(file_path, encoding='utf-8') as file:

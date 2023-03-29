@@ -1,4 +1,5 @@
 import datetime
+import logging
 import time
 
 from susumu_toolbox.infrastructure.config import Config
@@ -11,6 +12,7 @@ from susumu_toolbox.infrastructure.stt.youtube.youtube_livechat import YouTubeLi
 class YoutubePseudSTT(BaseSTT):
     def __init__(self, config: Config):
         super().__init__(config)
+
         self._timezone_jst = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
         self._client = YouTubeLiveChat(config)
         self._message_filter = MessageFilter()
@@ -26,7 +28,7 @@ class YoutubePseudSTT(BaseSTT):
         # for message in message_list:
         #     datetime_jst = message.datetime_utc.astimezone(self._timezone_jst)
         #     datetime_str = datetime_jst.strftime('%H:%M:%S.%f')[:-3]
-        #     print(f"{datetime_str}: name={message.name} message={message.message}")
+        #     self._logger.debug(f"{datetime_str}: name={message.name} message={message.message}")
 
         for message in message_list:
             self._fifo.put(message)
@@ -39,11 +41,13 @@ class YoutubePseudSTT(BaseSTT):
             self._event_publish(STTEvent.RESULT, STTResult("", True))
         else:
             message = self._fifo.get()
-            # print(f"message={message.message}")
+            # self._logger.debug(f"message={message.message}")
             self._event_publish(STTEvent.RESULT, STTResult(message.message, True))
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+
     _config = Config()
     _config.search_and_load()
     while True:

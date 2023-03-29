@@ -414,7 +414,7 @@ class SettingsWindow(BaseWindow):
         try:
             TTSTest(config).run()
         except Exception as e:
-            print(e)
+            self._logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _update_config(self, values, target_config) -> Config:
@@ -489,7 +489,7 @@ class SettingsWindow(BaseWindow):
         try:
             STTTest(config).run()
         except Exception as e:
-            print(e)
+            self._logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     # noinspection PyUnusedLocal
@@ -500,7 +500,7 @@ class SettingsWindow(BaseWindow):
         try:
             OBSTest(config).run()
         except Exception as e:
-            print(e)
+            self._logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _input_validation_number_only(self, window, event, values):

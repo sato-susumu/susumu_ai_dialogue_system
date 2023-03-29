@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 
 import dateutil.parser
@@ -14,6 +15,8 @@ class YouTubeLiveChatMessage:
     def __init__(self, item):
         # displayMessageはスパチャの場合は、'¥価格 from 名前: "メッセージ"'という形式になっている。
         # item["snippet"]["type"]によってもっと処理を分けるべき？
+        self._logger = logging.getLogger(__name__)
+
         self.original_message = item["snippet"]["displayMessage"]
         self.name = item["authorDetails"]["displayName"]
         self.datetime_utc = self.parse_utc_datetime_str(item["snippet"]["publishedAt"])

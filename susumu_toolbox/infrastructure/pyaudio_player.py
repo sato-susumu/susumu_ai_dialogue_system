@@ -1,4 +1,5 @@
 import io
+import logging
 import threading
 import wave
 
@@ -11,9 +12,11 @@ from susumu_toolbox.infrastructure.pyaudio_utility import PyAudioUtility
 # noinspection PyMethodMayBeStatic
 class PyAudioPlayer:
     def __init__(self, config: Config):
+        self._config = config
+        self._logger = logging.getLogger(__name__)
+
         self._thread2 = None
         self._thread1 = None
-        self._config = config
         # 複数スレッドで同時にPyAudioを取得するとうまく動作しなかったっぽいので、1箇所のみで取得
         self._pa = pyaudio.PyAudio()
         self._stop_requested_event = threading.Event()
@@ -117,6 +120,8 @@ class PyAudioPlayer:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
     _config = Config()
     _config.search_and_load()
     player = PyAudioPlayer(_config)
