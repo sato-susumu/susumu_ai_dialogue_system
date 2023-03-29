@@ -71,5 +71,5 @@ class GoogleCloudTTS(BaseTTS):
         before = time.perf_counter()
         response = self.client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
         after = time.perf_counter()
-        print(f"GoogleCloudTTS processing time={after - before:.3f} s")
+        self._logger.debug(f"GoogleCloudTTS processing time={after - before:.3f} s")
         return response.audio_content

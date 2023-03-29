@@ -1,4 +1,4 @@
-from pprint import pprint
+import logging
 
 import pyaudio
 
@@ -12,7 +12,7 @@ class PyAudioUtility:
     DEFAULT_SAMPLE_RATE = "defaultSampleRate"
 
     def __init__(self):
-        pass
+        self._logger = logging.getLogger(__name__)
 
     def get_speaker_id(self, part_of_host_api_name: str, part_of_device_name: str) -> int:
         speaker_list = self.get_speaker_list()
@@ -45,8 +45,10 @@ class PyAudioUtility:
         return speaker_list
 
     def print_speaker_list(self) -> None:
-        pprint(self.get_speaker_list())
+        self._logger.debug(self.get_speaker_list())
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+
     PyAudioUtility().print_speaker_list()

@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 
 from event_channel.threaded_event_channel import ThreadedEventChannel
@@ -19,6 +20,8 @@ class TTSEvent(Enum):
 class BaseTTS:
     def __init__(self, config: Config):
         self._config = config
+        self._logger = logging.getLogger(__name__)
+
         self._player = PyAudioPlayer(config)
         self.__event_channel = ThreadedEventChannel(blocking=False)
 
@@ -38,10 +41,10 @@ class BaseTTS:
         self._event_publish(TTSEvent.ERROR, e)
 
     def tts_play_sync(self, text: str) -> None:
-        print(f"tts_play_sync() is called. text: {text}")
+        self._logger.debug(f"tts_play_sync() is called. text: {text}")
 
     def tts_play_async(self, text: str) -> None:
-        print(f"tts_play_async() is called. text: {text}")
+        self._logger.debug(f"tts_play_async() is called. text: {text}")
 
     def is_playing(self) -> bool:
         return self._player.is_playing()

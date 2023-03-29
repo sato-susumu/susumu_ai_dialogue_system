@@ -21,7 +21,7 @@
 #         # before = time.perf_counter()
 #         confidence = self._vad_model(torch.from_numpy(audio_float32), 16000).item()
 #         # after = time.perf_counter()
-#         # print(f"{after - before:.3f} s")
+#         # self._logger.debug(f"{after - before:.3f} s")
 #
 #         return confidence
 #

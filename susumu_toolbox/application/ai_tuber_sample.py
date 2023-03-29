@@ -1,3 +1,4 @@
+import logging
 import time
 import traceback
 
@@ -36,12 +37,12 @@ class AiVTuberSample(BaseChatSample):
                     break
 
                 ai_text = ai_result.text
-                print("User: " + user_text)
-                print("AI: " + ai_text)
+                self._logger.debug("User: " + user_text)
+                self._logger.debug("AI: " + ai_text)
 
                 # 前の音声合成が再生中なら待つ
                 if self._tts.is_playing():
-                    print("前の音声合成が再生中なので待つ")
+                    self._logger.debug("前の音声合成が再生中なので待つ")
                     while self._tts.is_playing():
                         time.sleep(0.1)
 
@@ -57,13 +58,15 @@ class AiVTuberSample(BaseChatSample):
 
                 self._request_ai_message(user_text=user_text, obs_ai_utterance_text=None)
         except Exception:
-            print(traceback.format_exc())  # いつものTracebackが表示される
-            print("エラーが発生しましたが処理を継続します！")
+            self._logger.debug(traceback.format_exc())  # いつものTracebackが表示される
+            self._logger.debug("エラーが発生しましたが処理を継続します！")
         finally:
             self._disconnect_all()
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
     _config = Config()
     _config.search_and_load()
     _system_settings = SystemSettings(_config)

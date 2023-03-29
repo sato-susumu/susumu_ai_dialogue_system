@@ -1,4 +1,5 @@
 import copy
+import logging
 import os
 from enum import Enum
 from typing import List, Any
@@ -121,6 +122,8 @@ class Config:
     }
 
     def __init__(self):
+        self._logger = logging.getLogger(__name__)
+
         # 仕方なくここでimport
         from susumu_toolbox.infrastructure.ai_config_list import AiConfigList
         # 辞書からコンフィグを読み込む

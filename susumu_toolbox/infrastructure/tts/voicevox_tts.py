@@ -1,4 +1,5 @@
 import json
+import logging
 
 import requests
 
@@ -86,7 +87,10 @@ class VoicevoxTTS(BaseTTS):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
     _config = Config()
     tts = VoicevoxTTS(_config)
-    print(tts.get_version())
-    print(tts.get_speakers())
+    _logger = logging.getLogger(__name__)
+    _logger.debug(tts.get_version())
+    _logger.debug(tts.get_speakers())

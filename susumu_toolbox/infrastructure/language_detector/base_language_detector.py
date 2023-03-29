@@ -1,4 +1,4 @@
-# noinspection PyPackageRequirements
+import logging
 
 
 # noinspection PyMethodMayBeStatic
@@ -8,7 +8,7 @@ class BaseLanguageDetector:
     LANG_CODE_EN = "en"
 
     def __init__(self):
-        pass
+        self._logger = logging.getLogger(__name__)
 
     def detect(self, text: str) -> str:
         return ""

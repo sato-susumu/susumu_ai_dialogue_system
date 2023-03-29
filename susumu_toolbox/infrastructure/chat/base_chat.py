@@ -1,3 +1,4 @@
+import logging
 import threading
 from enum import Enum
 
@@ -34,6 +35,7 @@ class BaseChat:
     lock = threading.Lock()
 
     def __init__(self, config: Config):
+        self._logger = logging.getLogger(__name__)
         self._config = config
         self.state: ChatState = ChatState.INIT
         self._event_channel = ThreadedEventChannel(blocking=False)

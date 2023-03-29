@@ -1,3 +1,4 @@
+import logging
 import threading
 from collections import deque
 
@@ -5,6 +6,7 @@ from collections import deque
 class LimitedFIFO:
     def __init__(self, maxsize):
         self.buffer = deque(maxlen=maxsize)
+        self._logger = logging.getLogger(__name__)
 
     def is_empty(self):
         with threading.Lock():
