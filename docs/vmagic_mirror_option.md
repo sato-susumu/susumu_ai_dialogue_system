@@ -4,7 +4,8 @@ VMagicMirror連携とは、人間の3Dアバターを動かすためのオプシ
 
 <img src="./resources/vmagic_mirror_option0.png" style="zoom:50%;" />
 
-このためには、仮想MIDIケーブルである「loopMIDI」をインストールし、設定する必要があります。loopMIDIの設定方法については、[こちら](https://music-dtm.com/dtm/loopmidi-install)の説明が詳しいです。
+このためには、仮想MIDIケーブルである「loopMIDI」をインストールし、設定する必要があります。  
+loopMIDIの設定方法については、[こちら](https://music-dtm.com/dtm/loopmidi-install)の説明が詳しいです。
 
 #### VMagicMirror連携を使うための事前準備
 感情解析オプションの設定が必要
@@ -12,7 +13,7 @@ VMagicMirrorアプリのインストール
 <br/>
 
 #### VMagicMirrorの設定
-<img src="./resources/vmagic_mirrorv_option1.png" style="zoom:50%;" />
+<img src="./resources/vmagic_mirror_option1.png" style="zoom:50%;" />
 <br/>
 <img src="./resources/vmagic_mirror_option2.png" style="zoom:50%;" />
 <br/>
