@@ -31,9 +31,11 @@ class ChatGPTChat(BaseChat):
 
         before = time.perf_counter()
         try:
+            messages = self._create_prompt()
+            # print(f"ChatGPT prompt={messages}")
             result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=self._create_prompt(),
+                messages=messages,
             )
         except openai.error.RateLimitError as e:
             print("RateLimitError: OpenAI APIのリクエスト制限に達しました。")
