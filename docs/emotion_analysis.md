@@ -4,6 +4,7 @@
 <br/>
 
 #### 設定方法
+
 まず、下記のURLからzipファイルをダウンロードしてください。
 
 https://github.com/sato-susumu/susumu_toolbox_ml_model/releases/download/v0.1.0/wrime_model.pth.zip
@@ -11,6 +12,8 @@ https://github.com/sato-susumu/susumu_toolbox_ml_model/releases/download/v0.1.0/
 次に、zipファイルを解凍して、解凍したフォルダをmodel_dataフォルダに配置してください。model_dataフォルダはアプリを初めて起動したときに自動的に作成されます。
 
 <br/>
+
 #### susumu_toolboxの設定
+
 <img src="./resources/vmagic_mirror_option6.png" style="zoom:50%;" />
 <br/>
