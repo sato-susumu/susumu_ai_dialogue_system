@@ -1,10 +1,16 @@
+from __future__ import annotations
+
 import copy
 import logging
 import os
 from enum import Enum
 from typing import List, Any
+from typing import TYPE_CHECKING
 
 from omegaconf import OmegaConf
+
+if TYPE_CHECKING:
+    from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 class OutputFunction(Enum):
@@ -226,7 +232,7 @@ class Config:
     def get_ai_id_list(self) -> List[str]:
         return self._ai_config_list.get_ai_id_list()
 
-    def get_ai_system_settings(self, ai_id: str) -> Any:
+    def get_ai_system_settings(self, ai_id: str) -> SystemSettings:
         ai_config = self._ai_config_list.get_ai_config(ai_id)
         return ai_config.get_system_settings()
 
