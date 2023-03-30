@@ -1,5 +1,4 @@
-import logging
-
+import loguru
 import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
@@ -59,9 +58,7 @@ class WrimeEmotionModel(BaseEmotionModel):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
 
-    _logger = logging.getLogger(__name__)
     _config = Config()
     _config.set_wrime_model_dir_path("../../../model_data/wrime_model.pth")
     if not _config.exists_wrime_model_dir():
@@ -73,11 +70,11 @@ if __name__ == '__main__':
         out_dict, raw_dict = _model.get_emotion(text)
         max_key = max(out_dict, key=out_dict.get)
         max_value = out_dict[max_key]
-        _logger.debug(text)
-        _logger.debug(out_dict)
-        _logger.debug(raw_dict)
-        _logger.debug(max_key, max_value)
-        _logger.debug("")
+        loguru.logger.debug(text)
+        loguru.logger.debug(out_dict)
+        loguru.logger.debug(raw_dict)
+        loguru.logger.debug(f"max_key: {max_key}, max_value: {max_value}")
+        loguru.logger.debug("")
 
 
     func("大好きな人が遠くへ行ってしまった")

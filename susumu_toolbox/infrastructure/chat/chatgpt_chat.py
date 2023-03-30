@@ -1,6 +1,7 @@
 import time
 
 import openai
+from loguru import logger
 
 from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
@@ -32,19 +33,19 @@ class ChatGPTChat(BaseChat):
         before = time.perf_counter()
         try:
             messages = self._create_prompt()
-            # self._logger.debug(f"ChatGPT prompt={messages}")
+            # logger.debug(f"ChatGPT prompt={messages}")
             result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
             )
         except openai.error.RateLimitError as e:
-            self._logger.debug("RateLimitError: OpenAI APIのリクエスト制限に達しました。")
+            logger.debug("RateLimitError: OpenAI APIのリクエスト制限に達しました。")
             self._event_publish(ChatEvent.MESSAGE, ChatResult("", []))
             self._event_publish(ChatEvent.ERROR, e)
             raise
 
         after = time.perf_counter()
-        self._logger.debug(f"ChatGPT processing time={after - before:.3f} s")
+        logger.debug(f"ChatGPT processing time={after - before:.3f} s")
 
         result_text = result.choices[0].message.content
         self._append_message("assistant", result_text)

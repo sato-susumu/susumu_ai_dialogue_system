@@ -1,6 +1,8 @@
 import os
+import sys
 
 import PySimpleGUI as Sg
+from loguru import logger
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.main_window import MainWindow
@@ -19,11 +21,23 @@ def create_log_dir_if_needed():
 
 
 if __name__ == "__main__":
-    import logging
-
-    logging.basicConfig(level=logging.DEBUG)
     create_model_data_dir_if_needed()
     create_log_dir_if_needed()
+
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        level='DEBUG',
+        # format="<green>{time:YYYY-MM-DD HH:mm:ss.SSSSSS}</green> | <level>{level:<7}</level> | {message}"
+        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level:<8}</level> | {message}"
+    )
+
+    log_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level:<8}</level> | {message}"
+    logger.add("log/{time:YYYY-MM-DD}_app.log",
+               format=log_format)
+    logger.add("log/{time:YYYY-MM-DD}_error.log",
+               level="ERROR",
+               format=log_format)
 
     # TODO:ログ出力対応
     # TODO:GUIに合わせてドキュメントも更新

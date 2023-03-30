@@ -1,5 +1,4 @@
 import io
-import logging
 import threading
 import wave
 
@@ -13,7 +12,6 @@ from susumu_toolbox.infrastructure.pyaudio_utility import PyAudioUtility
 class PyAudioPlayer:
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
         self._thread2 = None
         self._thread1 = None
@@ -120,8 +118,6 @@ class PyAudioPlayer:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
     _config = Config()
     _config.search_and_load()
     player = PyAudioPlayer(_config)

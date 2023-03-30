@@ -1,6 +1,7 @@
-import logging
 import time
 import traceback
+
+from loguru import logger
 
 from susumu_toolbox.application.base_chat_sample import BaseChatSample
 from susumu_toolbox.infrastructure.config import Config
@@ -37,12 +38,12 @@ class AiVTuberSample(BaseChatSample):
                     break
 
                 ai_text = ai_result.text
-                self._logger.debug("User: " + user_text)
-                self._logger.debug("AI: " + ai_text)
+                logger.debug("User: " + user_text)
+                logger.debug("AI: " + ai_text)
 
                 # 前の音声合成が再生中なら待つ
                 if self._tts.is_playing():
-                    self._logger.debug("前の音声合成が再生中なので待つ")
+                    logger.debug("前の音声合成が再生中なので待つ")
                     while self._tts.is_playing():
                         time.sleep(0.1)
 
@@ -58,15 +59,13 @@ class AiVTuberSample(BaseChatSample):
 
                 self._request_ai_message(user_text=user_text, obs_ai_utterance_text=None)
         except Exception:
-            self._logger.debug(traceback.format_exc())  # いつものTracebackが表示される
-            self._logger.debug("エラーが発生しましたが処理を継続します！")
+            logger.debug(traceback.format_exc())  # いつものTracebackが表示される
+            logger.debug("エラーが発生しましたが処理を継続します！")
         finally:
             self._disconnect_all()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
     _config = Config()
     _config.search_and_load()
     _system_settings = SystemSettings(_config)

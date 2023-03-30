@@ -1,5 +1,4 @@
 import datetime
-import logging
 import time
 
 from susumu_toolbox.infrastructure.config import Config
@@ -28,7 +27,7 @@ class YoutubePseudSTT(BaseSTT):
         # for message in message_list:
         #     datetime_jst = message.datetime_utc.astimezone(self._timezone_jst)
         #     datetime_str = datetime_jst.strftime('%H:%M:%S.%f')[:-3]
-        #     self._logger.debug(f"{datetime_str}: name={message.name} message={message.message}")
+        #     logger.debug(f"{datetime_str}: name={message.name} message={message.message}")
 
         for message in message_list:
             self._fifo.put(message)
@@ -41,12 +40,11 @@ class YoutubePseudSTT(BaseSTT):
             self._event_publish(STTEvent.RESULT, STTResult("", True))
         else:
             message = self._fifo.get()
-            # self._logger.debug(f"message={message.message}")
+            # logger.debug(f"message={message.message}")
             self._event_publish(STTEvent.RESULT, STTResult(message.message, True))
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
 
     _config = Config()
     _config.search_and_load()

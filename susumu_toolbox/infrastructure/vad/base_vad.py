@@ -1,11 +1,10 @@
 # noinspection PyMethodMayBeStatic
-import logging
 
 
 class BaseVad:
     def __init__(self):
-        self._logger = logging.getLogger(__name__)
-
+        pass
+    
     def get_threshold(self) -> float:
         return 0.0
 

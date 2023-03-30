@@ -1,4 +1,5 @@
 import PySimpleGUI as Sg
+from loguru import logger
 
 from susumu_toolbox.application.common.obs_test import OBSTest
 from susumu_toolbox.application.common.stt_test import STTTest
@@ -408,7 +409,7 @@ class SettingsWindow(BaseWindow):
         try:
             TTSTest(config).run()
         except Exception as e:
-            self._logger.debug(e)
+            logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _update_config(self, values, target_config) -> Config:
@@ -483,7 +484,7 @@ class SettingsWindow(BaseWindow):
         try:
             STTTest(config).run()
         except Exception as e:
-            self._logger.debug(e)
+            logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     # noinspection PyUnusedLocal
@@ -494,7 +495,7 @@ class SettingsWindow(BaseWindow):
         try:
             OBSTest(config).run()
         except Exception as e:
-            self._logger.debug(e)
+            logger.debug(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def _input_validation_number_only(self, window, event, values):

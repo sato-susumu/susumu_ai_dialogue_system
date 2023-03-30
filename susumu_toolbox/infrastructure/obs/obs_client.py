@@ -1,5 +1,6 @@
 from queue import Empty
 
+from loguru import logger
 from obswebsocket import obsws, requests
 from six.moves import queue
 from websocket import WebSocketConnectionClosedException
@@ -27,11 +28,11 @@ class OBSClient(BaseOBSClient):
         self._connection_waiting_queue = queue.Queue()
 
     def _on_connect(self, ws_app) -> None:
-        self._logger.debug("on_connect({})".format(ws_app))
+        logger.debug("on_connect({})".format(ws_app))
         self._connection_waiting_queue.put(True)
 
     def _on_disconnect(self, ws_app) -> None:
-        self._logger.debug("on_disconnect({})".format(ws_app))
+        logger.debug("on_disconnect({})".format(ws_app))
         self._ws = None
 
     def connect(self) -> None:
@@ -57,7 +58,7 @@ class OBSClient(BaseOBSClient):
     def set_text(self, source: str, text: str) -> None:
         if self._ws is None:
             return
-        self._logger.debug("OBS: set_text(source={}, text={})".format(source, text))
+        logger.debug("OBS: set_text(source={}, text={})".format(source, text))
         try:
             self._ws.call(
                 requests.SetInputSettings(inputName=f"{source}", inputSettings={"text": text}))

@@ -34,4 +34,3 @@ class STTHelper:
                 return None
             case _:
                 raise ValueError(f"Invalid input_function: {stt}")
-

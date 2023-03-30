@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 from susumu_toolbox.infrastructure.config import Config
@@ -13,7 +12,6 @@ class BaseTranslator:
 
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
     def translate(self, text: str, target_lang: str, base_lang: Optional[str] = None) -> str:
         return text
