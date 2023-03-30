@@ -39,8 +39,6 @@ if __name__ == "__main__":
                level="ERROR",
                format=log_format)
 
-    # TODO:ログ出力対応
-    # TODO:GUIに合わせてドキュメントも更新
     _config = Config()
     _config_file_path = _config.get_default_config_path()
     _config.set_current_config_path(_config_file_path)
