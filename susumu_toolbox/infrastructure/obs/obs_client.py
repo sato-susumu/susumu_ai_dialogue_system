@@ -15,13 +15,7 @@ class OBSClient(BaseOBSClient):
     利用にはOBS Studioの設定変更が必要です。
       ツール > Websocket設定 > 「WebSocketサーバーを有効にする」をON
 
-    サポートしているobs-websocket protocolは 4.9.1 のみです。
-    最新のOBS Studioを利用している場合は、プラグインのインストールが必要です。
-    https://github.com/obsproject/obs-websocket/releases/tag/4.9.1-compat
-
-    参考資料：
-    obs-websocket 4.9.1 protocol reference
-    https://github.com/obsproject/obs-websocket/blob/4.x-compat/docs/generated/protocol.md
+    サポートしているobs-websocket protocolは 5.x のみです。
 
     obs-websocket latest Protocol
     https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md
@@ -60,13 +54,13 @@ class OBSClient(BaseOBSClient):
         self._ws.disconnect()
         self._ws = None
 
-    def set_text(self, scene_name: str, source: str, text: str) -> None:
+    def set_text(self, source: str, text: str) -> None:
         if self._ws is None:
             return
-        self._logger.debug("OBS: set_text(scene_name={}, source={}, text={})".format(scene_name, source, text))
+        self._logger.debug("OBS: set_text(source={}, text={})".format(source, text))
         try:
             self._ws.call(
-                requests.SetTextGDIPlusProperties(scene_name=scene_name, source=source, text=text))
+                requests.SetInputSettings(inputName=f"{source}", inputSettings={"text": text}))
         except WebSocketConnectionClosedException:
             # Ignore exceptions after disconnect.
             if self._ws is None:
