@@ -1,6 +1,7 @@
-import logging
 import time
 import traceback
+
+from loguru import logger
 
 from susumu_toolbox.application.base_chat_sample import BaseChatSample
 from susumu_toolbox.infrastructure.config import Config
@@ -47,15 +48,13 @@ class VoiceChatSample(BaseChatSample):
 
                 self._request_ai_message(user_text=user_text, obs_ai_utterance_text="(考え中。。。)")
         except Exception:
-            self._logger.debug(traceback.format_exc())  # いつものTracebackが表示される
-            self._logger.debug("エラーが発生しましたが処理を継続します！")
+            logger.debug(traceback.format_exc())  # いつものTracebackが表示される
+            logger.debug("エラーが発生しましたが処理を継続します！")
         finally:
             self._disconnect_all()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
     _config = Config()
     _config.search_and_load()
     _system_settings = SystemSettings(_config)

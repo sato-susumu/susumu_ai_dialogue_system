@@ -1,5 +1,3 @@
-import logging
-
 from susumu_toolbox.infrastructure.config import Config
 
 
@@ -7,7 +5,6 @@ from susumu_toolbox.infrastructure.config import Config
 class BaseOBSClient:
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
     def connect(self) -> None:
         pass

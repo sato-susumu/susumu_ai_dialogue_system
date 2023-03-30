@@ -1,4 +1,3 @@
-import logging
 import time
 
 from susumu_toolbox.application.common.function_factory import FunctionFactory
@@ -20,7 +19,6 @@ class OBSTest:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
     _config = Config()
     _config.search_and_load()
     OBSTest(_config).run()

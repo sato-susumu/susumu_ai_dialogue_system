@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 from susumu_toolbox.infrastructure.config import Config
@@ -8,7 +7,6 @@ from susumu_toolbox.infrastructure.config import Config
 class SystemSettings:
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
         self._text = """
 ある女性を相手にした対話のシミュレーションを行います。

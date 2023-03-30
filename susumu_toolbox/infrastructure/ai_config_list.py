@@ -1,5 +1,3 @@
-import logging
-
 from susumu_toolbox.infrastructure.ai_config import AiConfig
 from susumu_toolbox.infrastructure.config import Config
 
@@ -8,7 +6,6 @@ from susumu_toolbox.infrastructure.config import Config
 class AiConfigList:
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
         self._ai_config_list = [AiConfig(self._config, "default")]
 

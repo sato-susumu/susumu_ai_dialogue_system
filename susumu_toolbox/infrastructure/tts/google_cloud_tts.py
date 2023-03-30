@@ -2,6 +2,7 @@ import time
 
 # noinspection PyPackageRequirements
 from google.cloud import texttospeech
+from loguru import logger
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS
@@ -71,5 +72,5 @@ class GoogleCloudTTS(BaseTTS):
         before = time.perf_counter()
         response = self.client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
         after = time.perf_counter()
-        self._logger.debug(f"GoogleCloudTTS processing time={after - before:.3f} s")
+        logger.debug(f"GoogleCloudTTS processing time={after - before:.3f} s")
         return response.audio_content

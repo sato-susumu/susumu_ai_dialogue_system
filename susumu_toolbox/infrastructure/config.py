@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import logging
 import os
 from enum import Enum
 from typing import List, Any
@@ -9,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from omegaconf import OmegaConf
 
+# 循環参照対策
 if TYPE_CHECKING:
     from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
@@ -127,9 +127,8 @@ class Config:
     }
 
     def __init__(self):
-        self._logger = logging.getLogger(__name__)
-
         # 仕方なくここでimport
+        # 循環参照対策
         from susumu_toolbox.infrastructure.ai_config_list import AiConfigList
         # 辞書からコンフィグを読み込む
         default_yaml = """

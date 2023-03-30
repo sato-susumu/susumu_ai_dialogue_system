@@ -1,6 +1,6 @@
 import json
-import logging
 
+import loguru
 import requests
 
 from susumu_toolbox.infrastructure.config import Config
@@ -87,10 +87,7 @@ class VoicevoxTTS(BaseTTS):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
     _config = Config()
     tts = VoicevoxTTS(_config)
-    _logger = logging.getLogger(__name__)
-    _logger.debug(tts.get_version())
-    _logger.debug(tts.get_speakers())
+    loguru.logger.debug(tts.get_version())
+    loguru.logger.debug(tts.get_speakers())

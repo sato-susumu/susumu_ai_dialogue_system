@@ -1,12 +1,11 @@
-import logging
 import random
 
 
 # noinspection PyMethodMayBeStatic
 class MessageFilter:
     def __init__(self):
-        self._logger = logging.getLogger(__name__)
-
+        pass
+    
     def exclude_empty_message(self, message_list):
         return [item for item in message_list if item.message != ""]
 

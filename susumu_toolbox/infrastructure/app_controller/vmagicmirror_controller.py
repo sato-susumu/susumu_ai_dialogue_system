@@ -1,5 +1,3 @@
-import logging
-
 import mido
 
 from susumu_toolbox.infrastructure.app_controller.base_app_contorller import BaseAppController
@@ -26,7 +24,7 @@ class VMagicMirrorController(BaseAppController):
         # noinspection PyUnresolvedReferences
         port_name_list = mido.get_output_names()
         # TODO: デバッグログで出力する
-        # self._logger.debug(port_name_list)
+        # logger.debug(port_name_list)
 
         # "loopMIDI"を含む最初の要素を取得する
         loop_midi_port = next((s for s in port_name_list if 'loopMIDI' in s), None)
@@ -55,15 +53,13 @@ class VMagicMirrorController(BaseAppController):
         note = self._mapping[emotion]
         msg = mido.Message('note_on', note=note, velocity=127, time=0)
         # TODO: デバッグログで出力する
-        # self._logger.debug("Sending message: {}".format(msg))
+        # logger.debug("Sending message: {}".format(msg))
         self._mido_output.send(msg)
 
 
 if __name__ == '__main__':
     import random
     from time import sleep
-
-    logging.basicConfig(level=logging.DEBUG)
 
     _config = Config()
     _controller = VMagicMirrorController(_config)

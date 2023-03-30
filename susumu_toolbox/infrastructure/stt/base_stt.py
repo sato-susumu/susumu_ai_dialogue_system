@@ -1,4 +1,3 @@
-import logging
 from enum import Enum
 
 import pyaudio
@@ -112,7 +111,6 @@ class STTEvent(Enum):
 class BaseSTT:
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
         self.__event_channel = ThreadedEventChannel(blocking=False)
 

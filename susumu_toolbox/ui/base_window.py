@@ -1,4 +1,3 @@
-import logging
 import webbrowser
 
 import PySimpleGUI as Sg
@@ -16,7 +15,6 @@ class BaseWindow:
 
     def __init__(self, config: Config):
         self._config = config
-        self._logger = logging.getLogger(__name__)
 
     def is_linked_text_event(self, event) -> bool:
         if event.startswith("URL "):
