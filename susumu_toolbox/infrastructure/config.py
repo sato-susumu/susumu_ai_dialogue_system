@@ -76,7 +76,6 @@ class Config:
     KEY_OBS_HOST = "obs_host"
     KEY_OBS_PORT_NO = "obs_port_no"
     KEY_OBS_PASSWORD = "obs_password"
-    KEY_OBS_SCENE_NAME = "obs_scene_name"
     KEY_OBS_USER_UTTERANCE_SOURCE_NAME = "obs_user_utterance_source_name"
     KEY_OBS_AI_UTTERANCE_SOURCE_NAME = "obs_ai_utterance_source_name"
     KEY_YOUTUBE_LIVE_URL = "youtube_live_url"
@@ -142,9 +141,8 @@ class Config:
               openai_api_key: ""
             OBS:
               obs_host: "127.0.0.1"
-              obs_port_no: 4444
+              obs_port_no: 4455
               obs_password: "パスワード"
-              obs_scene_name: "scene1"
               obs_user_utterance_source_name: "user_input_text"
               obs_ai_utterance_source_name: "ai_output_text"
             VOICEVOX:
@@ -283,12 +281,6 @@ class Config:
 
     def set_obs_password(self, value: str) -> None:
         self._config["OBS"][self.KEY_OBS_PASSWORD] = value
-
-    def get_obs_scene_name(self) -> str:
-        return self._config["OBS"][self.KEY_OBS_SCENE_NAME]
-
-    def set_obs_scene_name(self, value: str) -> None:
-        self._config["OBS"][self.KEY_OBS_SCENE_NAME] = value
 
     def get_obs_user_utterance_source_name(self) -> str:
         return self._config["OBS"][self.KEY_OBS_USER_UTTERANCE_SOURCE_NAME]
