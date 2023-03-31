@@ -1,5 +1,5 @@
-from susumu_toolbox.translation.googletrans_translator import GoogletransTranslator
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.infrastructure.translation.googletrans_translator import GoogletransTranslator
+from susumu_toolbox.infrastructure.config import Config
 
 
 def test_translator():

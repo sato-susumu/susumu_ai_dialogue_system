@@ -1,5 +1,5 @@
-from susumu_toolbox.tts.voicevox_tts import VoicevoxTTS
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.infrastructure.tts.voicevox_tts import VoicevoxTTS
+from susumu_toolbox.infrastructure.config import Config
 
 
 def test_tts_play():

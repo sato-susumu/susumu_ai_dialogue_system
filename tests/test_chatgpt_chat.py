@@ -1,6 +1,6 @@
-from susumu_toolbox.chat.chatgpt_chat import ChatGPTChat
-from susumu_toolbox.utility.config import Config
-from susumu_toolbox.utility.system_setting import SystemSettings
+from susumu_toolbox.infrastructure.chat.chatgpt_chat import ChatGPTChat
+from susumu_toolbox.infrastructure.config import Config
+from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 def test_settings():
