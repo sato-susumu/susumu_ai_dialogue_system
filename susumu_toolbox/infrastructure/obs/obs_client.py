@@ -1,8 +1,7 @@
-from queue import Empty
+from queue import Empty, Queue
 
 from loguru import logger
 from obswebsocket import obsws, requests
-from six.moves import queue
 from websocket import WebSocketConnectionClosedException
 
 from susumu_toolbox.infrastructure.config import Config
@@ -25,7 +24,7 @@ class OBSClient(BaseOBSClient):
     def __init__(self, config: Config):
         super().__init__(config)
         self._ws = None
-        self._connection_waiting_queue = queue.Queue()
+        self._connection_waiting_queue = Queue()
 
     def _on_connect(self, ws_app) -> None:
         logger.debug("on_connect({})".format(ws_app))

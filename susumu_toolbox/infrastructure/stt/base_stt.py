@@ -1,8 +1,8 @@
 from enum import Enum
+from queue import Queue, Empty
 
 import pyaudio
 from event_channel.threaded_event_channel import ThreadedEventChannel
-from six.moves import queue
 
 from susumu_toolbox.infrastructure.config import Config
 
@@ -20,7 +20,7 @@ class MicrophoneStream(object):
         self._chunk = chunk
 
         # スレッドセーフのオーディオ格納バッファ。サイズ無制限
-        self._buff = queue.Queue()
+        self._buff = Queue()
         self._audio_interface = None
         self._audio_stream = None
         self.closed = True
@@ -79,7 +79,7 @@ class MicrophoneStream(object):
                     # データがあれば、さらに取得。
                     # block=Falseなので、データがなければqueue.Empty例外発生
                     chunk = self._buff.get(block=False)
-                except queue.Empty:
+                except Empty:
                     # バッファが空になったらbreak
                     break
                 # データが終わったときにはNoneが積まれているので、Noneだった場合は戻る

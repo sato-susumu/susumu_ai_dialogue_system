@@ -8,7 +8,6 @@ pyaudio
 pyttsx3
 pytest
 requests
-six
 pydub
 gtts
 simpleaudio
