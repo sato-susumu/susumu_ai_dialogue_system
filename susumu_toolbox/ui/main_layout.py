@@ -20,12 +20,18 @@ class MainLayout(BaseLayout):
     def get_key(cls) -> str:
         return "main_layout"
 
+    def __get_run_button_label(self) -> str:
+        if self.__main_thread:
+            return "停止"
+        else:
+            return "起動"
+
     def get_layout(self):
         from susumu_toolbox.ui.main_window import MainWindow
 
         buttons_layout = [[
             Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_SETTINGS),
-            Sg.Button('起動', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
+            Sg.Button(self.__get_run_button_label(), size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
             Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key=MainWindow.KEY_WINDOW_EXIT),
         ]]
 
@@ -48,6 +54,7 @@ class MainLayout(BaseLayout):
 
     def update_layout(self, window: Window) -> None:
         window["common_config_table"].update(values=self._get_common_config_table())
+        window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
 
     def _get_common_config_table(self) -> list:
         common_config_table = [
@@ -61,15 +68,26 @@ class MainLayout(BaseLayout):
         ]
         return common_config_table
 
-    def __run(self) -> None:
+    def __main_thread_start(self) -> None:
         if self.__main_thread:
             return
         self.__main_thread = MainThread(self._config)
         self.__main_thread.start()
 
+    def __main_thread_stop(self) -> None:
+        if self.__main_thread is None:
+            return
+        self.__main_thread.stop()
+        self.__main_thread = None
+
     def handle_event(self, event, values, main_window) -> None:
         match event:
             case self.KEY_MAIN_RUN:
-                main_window.window.Hide()
+                # main_window.window.Hide()
+                if self.__main_thread is None:
+                    self.__main_thread_start()
+                else:
+                    self.__main_thread_stop()
+                main_window.update_layout(self.get_key())
             case self.KEY_MAIN_SETTINGS:
                 main_window.change_layout(SettingsLayout.get_key())

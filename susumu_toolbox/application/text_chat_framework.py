@@ -30,10 +30,10 @@ class TextChatFramework(BaseChatFramework):
         try:
             self._connect_all()
 
-            while self._chat.is_connecting():
+            while self._chat.is_connecting() and not self._termination_flag.is_set():
                 time.sleep(1)
 
-            while self._chat.is_connected():
+            while self._chat.is_connected() and not self._termination_flag.is_set():
                 ai_result = self._wait_ai_response()
                 if ai_result is None:
                     break
@@ -49,8 +49,8 @@ class TextChatFramework(BaseChatFramework):
                 self._present_quick_replies(quick_replies)
 
                 user_text = self._wait_user_input()
-                if user_text == "bye":
-                    self._exit_requested_event.set()
+                if user_text == "bye" or self._termination_flag.is_set():
+                    self._termination_flag.set()
                     break
 
                 self._request_ai_message(user_text=user_text, obs_ai_utterance_text="(考え中。。。)")

@@ -24,7 +24,7 @@ class BaseChatFramework:
         self._system_settings = system_settings
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
-        self._exit_requested_event = Event()
+        self._termination_flag = Event()
 
         # speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
         speech_contexts = []
@@ -44,6 +44,10 @@ class BaseChatFramework:
 
         self._tts.event_subscribe(TTSEvent.START, self._on_tts_start)
         self._tts.event_subscribe(TTSEvent.END, self._on_tts_end)
+
+    def set_termination_flag(self):
+        logger.debug("終了をリクエスト")
+        self._termination_flag.set()
 
     def create_chat(self) -> BaseChat:
         chat = FunctionFactory.create_chat(self._config, self._system_settings)
@@ -145,7 +149,7 @@ class BaseChatFramework:
         self._chat.disconnect()
 
     def _wait_user_input(self) -> str:
-        while True:
+        while self._termination_flag.is_set() is False:
             if type(self._stt) == SRGoogleSyncSTT:
                 logger.debug("音声認識 準備中")
             self._stt.recognize()
@@ -207,7 +211,7 @@ class BaseChatFramework:
 
     def run_forever(self) -> None:
         logger.debug("run_forever")
-        while self._exit_requested_event.is_set() is False:
+        while self._termination_flag.is_set() is False:
             self.run_once()
 
     def run_once(self) -> None:
