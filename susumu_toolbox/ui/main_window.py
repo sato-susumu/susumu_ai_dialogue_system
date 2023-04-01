@@ -2,85 +2,63 @@ import os
 
 import PySimpleGUI as Sg
 
-from susumu_toolbox.application.main_thread import MainThread
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.ui.base_window import BaseWindow
-from susumu_toolbox.ui.settings_window import SettingsWindow
+from susumu_toolbox.ui.main_layout import MainLayout
+from susumu_toolbox.ui.settings_layout import SettingsLayout
 
 
 # noinspection PyMethodMayBeStatic
-class MainWindow(BaseWindow):
+class MainWindow:
+    __WINDOW_SIZE = (800, 600)
+    KEY_WINDOW_EXIT = "key_window_exit"
+
     def __init__(self, config: Config):
-        super().__init__(config)
-        self.__main_thread = None
+        self.window = None
+        self.__config = config
+        self.__layout_list = [MainLayout(config), SettingsLayout(config)]
 
-    def _run(self) -> None:
-        if self.__main_thread:
-            return
-        self.__main_thread = MainThread(self._config)
-        self.__main_thread.start()
+    def change_layout(self, target_layout_name: str) -> None:
+        for layout in self.__layout_list:
+            self.window[layout.get_key()].update(visible=False)
 
-    def _get_common_config_table(self) -> list:
-        common_config_table = [
-            ['ベース機能', self._config.get_common_base_function_name()],
-            ['入力', self._config.get_common_input_function_name()],
-            ['チャットエンジン', self._config.get_common_chat_function_name()],
-            ['出力', self._config.get_common_output_function_name()],
-            ['OBS出力', "有効" if self._config.get_common_obs_enabled() else "無効"],
-            ['感情解析とVMagicMirror連携',
-             "有効" if self._config.get_common_v_magic_mirror_connection_enabled() else "無効"],
-        ]
-        return common_config_table
+        self.window[target_layout_name].update(visible=True)
+        self.__update_layout(target_layout_name)
+
+    def __update_layout(self, target_layout_name: str) -> None:
+        for layout in self.__layout_list:
+            if layout.get_key() == target_layout_name:
+                layout.update_layout(self.window)
+
+    def update_config(self) -> None:
+        config_file_path = self.__config.get_current_config_path()
+        if os.path.exists(config_file_path):
+            self.__config.load(config_file_path)
+        for layout in self.__layout_list:
+            layout.update_config(self.__config)
+
+    def input_validation_number_only(self, event, values):
+        if values[event] and values[event][-1] not in '0123456789':
+            self.window[event].update(values[event][:-1])
 
     def display(self):
-        buttons_layout = [[
-            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key="settings"),
-            Sg.Button('起動', size=self.BUTTON_SIZE_NORMAL, key="run"),
-            Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key="exit"),
-        ]]
-
-        header = ['機能名', '設定値']
-        common_config_items = [
-            [Sg.Table(self._get_common_config_table(),
-                      headings=header,
-                      hide_vertical_scroll=True,
-                      col_widths=[20, 50],
-                      justification='left',
-                      auto_size_columns=False,
-                      key="common_config_table",
-                      )],
-        ]
-        window_layout = [
-            [Sg.Frame("現在の設定", common_config_items, expand_x=True)],
-            [Sg.Column(buttons_layout, justification='center')],
-        ]
-
-        main_window = Sg.Window(self._config.get_gui_app_title(),
-                                window_layout,
-                                size=self.WINDOW_SIZE,
+        window_layout = [[Sg.Column(layout.get_layout(), visible=False, key=layout.get_key())
+                          for layout in self.__layout_list]]
+        self.window = Sg.Window(title=self.__config.get_gui_app_title(),
+                                layout=window_layout,
+                                size=self.__WINDOW_SIZE,
                                 finalize=True,
                                 )
-        path = self._config.get_current_config_path()
+        self.change_layout(MainLayout.get_key())
+
+        path = self.__config.get_current_config_path()
         if not os.path.exists(path):
             Sg.popup_ok("このアプリを使用するにはOpenAIのAPI Keyの設定が必要です。\nまずは、設定ボタンを押し、OpenAIのAPI Keyを設定してください。",
                         title="OpenAIのAPI Keyが設定されていません。")
 
         while True:
-            event, values = main_window.read()
-            if event in (Sg.WIN_CLOSED, 'exit'):
+            event, values = self.window.read()
+            for layout in self.__layout_list:
+                layout.handle_event(event, values, self)
+            if event in (Sg.WIN_CLOSED, self.KEY_WINDOW_EXIT):
                 break
-            if event == "run":
-                main_window.Hide()
-                self._run()
-                break
-            if event == "settings":
-                main_window.Hide()
-                close_button_clicked = SettingsWindow(self._config).display()
-                if close_button_clicked:
-                    break
-                _config_file_path = self._config.get_current_config_path()
-                if os.path.exists(_config_file_path):
-                    self._config.load(_config_file_path)
-                main_window["common_config_table"].update(values=self._get_common_config_table())
-                main_window.UnHide()
-        main_window.close()
+        self.window.close()

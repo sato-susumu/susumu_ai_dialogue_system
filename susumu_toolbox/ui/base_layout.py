@@ -1,19 +1,35 @@
 import webbrowser
 
 import PySimpleGUI as Sg
+from PySimpleGUI import Window
 
 from susumu_toolbox.infrastructure.config import Config
 
 
 # noinspection PyMethodMayBeStatic
-class BaseWindow:
-    WINDOW_SIZE = (800, 600)
+class BaseLayout:
     INPUT_SIZE_SHORT = (8, 1)
     INPUT_SIZE_NORMAL = (20, 1)
     INPUT_SIZE_LONG = (70, 1)
     BUTTON_SIZE_NORMAL = (10, 1)
 
     def __init__(self, config: Config):
+        self._config = config
+
+    @classmethod
+    def get_key(cls) -> str:
+        raise NotImplementedError
+
+    def get_layout(self):
+        raise NotImplementedError
+
+    def update_layout(self, window: Window) -> None:
+        raise NotImplementedError
+
+    def handle_event(self, event, values, main_window) -> None:
+        raise NotImplementedError
+
+    def update_config(self, config: Config) -> None:
         self._config = config
 
     def is_linked_text_event(self, event) -> bool:
