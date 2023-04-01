@@ -1,7 +1,7 @@
 import threading
 import time
 
-from susumu_toolbox.application.text_chat_sample import TextChatSample
+from susumu_toolbox.application.text_chat_framework import TextChatFramework
 from susumu_toolbox.infrastructure.chat.base_chat import ChatResult
 from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult
@@ -15,7 +15,7 @@ def start_sample():
     _config.set_common_obs_enabled(False)
     _system_settings = SystemSettings(_config)
 
-    text_chat_sample = TextChatSample(_config, _system_settings)
+    text_chat_sample = TextChatFramework(_config, _system_settings)
 
     thread = threading.Thread(target=text_chat_sample.run_once)
     thread.start()

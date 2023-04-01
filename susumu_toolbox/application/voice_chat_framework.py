@@ -3,14 +3,14 @@ import traceback
 
 from loguru import logger
 
-from susumu_toolbox.application.base_chat_sample import BaseChatSample
+from susumu_toolbox.application.base_chat_framework import BaseChatFramework
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult, STTEvent
 from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class TextChatSample(BaseChatSample):
+class VoiceChatFramework(BaseChatFramework):
     def __init__(self, config: Config, system_settings: SystemSettings):
         super().__init__(config, system_settings)
 
@@ -38,15 +38,8 @@ class TextChatSample(BaseChatSample):
                 if ai_result is None:
                     break
 
-                if self._tts.is_playing():
-                    logger.debug("前の音声合成が再生中なので、再生停止")
-                    self._tts.tts_stop()
-
                 ai_text = ai_result.text
-                self._present_ai_message(ai_text, obs_ai_utterance_text=ai_text)
-
-                quick_replies = ai_result.quick_replies
-                self._present_quick_replies(quick_replies)
+                self._present_ai_message(ai_text, obs_ai_utterance_text=ai_text, tts_async_playback=False)
 
                 user_text = self._wait_user_input()
                 if user_text == "bye":
@@ -66,4 +59,4 @@ if __name__ == "__main__":
     _config.search_and_load()
     _system_settings = SystemSettings(_config)
     _config.set_wrime_model_dir_path("../../model_data/wrime_model.pth")
-    TextChatSample(_config, _system_settings).run_forever()
+    VoiceChatFramework(_config, _system_settings).run_forever()

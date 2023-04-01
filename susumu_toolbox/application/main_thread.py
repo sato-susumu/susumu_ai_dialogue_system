@@ -1,8 +1,8 @@
 import threading
 
-from susumu_toolbox.application.ai_tuber_sample import AiVTuberSample
-from susumu_toolbox.application.text_chat_sample import TextChatSample
-from susumu_toolbox.application.voice_chat_sample import VoiceChatSample
+from susumu_toolbox.application.ai_tuber_framework import AiVTuberFramework
+from susumu_toolbox.application.text_chat_framework import TextChatFramework
+from susumu_toolbox.application.voice_chat_framework import VoiceChatFramework
 from susumu_toolbox.infrastructure.config import Config, BaseFunction
 
 
@@ -21,11 +21,11 @@ class MainThread:
 
         base_function = self.__config.get_common_base_function()
         if base_function == BaseFunction.TEXT_DIALOGUE:
-            base = TextChatSample(self.__config, system_settings)
+            base = TextChatFramework(self.__config, system_settings)
         elif base_function == BaseFunction.VOICE_DIALOGUE:
-            base = VoiceChatSample(self.__config, system_settings)
+            base = VoiceChatFramework(self.__config, system_settings)
         elif base_function == BaseFunction.AI_TUBER:
-            base = AiVTuberSample(self.__config, system_settings)
+            base = AiVTuberFramework(self.__config, system_settings)
         else:
             raise ValueError(f"Invalid base_function: {base_function}")
         base.run_forever()

@@ -18,7 +18,7 @@ from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS, TTSEvent
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
-class BaseChatSample:
+class BaseChatFramework:
     def __init__(self, config: Config, system_settings: SystemSettings):
         self._config = config
         self._system_settings = system_settings
