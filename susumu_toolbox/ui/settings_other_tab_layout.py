@@ -10,8 +10,6 @@ if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
     from susumu_toolbox.ui.main_window import MainWindow
 
-from PySimpleGUI import Window
-
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.base_layout import BaseLayout
 from susumu_toolbox.ui.gui_events import GuiEvents
@@ -21,8 +19,8 @@ import PySimpleGUI as Sg
 
 # noinspection PyMethodMayBeStatic
 class SettingsOtherTabLayout(BaseLayout):
-    def __init__(self, config: Config, settings_layout: SettingsLayout):
-        super().__init__(config)
+    def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
+        super().__init__(config, main_window)
         self._settings_layout = settings_layout
 
     @classmethod
@@ -90,7 +88,7 @@ class SettingsOtherTabLayout(BaseLayout):
 
         return other_tab_layout
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         pass
 
     # noinspection PyUnusedLocal
@@ -104,9 +102,9 @@ class SettingsOtherTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         if event == self._config.KEY_OBS_PORT_NO:
-            main_window.input_validation_number_only(event, values)
+            self._main_window.window.input_validation_number_only(event, values)
 
         if event == GuiEvents.OBS_TEST:
             self.__obs_test(event, values)

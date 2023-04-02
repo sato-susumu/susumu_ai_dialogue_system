@@ -4,7 +4,6 @@ import webbrowser
 from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
-from PySimpleGUI import Window
 
 from susumu_toolbox.infrastructure.config import Config
 
@@ -18,8 +17,9 @@ class BaseLayout:
     INPUT_SIZE_LONG = (70, 1)
     BUTTON_SIZE_NORMAL = (10, 1)
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, main_window: MainWindow):
         self._config = config
+        self._main_window = main_window
 
     @classmethod
     def get_key(cls) -> str:
@@ -28,10 +28,10 @@ class BaseLayout:
     def get_layout(self):
         raise NotImplementedError
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         raise NotImplementedError
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         raise NotImplementedError
 
     def update_config(self, config: Config) -> None:

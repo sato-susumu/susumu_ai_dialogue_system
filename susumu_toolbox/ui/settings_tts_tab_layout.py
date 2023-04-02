@@ -7,7 +7,6 @@ if TYPE_CHECKING:
     from susumu_toolbox.ui.main_window import MainWindow
 
 import PySimpleGUI as Sg
-from PySimpleGUI import Window
 from loguru import logger
 
 from susumu_toolbox.application.common.tts_test import TTSTest
@@ -40,8 +39,8 @@ class SettingsTtsTabLayout(BaseLayout):
                              'ナースロボ＿タイプＴ-ノーマル': 47, 'ナースロボ＿タイプＴ-楽々': 48,
                              'ナースロボ＿タイプＴ-恐怖': 49, 'ナースロボ＿タイプＴ-内緒話': 50}
 
-    def __init__(self, config: Config, settings_layout: SettingsLayout):
-        super().__init__(config)
+    def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
+        super().__init__(config, main_window)
         self._settings_layout = settings_layout
 
     @classmethod
@@ -105,7 +104,7 @@ class SettingsTtsTabLayout(BaseLayout):
         ]
         return tts_tab_layout
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         pass
 
     def __tts_test(self, event, values) -> None:
@@ -133,9 +132,9 @@ class SettingsTtsTabLayout(BaseLayout):
         selected_speaker_key = values[self._VOICEVOX_SPEAKER_COMBO_KEY]
         return self._voicevox_speaker_dic[selected_speaker_key]
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         if event in (self._config.KEY_VOICEVOX_PORT_NO, self._config.KEY_VOICEVOX_SPEAKER_NO):
-            main_window.input_validation_number_only(event, values)
+            self._main_window.window.input_validation_number_only(event, values)
 
         if event in (
                 GuiEvents.VOICEVOX_TEST, GuiEvents.GTTS_TEST, GuiEvents.GOOGLE_CLOUD_TTS_TEST,

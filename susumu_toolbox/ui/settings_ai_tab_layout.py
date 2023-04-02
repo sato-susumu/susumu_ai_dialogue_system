@@ -8,16 +8,14 @@ if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
     from susumu_toolbox.ui.main_window import MainWindow
 
-from PySimpleGUI import Window
-
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.base_layout import BaseLayout
 
 
 # noinspection PyMethodMayBeStatic
 class SettingsAiTabLayout(BaseLayout):
-    def __init__(self, config: Config, settings_layout: SettingsLayout):
-        super().__init__(config)
+    def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
+        super().__init__(config, main_window)
         self._settings_layout = settings_layout
         self.__current_ai_id = config.get_ai_id_list()[0]
 
@@ -40,11 +38,11 @@ class SettingsAiTabLayout(BaseLayout):
 
         return ai_tab_layout
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         pass
 
     def get_current_ai_id(self) -> str:
         return self.__current_ai_id
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         pass

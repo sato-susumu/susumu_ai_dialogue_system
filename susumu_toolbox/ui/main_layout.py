@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Optional, TYPE_CHECKING
 
 import PySimpleGUI as Sg
-from PySimpleGUI import Window
 from loguru import logger
 
 from susumu_toolbox.application.main_thread import MainThread, MainThreadEvent
@@ -20,8 +19,8 @@ class MainLayout(BaseLayout):
     KEY_MAIN_RUN = "key_main_run"
     KEY_MAIN_SETTINGS = "key_main_settings"
 
-    def __init__(self, config: Config):
-        super().__init__(config)
+    def __init__(self, config: Config, main_window: MainWindow):
+        super().__init__(config, main_window)
         self.__main_thread: Optional[MainThread] = None
 
     @classmethod
@@ -64,10 +63,10 @@ class MainLayout(BaseLayout):
         ]
         return window_layout
 
-    def update_layout(self, window: Window) -> None:
-        window["common_config_table"].update(values=self._get_common_config_table())
-        window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
-        window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
+    def update_layout(self) -> None:
+        self._main_window.window["common_config_table"].update(values=self._get_common_config_table())
+        self._main_window.window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
+        self._main_window.window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
 
     def update_config(self, config: Config) -> None:
         logger.info("設定内容の一部をリアルタイム反映")
@@ -110,13 +109,13 @@ class MainLayout(BaseLayout):
     def __handle_main_thread_stopped(self) -> None:
         logger.debug("メインスレッド停止完了")
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         match event:
             case self.KEY_MAIN_RUN:
                 if self.__main_thread is None:
                     self.__main_thread_start()
                 else:
                     self.__main_thread_stop()
-                main_window.update_layout(self.get_key())
+                self._main_window.update_layout(self.get_key())
             case self.KEY_MAIN_SETTINGS:
-                main_window.change_layout(SettingsLayout.get_key())
+                self._main_window.change_layout(SettingsLayout.get_key())

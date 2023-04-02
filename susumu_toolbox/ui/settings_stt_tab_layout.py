@@ -11,8 +11,6 @@ if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
     from susumu_toolbox.ui.main_window import MainWindow
 
-from PySimpleGUI import Window
-
 from susumu_toolbox.infrastructure.config import Config, InputFunction
 from susumu_toolbox.ui.base_layout import BaseLayout
 from susumu_toolbox.ui.gui_events import GuiEvents
@@ -20,8 +18,8 @@ from susumu_toolbox.ui.gui_events import GuiEvents
 
 # noinspection PyMethodMayBeStatic
 class SettingsSttTabLayout(BaseLayout):
-    def __init__(self, config: Config, settings_layout: SettingsLayout):
-        super().__init__(config)
+    def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
+        super().__init__(config, main_window)
         self._settings_layout = settings_layout
 
     @classmethod
@@ -82,7 +80,7 @@ class SettingsSttTabLayout(BaseLayout):
 
         return stt_tab_layout
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         pass
 
     def __stt_test(self, event, values):
@@ -108,7 +106,7 @@ class SettingsSttTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         if event in (GuiEvents.YOUTUBE_PSEUD_STT_TEST, GuiEvents.GOOGLE_STREAMING_STT_TEST,
                      GuiEvents.SR_GOOGLE_STT_TEST, GuiEvents.STDIN_PSEUD_STT_TEST,
                      GuiEvents.WHISPER_API_STT_TEST):

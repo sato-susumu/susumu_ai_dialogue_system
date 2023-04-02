@@ -15,7 +15,7 @@ class MainWindow:
     def __init__(self, config: Config):
         self.window = None
         self.__config = config
-        self.__layout_list = [MainLayout(config), SettingsLayout(config)]
+        self.__layout_list = [MainLayout(config, self), SettingsLayout(config, self)]
 
     def change_layout(self, target_layout_name: str) -> None:
         for layout in self.__layout_list:
@@ -27,7 +27,7 @@ class MainWindow:
     def update_layout(self, target_layout_name: str) -> None:
         for layout in self.__layout_list:
             if layout.get_key() == target_layout_name:
-                layout.update_layout(self.window)
+                layout.update_layout()
 
     def update_config(self) -> None:
         config_file_path = self.__config.get_current_config_path()
@@ -60,5 +60,5 @@ class MainWindow:
             if event in (Sg.WIN_CLOSED, self.KEY_WINDOW_EXIT):
                 break
             for layout in self.__layout_list:
-                layout.handle_event(event, values, self)
+                layout.handle_event(event, values)
         self.window.close()

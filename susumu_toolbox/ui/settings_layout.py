@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
-from PySimpleGUI import Window
 
 from susumu_toolbox.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction, OutputFunction
 from susumu_toolbox.ui.base_layout import BaseLayout
@@ -22,15 +21,15 @@ if TYPE_CHECKING:
 # noinspection PyMethodMayBeStatic
 class SettingsLayout(BaseLayout):
 
-    def __init__(self, config: Config):
-        super().__init__(config)
-        self.__common_tab_layout = SettingsCommonTabLayout(config, self)
-        self.__stt_tab_layout = SettingsSttTabLayout(config, self)
-        self.__tts_tab_layout = SettingsTtsTabLayout(config, self)
-        self.__other_tab_layout = SettingsOtherTabLayout(config, self)
-        self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self)
-        self.__chat_tab_layout = SettingsChatTabLayout(config, self)
-        self.__ai_tab_layout = SettingsAiTabLayout(config, self)
+    def __init__(self, config: Config, main_window: MainWindow):
+        super().__init__(config, main_window)
+        self.__common_tab_layout = SettingsCommonTabLayout(config, self, main_window)
+        self.__stt_tab_layout = SettingsSttTabLayout(config, self, main_window)
+        self.__tts_tab_layout = SettingsTtsTabLayout(config, self, main_window)
+        self.__other_tab_layout = SettingsOtherTabLayout(config, self, main_window)
+        self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
+        self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
+        self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
 
     @classmethod
     def get_key(cls) -> str:
@@ -40,9 +39,9 @@ class SettingsLayout(BaseLayout):
         self._config = self.update_local_config_by_values(values, self._config)
         self._config.save()
 
-    def update_layout(self, window: Window) -> None:
+    def update_layout(self) -> None:
         if self._config.get_openai_api_key() == "":
-            window["api_keys_tab"].select()
+            self._main_window.window["api_keys_tab"].select()
 
     def get_layout(self):
         buttons_layout = [
@@ -122,25 +121,25 @@ class SettingsLayout(BaseLayout):
 
         return target_config
 
-    def handle_event(self, event, values, main_window: MainWindow) -> None:
+    def handle_event(self, event, values) -> None:
         from susumu_toolbox.ui.main_layout import MainLayout
 
         if event == "save":
             self.__save(values)
-            main_window.update_config()
-            main_window.change_layout(MainLayout.get_key())
+            self._main_window.update_config()
+            self._main_window.change_layout(MainLayout.get_key())
             return
         if event == "cancel":
-            main_window.change_layout(MainLayout.get_key())
+            self._main_window.change_layout(MainLayout.get_key())
             return
 
         if self.is_linked_text_event(event):
             self.open_linked_text_url(event)
 
-        self.__common_tab_layout.handle_event(event, values, main_window)
-        self.__stt_tab_layout.handle_event(event, values, main_window)
-        self.__tts_tab_layout.handle_event(event, values, main_window)
-        self.__other_tab_layout.handle_event(event, values, main_window)
-        self.__api_key_tab_layout.handle_event(event, values, main_window)
-        self.__chat_tab_layout.handle_event(event, values, main_window)
-        self.__ai_tab_layout.handle_event(event, values, main_window)
+        self.__common_tab_layout.handle_event(event, values)
+        self.__stt_tab_layout.handle_event(event, values)
+        self.__tts_tab_layout.handle_event(event, values)
+        self.__other_tab_layout.handle_event(event, values)
+        self.__api_key_tab_layout.handle_event(event, values)
+        self.__chat_tab_layout.handle_event(event, values)
+        self.__ai_tab_layout.handle_event(event, values)
