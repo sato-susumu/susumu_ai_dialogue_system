@@ -37,6 +37,7 @@ class BaseLayout:
     def update_config(self, config: Config) -> None:
         self._config = config
 
+    # noinspection PyMethodMayBeStatic
     def is_linked_text_event(self, event) -> bool:
         if event.startswith("URL "):
             return True

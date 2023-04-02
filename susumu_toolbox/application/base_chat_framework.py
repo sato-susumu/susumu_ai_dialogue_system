@@ -11,7 +11,6 @@ from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.emotion.emotion import Emotion
 from susumu_toolbox.infrastructure.stt.base_stt import BaseSTT, STTResult
 from susumu_toolbox.infrastructure.stt.sr_google_sync_stt import SRGoogleSyncSTT
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.translation.base_translator import BaseTranslator
 from susumu_toolbox.infrastructure.translation.dummy_translator import DummyTranslator
 from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS, TTSEvent
@@ -19,9 +18,8 @@ from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS, TTSEvent
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class BaseChatFramework:
-    def __init__(self, config: Config, system_settings: SystemSettings):
+    def __init__(self, config: Config):
         self._config = config
-        self._system_settings = system_settings
         self._chat_message_queue = queue.Queue()
         self._stt_message_queue = queue.Queue()
         self._termination_flag = Event()
@@ -50,7 +48,7 @@ class BaseChatFramework:
         self._termination_flag.set()
 
     def create_chat(self) -> BaseChat:
-        chat = FunctionFactory.create_chat(self._config, self._system_settings)
+        chat = FunctionFactory.create_chat(self._config)
         logger.debug(f"chat:{chat}")
         return chat
 

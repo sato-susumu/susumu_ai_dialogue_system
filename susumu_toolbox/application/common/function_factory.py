@@ -16,7 +16,6 @@ from susumu_toolbox.infrastructure.stt.sr_google_sync_stt import SRGoogleSyncSTT
 from susumu_toolbox.infrastructure.stt.stdin_pseud_stt import StdinPseudSTT
 from susumu_toolbox.infrastructure.stt.whisper_stt import WhisperApiSTT
 from susumu_toolbox.infrastructure.stt.youtube_pseud_stt import YoutubePseudSTT
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.tts.base_tts import BaseTTS
 from susumu_toolbox.infrastructure.tts.dummy_tts import DummyTTS
 from susumu_toolbox.infrastructure.tts.google_cloud_tts import GoogleCloudTTS
@@ -45,12 +44,12 @@ class FunctionFactory:
         raise ValueError(f"Invalid input_function: {input_function}")
 
     @staticmethod
-    def create_chat(config: Config, system: SystemSettings) -> BaseChat:
+    def create_chat(config: Config) -> BaseChat:
         chat_function = config.get_common_chat_function()
         if chat_function == ChatFunction.PARLAI:
             return ParlAIChat(config)
         if chat_function == ChatFunction.CHATGPT:
-            return ChatGPTChat(config, system)
+            return ChatGPTChat(config)
         raise ValueError(f"Invalid chat_function: {chat_function}")
 
     @staticmethod

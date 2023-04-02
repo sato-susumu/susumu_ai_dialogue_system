@@ -52,16 +52,13 @@ class MainThread:
             self.__base.update_config(config)
 
     def __run(self):
-        current_ai_id = self.__config.get_ai_id_list()[0]
-        system_settings = self.__config.get_ai_system_settings(current_ai_id)
-
         base_function = self.__config.get_common_base_function()
         if base_function == BaseFunction.TEXT_DIALOGUE:
-            self.__base = TextChatFramework(self.__config, system_settings)
+            self.__base = TextChatFramework(self.__config)
         elif base_function == BaseFunction.VOICE_DIALOGUE:
-            self.__base = VoiceChatFramework(self.__config, system_settings)
+            self.__base = VoiceChatFramework(self.__config)
         elif base_function == BaseFunction.AI_TUBER:
-            self.__base = AiVTuberFramework(self.__config, system_settings)
+            self.__base = AiVTuberFramework(self.__config)
         else:
             raise ValueError(f"Invalid base_function: {base_function}")
         self._event_channel.publish(MainThreadEvent.ON_START.value)

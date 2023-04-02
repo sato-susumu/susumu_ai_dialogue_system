@@ -3,26 +3,22 @@ from susumu_toolbox.application.common.log_mannager import LogManager
 from susumu_toolbox.application.text_chat_framework import TextChatFramework
 from susumu_toolbox.application.voice_chat_framework import VoiceChatFramework
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 from susumu_toolbox.infrastructure.vad.webrtc_vad import WebRtcVad
 
 
 def test_voice_chat_sample():
     config = Config()
-    system_settings = SystemSettings(config)
-    VoiceChatFramework(config, system_settings)
+    VoiceChatFramework(config)
 
 
 def test_ai_v_tuber_sample():
     config = Config()
-    system_settings = SystemSettings(config)
-    AiVTuberFramework(config, system_settings)
+    AiVTuberFramework(config)
 
 
 def test_text_chat_sample():
     config = Config()
-    system_settings = SystemSettings(config)
-    TextChatFramework(config, system_settings)
+    TextChatFramework(config)
 
 
 def test_log_manager():

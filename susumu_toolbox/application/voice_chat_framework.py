@@ -6,13 +6,12 @@ from loguru import logger
 from susumu_toolbox.application.base_chat_framework import BaseChatFramework
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.infrastructure.stt.base_stt import STTResult, STTEvent
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 # noinspection PyMethodMayBeStatic,DuplicatedCode
 class VoiceChatFramework(BaseChatFramework):
-    def __init__(self, config: Config, system_settings: SystemSettings):
-        super().__init__(config, system_settings)
+    def __init__(self, config: Config):
+        super().__init__(config)
 
         self._stt.event_subscribe(STTEvent.START, self._on_stt_start)
         self._stt.event_subscribe(STTEvent.END, self._on_stt_end)
@@ -57,6 +56,5 @@ class VoiceChatFramework(BaseChatFramework):
 if __name__ == "__main__":
     _config = Config()
     _config.search_and_load()
-    _system_settings = SystemSettings(_config)
     _config.set_wrime_model_dir_path("../../model_data/wrime_model.pth")
-    VoiceChatFramework(_config, _system_settings).run_forever()
+    VoiceChatFramework(_config).run_forever()

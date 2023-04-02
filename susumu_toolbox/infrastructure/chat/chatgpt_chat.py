@@ -5,17 +5,17 @@ from loguru import logger
 
 from susumu_toolbox.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatEvent
 from susumu_toolbox.infrastructure.config import Config
-from susumu_toolbox.infrastructure.system_setting import SystemSettings
 
 
 # noinspection PyUnusedLocal,PyMethodMayBeStatic,PyShadowingNames
 class ChatGPTChat(BaseChat):
-    def __init__(self, config: Config, system_settings: SystemSettings):
+    def __init__(self, config: Config):
         super().__init__(config)
         openai.api_key = config.get_openai_api_key()
-        self._system_settings = system_settings
         self._messages = []
-        system_settings_text = self._system_settings.get_text()
+        current_ai_id = config.get_ai_id_list()[0]
+        system_settings = config.get_ai_system_settings(current_ai_id)
+        system_settings_text = system_settings.get_text()
         if len(system_settings_text) != 0:
             self._append_message("system", system_settings_text)
 
@@ -33,7 +33,7 @@ class ChatGPTChat(BaseChat):
         before = time.perf_counter()
         try:
             messages = self._create_prompt()
-            # logger.debug(f"ChatGPT prompt={messages}")
+            logger.debug(f"ChatGPT prompt={messages}")
             result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
