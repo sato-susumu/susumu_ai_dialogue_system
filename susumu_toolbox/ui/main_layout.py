@@ -27,7 +27,7 @@ class MainLayout(BaseLayout):
     def get_key(cls) -> str:
         return "main_layout"
 
-    def __get_run_button_label(self) -> str:
+    def __get_run_button_text(self) -> str:
         if self.__main_thread:
             return "停止"
         else:
@@ -36,13 +36,20 @@ class MainLayout(BaseLayout):
     def __settings_button_disabled(self) -> bool:
         return self.__main_thread is not None
 
+    def __run_button_disabled(self) -> bool:
+        if self.__main_thread is None:
+            return False
+        if self.__main_thread.is_running():
+            return False
+        return True
+
     def get_layout(self):
         from susumu_toolbox.ui.main_window import MainWindow
 
         buttons_layout = [[
             Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_SETTINGS,
                       disabled=self.__settings_button_disabled()),
-            Sg.Button(self.__get_run_button_label(), size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
+            Sg.Button(self.__get_run_button_text(), size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
             Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key=MainWindow.KEY_WINDOW_EXIT),
         ]]
 
@@ -65,7 +72,8 @@ class MainLayout(BaseLayout):
 
     def update_layout(self) -> None:
         self._main_window.window["common_config_table"].update(values=self._get_common_config_table())
-        self._main_window.window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
+        self._main_window.window[self.KEY_MAIN_RUN].update(text=self.__get_run_button_text(),
+                                                           disabled=self.__run_button_disabled())
         self._main_window.window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
 
     def update_config(self, config: Config) -> None:
@@ -105,9 +113,11 @@ class MainLayout(BaseLayout):
 
     def _handle_main_thread_started(self) -> None:
         logger.debug("メインスレッド起動完了")
+        self._main_window.update_layout(self.get_key())
 
     def __handle_main_thread_stopped(self) -> None:
         logger.debug("メインスレッド停止完了")
+        self._main_window.update_layout(self.get_key())
 
     def handle_event(self, event, values) -> None:
         match event:
