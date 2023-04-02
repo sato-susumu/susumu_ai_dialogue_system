@@ -6,6 +6,9 @@ class BaseOBSClient:
     def __init__(self, config: Config):
         self._config = config
 
+    def update_config(self, config: Config):
+        self._config = config
+
     def connect(self) -> None:
         pass
 

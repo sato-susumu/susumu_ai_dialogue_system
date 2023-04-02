@@ -38,6 +38,9 @@ class BaseChat:
         self.state: ChatState = ChatState.INIT
         self._event_channel = ThreadedEventChannel(blocking=False)
 
+    def update_config(self, config: Config):
+        self._config = config
+
     def event_subscribe(self, event_name: ChatEvent, func) -> None:
         self._event_channel.subscribe(event_name.value, func)
 

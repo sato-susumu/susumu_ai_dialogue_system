@@ -120,6 +120,9 @@ class BaseSTT:
     def _event_publish(self, event: STTEvent, *args, **kwargs):
         self.__event_channel.publish(event.value, *args, **kwargs)
 
+    def update_config(self, config: Config):
+        self._config = config
+
     def recognize(self):
         pass
 

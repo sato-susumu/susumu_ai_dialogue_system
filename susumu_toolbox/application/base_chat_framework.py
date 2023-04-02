@@ -210,6 +210,14 @@ class BaseChatFramework:
         logger.debug("CHATメッセージキュー取得")
         return ai_result
 
+    def update_config(self, config: Config):
+        self._config = config
+        self._obs.update_config(config)
+        self._app_controller.update_config(config)
+        self._chat.update_config(config)
+        self._stt.update_config(config)
+        self._tts.update_config(config)
+
     def run_forever(self) -> None:
         logger.debug("run_forever")
         while self._termination_flag.is_set() is False:

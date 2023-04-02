@@ -24,6 +24,9 @@ class BaseTTS:
         self._player = PyAudioPlayer(config)
         self.__event_channel = ThreadedEventChannel(blocking=False)
 
+    def update_config(self, config: Config):
+        self._config = config
+
     def event_subscribe(self, event_name: TTSEvent, func):
         self.__event_channel.subscribe(event_name.value, func)
 
