@@ -46,7 +46,7 @@ class BaseChatFramework:
         self._tts.event_subscribe(TTSEvent.END, self._on_tts_end)
 
     def set_termination_flag(self):
-        logger.debug("終了をリクエスト")
+        logger.info("終了をリクエスト")
         self._termination_flag.set()
 
     def create_chat(self) -> BaseChat:
@@ -73,6 +73,7 @@ class BaseChatFramework:
         return obs
 
     def create_emotion_model(self):
+        logger.info("感情解析モデル読み込み中...(しばらくお待ちください)")
         emotion_model = FunctionFactory.create_emotion_model(self._config)
         logger.debug(f"emotion model:{emotion_model}")
         return emotion_model
@@ -106,7 +107,7 @@ class BaseChatFramework:
     def _on_stt_start(self):
         console_message = self._stt_helper.get_start_message_for_console()
         if console_message is not None:
-            logger.debug(console_message)
+            logger.info(console_message)
         caption_message = self._stt_helper.get_start_message_for_caption()
         if caption_message is not None:
             self._obs.set_user_utterance_text(caption_message)
@@ -114,12 +115,12 @@ class BaseChatFramework:
     def _on_stt_result(self, result: STTResult):
         if result.is_final:
             if result.is_timed_out:
-                logger.debug('stt final(timeout):' + result.text)
+                logger.info('stt final(timeout):' + result.text)
             else:
-                logger.debug('stt final:' + result.text)
+                logger.info('stt final:' + result.text)
             self._stt_message_queue.put(result)
         else:
-            logger.debug('stt not final:' + result.text)
+            logger.info('stt not final:' + result.text)
 
     def _on_stt_end(self):
         # logger.debug("stt end")
@@ -132,7 +133,7 @@ class BaseChatFramework:
         pass
 
     def _on_stt_error(self, e):
-        logger.debug(e)
+        logger.error(e)
 
     def _connect_all(self):
         self._obs.connect()
@@ -151,7 +152,7 @@ class BaseChatFramework:
     def _wait_user_input(self) -> str:
         while self._termination_flag.is_set() is False:
             if type(self._stt) == SRGoogleSyncSTT:
-                logger.debug("音声認識 準備中")
+                logger.info("音声認識 準備中")
             self._stt.recognize()
             logger.debug("STTメッセージキュー待機")
             stt_message = self._stt_message_queue.get(block=True, timeout=None)
@@ -166,7 +167,7 @@ class BaseChatFramework:
             return input_text
 
     def _present_ai_message(self, text: str, obs_ai_utterance_text: Optional[str], tts_async_playback: bool = True):
-        logger.debug("Present AI message. AI: " + text)
+        logger.info("Present AI message. AI: " + text)
         text = self._translator.translate(text, self._translator.LANG_CODE_JA_JP)
 
         self._present_ai_emotion(text)
@@ -181,7 +182,7 @@ class BaseChatFramework:
 
     def _present_ai_emotion(self, ai_text: str):
         max_emotion, max_emotion_value, raw_dict = self._emotion_model.get_max_emotion(ai_text)
-        logger.debug(f"max_emotion: {max_emotion}, max_emotion_value: {max_emotion_value}")
+        logger.info(f"max_emotion: {max_emotion}, max_emotion_value: {max_emotion_value}")
         logger.debug(f"raw_result:{raw_dict}")
         if max_emotion_value > 0.4:
             self._app_controller.set_emotion(max_emotion)
@@ -199,9 +200,9 @@ class BaseChatFramework:
             self._obs.set_ai_utterance_text(obs_ai_utterance_text)
 
         text = self._translator.translate(user_text, self._translator.LANG_CODE_EN_US)
-        logger.debug("AI 返事待ち開始")
+        logger.info("AI 返事待ち開始")
         self._chat.send_message(text)
-        logger.debug("AI 返事待ち完了 ")
+        logger.info("AI 返事待ち完了 ")
 
     def _wait_ai_response(self) -> ChatResult:
         logger.debug("CHATメッセージキュー待機")

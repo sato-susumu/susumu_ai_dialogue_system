@@ -100,7 +100,7 @@ class SettingsOtherTabLayout(BaseLayout):
         try:
             OBSTest(config).run()
         except Exception as e:
-            logger.debug(e)
+            logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def handle_event(self, event, values, main_window) -> None:

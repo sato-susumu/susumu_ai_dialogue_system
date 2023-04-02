@@ -59,8 +59,8 @@ class AiVTuberFramework(BaseChatFramework):
 
                 self._request_ai_message(user_text=user_text, obs_ai_utterance_text=None)
         except Exception:
-            logger.debug(traceback.format_exc())  # いつものTracebackが表示される
-            logger.debug("エラーが発生しましたが処理を継続します！")
+            logger.error(traceback.format_exc())  # いつものTracebackが表示される
+            logger.info("エラーが発生しましたが処理を継続します！")
         finally:
             self._disconnect_all()
 

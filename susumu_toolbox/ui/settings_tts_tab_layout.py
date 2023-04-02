@@ -126,7 +126,7 @@ class SettingsTtsTabLayout(BaseLayout):
         try:
             TTSTest(config).run()
         except Exception as e:
-            logger.debug(e)
+            logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def get_selected_speaker_no(self, values):
