@@ -4,10 +4,9 @@ from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
 
-# 循環参照対策
-
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
 
 from PySimpleGUI import Window
 
@@ -47,5 +46,5 @@ class SettingsAiTabLayout(BaseLayout):
     def get_current_ai_id(self) -> str:
         return self.__current_ai_id
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         pass

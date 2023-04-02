@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-# 循環参照対策
-
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
+
 import PySimpleGUI as Sg
 from PySimpleGUI import Window
 
@@ -58,5 +58,5 @@ class SettingsApiKeyTabLayout(BaseLayout):
     def update_layout(self, window: Window) -> None:
         pass
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         pass

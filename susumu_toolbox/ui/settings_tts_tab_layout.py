@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-# 循環参照対策
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
 
 import PySimpleGUI as Sg
 from PySimpleGUI import Window
@@ -133,7 +133,7 @@ class SettingsTtsTabLayout(BaseLayout):
         selected_speaker_key = values[self._VOICEVOX_SPEAKER_COMBO_KEY]
         return self._voicevox_speaker_dic[selected_speaker_key]
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         if event in (self._config.KEY_VOICEVOX_PORT_NO, self._config.KEY_VOICEVOX_SPEAKER_NO):
             main_window.input_validation_number_only(event, values)
 

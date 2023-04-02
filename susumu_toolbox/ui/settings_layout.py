@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import PySimpleGUI as Sg
 from PySimpleGUI import Window
 
@@ -10,6 +14,9 @@ from susumu_toolbox.ui.settings_common_tab_layout import SettingsCommonTabLayout
 from susumu_toolbox.ui.settings_other_tab_layout import SettingsOtherTabLayout
 from susumu_toolbox.ui.settings_stt_tab_layout import SettingsSttTabLayout
 from susumu_toolbox.ui.settings_tts_tab_layout import SettingsTtsTabLayout
+
+if TYPE_CHECKING:
+    from susumu_toolbox.ui.main_window import MainWindow
 
 
 # noinspection PyMethodMayBeStatic
@@ -115,7 +122,7 @@ class SettingsLayout(BaseLayout):
 
         return target_config
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         from susumu_toolbox.ui.main_layout import MainLayout
 
         if event == "save":

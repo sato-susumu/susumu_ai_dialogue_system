@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
-# 循環参照対策
 from loguru import logger
 
 from susumu_toolbox.application.common.stt_test import STTTest
 
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
 
 from PySimpleGUI import Window
 
@@ -108,7 +108,7 @@ class SettingsSttTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         if event in (GuiEvents.YOUTUBE_PSEUD_STT_TEST, GuiEvents.GOOGLE_STREAMING_STT_TEST,
                      GuiEvents.SR_GOOGLE_STT_TEST, GuiEvents.STDIN_PSEUD_STT_TEST,
                      GuiEvents.WHISPER_API_STT_TEST):

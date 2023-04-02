@@ -1,8 +1,10 @@
 import threading
+from typing import Optional
 
 from loguru import logger
 
 from susumu_toolbox.application.ai_tuber_framework import AiVTuberFramework
+from susumu_toolbox.application.base_chat_framework import BaseChatFramework
 from susumu_toolbox.application.text_chat_framework import TextChatFramework
 from susumu_toolbox.application.voice_chat_framework import VoiceChatFramework
 from susumu_toolbox.infrastructure.config import Config, BaseFunction
@@ -12,7 +14,7 @@ class MainThread:
     def __init__(self, config: Config):
         self.__config = config
         self.__thread = None
-        self.__base = None
+        self.__base: Optional[BaseChatFramework] = None
 
     def start(self):
         if self.__thread:
@@ -29,6 +31,11 @@ class MainThread:
         logger.debug("メインスレッド終了完了")
         self.__base = None
         self.__thread = None
+
+    def update_config(self, config: Config):
+        self.__config = config
+        if self.__base:
+            self.__base.update_config(config)
 
     def __run(self):
         current_ai_id = self.__config.get_ai_id_list()[0]

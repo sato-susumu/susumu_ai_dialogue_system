@@ -2,20 +2,21 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import PySimpleGUI as Sg
-# 循環参照対策
 from loguru import logger
 
 from susumu_toolbox.application.common.obs_test import OBSTest
 
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
 
 from PySimpleGUI import Window
 
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.base_layout import BaseLayout
 from susumu_toolbox.ui.gui_events import GuiEvents
+
+import PySimpleGUI as Sg
 
 
 # noinspection PyMethodMayBeStatic
@@ -103,7 +104,7 @@ class SettingsOtherTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         if event == self._config.KEY_OBS_PORT_NO:
             main_window.input_validation_number_only(event, values)
 

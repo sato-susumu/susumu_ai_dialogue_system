@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+from typing import Optional, TYPE_CHECKING
+
 import PySimpleGUI as Sg
 from PySimpleGUI import Window
+from loguru import logger
 
 from susumu_toolbox.application.main_thread import MainThread
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.base_layout import BaseLayout
 from susumu_toolbox.ui.settings_layout import SettingsLayout
+
+if TYPE_CHECKING:
+    from susumu_toolbox.ui.main_window import MainWindow
 
 
 # noinspection PyMethodMayBeStatic
@@ -14,7 +22,7 @@ class MainLayout(BaseLayout):
 
     def __init__(self, config: Config):
         super().__init__(config)
-        self.__main_thread = None
+        self.__main_thread: Optional[MainThread] = None
 
     @classmethod
     def get_key(cls) -> str:
@@ -56,6 +64,12 @@ class MainLayout(BaseLayout):
         window["common_config_table"].update(values=self._get_common_config_table())
         window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
 
+    def update_config(self, config: Config) -> None:
+        logger.info("設定内容の一部をリアルタイム反映")
+        super().update_config(config)
+        if self.__main_thread:
+            self.__main_thread.update_config(config)
+
     def _get_common_config_table(self) -> list:
         common_config_table = [
             ['ベース機能', self._config.get_common_base_function_name()],
@@ -80,7 +94,7 @@ class MainLayout(BaseLayout):
         self.__main_thread.stop()
         self.__main_thread = None
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         match event:
             case self.KEY_MAIN_RUN:
                 # main_window.window.Hide()

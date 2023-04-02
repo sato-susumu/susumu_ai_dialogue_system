@@ -4,10 +4,9 @@ from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
 
-# 循環参照対策
-
 if TYPE_CHECKING:
     from susumu_toolbox.ui.settings_layout import SettingsLayout
+    from susumu_toolbox.ui.main_window import MainWindow
 
 from PySimpleGUI import Window
 
@@ -57,6 +56,6 @@ class SettingsChatTabLayout(BaseLayout):
     def update_layout(self, window: Window) -> None:
         pass
 
-    def handle_event(self, event, values, main_window) -> None:
+    def handle_event(self, event, values, main_window: MainWindow) -> None:
         if event == self._config.KEY_PARLAI_PORT_NO:
             main_window.input_validation_number_only(event, values)
