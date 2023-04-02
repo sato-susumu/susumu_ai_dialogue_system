@@ -6,7 +6,7 @@ import PySimpleGUI as Sg
 from PySimpleGUI import Window
 from loguru import logger
 
-from susumu_toolbox.application.main_thread import MainThread
+from susumu_toolbox.application.main_thread import MainThread, MainThreadEvent
 from susumu_toolbox.infrastructure.config import Config
 from susumu_toolbox.ui.base_layout import BaseLayout
 from susumu_toolbox.ui.settings_layout import SettingsLayout
@@ -34,11 +34,15 @@ class MainLayout(BaseLayout):
         else:
             return "起動"
 
+    def __settings_button_disabled(self) -> bool:
+        return self.__main_thread is not None
+
     def get_layout(self):
         from susumu_toolbox.ui.main_window import MainWindow
 
         buttons_layout = [[
-            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_SETTINGS),
+            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_SETTINGS,
+                      disabled=self.__settings_button_disabled()),
             Sg.Button(self.__get_run_button_label(), size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
             Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key=MainWindow.KEY_WINDOW_EXIT),
         ]]
@@ -63,6 +67,7 @@ class MainLayout(BaseLayout):
     def update_layout(self, window: Window) -> None:
         window["common_config_table"].update(values=self._get_common_config_table())
         window[self.KEY_MAIN_RUN].update(self.__get_run_button_label())
+        window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
 
     def update_config(self, config: Config) -> None:
         logger.info("設定内容の一部をリアルタイム反映")
@@ -86,18 +91,28 @@ class MainLayout(BaseLayout):
         if self.__main_thread:
             return
         self.__main_thread = MainThread(self._config)
+        self.__main_thread.event_subscribe(MainThreadEvent.ON_START, self._handle_main_thread_started)
+        self.__main_thread.event_subscribe(MainThreadEvent.ON_STOP, self.__handle_main_thread_stopped)
         self.__main_thread.start()
 
     def __main_thread_stop(self) -> None:
         if self.__main_thread is None:
             return
+        logger.debug("メインスレッド停止待ち")
         self.__main_thread.stop()
+        self.__main_thread.event_unsubscribe(MainThreadEvent.ON_START, self._handle_main_thread_started)
+        self.__main_thread.event_unsubscribe(MainThreadEvent.ON_STOP, self.__handle_main_thread_stopped)
         self.__main_thread = None
+
+    def _handle_main_thread_started(self) -> None:
+        logger.debug("メインスレッド起動完了")
+
+    def __handle_main_thread_stopped(self) -> None:
+        logger.debug("メインスレッド停止完了")
 
     def handle_event(self, event, values, main_window: MainWindow) -> None:
         match event:
             case self.KEY_MAIN_RUN:
-                # main_window.window.Hide()
                 if self.__main_thread is None:
                     self.__main_thread_start()
                 else:
