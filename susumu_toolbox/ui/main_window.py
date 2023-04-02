@@ -57,8 +57,8 @@ class MainWindow:
 
         while True:
             event, values = self.window.read()
-            for layout in self.__layout_list:
-                layout.handle_event(event, values, self)
             if event in (Sg.WIN_CLOSED, self.KEY_WINDOW_EXIT):
                 break
+            for layout in self.__layout_list:
+                layout.handle_event(event, values, self)
         self.window.close()
