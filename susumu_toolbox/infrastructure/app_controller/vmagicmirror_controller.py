@@ -1,4 +1,5 @@
 import mido
+import mido.backends.rtmidi  # noqa
 
 from susumu_toolbox.infrastructure.app_controller.base_app_contorller import BaseAppController
 from susumu_toolbox.infrastructure.config import Config

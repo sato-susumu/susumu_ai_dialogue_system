@@ -2,6 +2,7 @@ websocket-client
 event_channel
 deepl
 speechrecognition
+google-cloud-core
 google-cloud-speech
 google-cloud-texttospeech
 pyaudio
