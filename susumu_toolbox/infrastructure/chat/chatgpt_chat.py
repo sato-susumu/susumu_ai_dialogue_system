@@ -33,7 +33,7 @@ class ChatGPTChat(BaseChat):
         before = time.perf_counter()
         try:
             messages = self._create_prompt()
-            logger.debug(f"ChatGPT prompt={messages}")
+            # logger.debug(f"ChatGPT prompt={messages}")
             result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
