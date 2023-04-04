@@ -21,13 +21,21 @@ class MainWindow:
         # 例えば、設定画面のキャンセルボタンを押した場合、作成済みの各Elementを初期化するか、全Elementを再作成したい。
         # しかし、ウィンドウを維持したまま簡単に行う手段がない。
         # そのため、ウィンドウから再作成することで、全Elementを初期化する。
-        window_layout = [[Sg.Column(layout.get_layout(), visible=False, key=layout.get_key())
-                          for layout in self.__layout_list]]
-        new_window = Sg.Window(title=self.__config.get_gui_app_title(),
-                               layout=window_layout,
-                               size=self.__WINDOW_SIZE,
-                               finalize=True,
-                               )
+        window_layout = [
+            [Sg.Column(layout.get_layout(), visible=False, key=layout.get_key()) for layout in self.__layout_list]]
+
+        window_params = {
+            'title': self.__config.get_gui_app_title(),
+            'layout': window_layout,
+            'size': self.__WINDOW_SIZE,
+            'finalize': True
+        }
+
+        if self.window:
+            window_params['location'] = self.window.current_location()
+
+        new_window = Sg.Window(**window_params)
+
         for layout in self.__layout_list:
             new_window[layout.get_key()].update(visible=False)
         new_window[target_layout_name].update(visible=True)
