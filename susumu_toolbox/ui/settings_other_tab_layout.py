@@ -87,7 +87,7 @@ class SettingsOtherTabLayout(BaseLayout):
 
         return other_tab_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         pass
 
     # noinspection PyUnusedLocal

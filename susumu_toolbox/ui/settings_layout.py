@@ -48,7 +48,7 @@ class SettingsLayout(BaseLayout):
         self._config = self.update_local_config_by_values(values, self._config)
         self._config.save()
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         if self._config.get_openai_api_key() == "":
             self._main_window.window["api_keys_tab"].select()
 

@@ -38,7 +38,7 @@ class SettingsAiTabLayout(BaseLayout):
 
         return ai_tab_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         pass
 
     def get_current_ai_id(self) -> str:

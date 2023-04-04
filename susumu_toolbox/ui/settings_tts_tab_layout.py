@@ -114,7 +114,7 @@ class SettingsTtsTabLayout(BaseLayout):
         ]
         return tts_tab_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         pass
 
     def __tts_test(self, event, values) -> None:

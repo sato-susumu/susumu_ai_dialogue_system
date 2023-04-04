@@ -70,7 +70,7 @@ class SettingsCommonTabLayout(BaseLayout):
         ]]
         return common_tab_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         pass
 
     def handle_event(self, event, values) -> None:

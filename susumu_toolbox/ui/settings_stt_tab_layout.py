@@ -80,7 +80,7 @@ class SettingsSttTabLayout(BaseLayout):
 
         return stt_tab_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         pass
 
     def __stt_test(self, event, values):

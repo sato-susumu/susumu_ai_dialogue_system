@@ -22,12 +22,12 @@ class MainWindow:
             self.window[layout.get_key()].update(visible=False)
 
         self.window[target_layout_name].update(visible=True)
-        self.update_layout(target_layout_name)
+        self.update_all_elements_in_window(target_layout_name)
 
-    def update_layout(self, target_layout_name: str) -> None:
+    def update_all_elements_in_window(self, target_layout_name: str) -> None:
         for layout in self.__layout_list:
             if layout.get_key() == target_layout_name:
-                layout.update_layout()
+                layout.update_elements()
 
     def update_config(self) -> None:
         config_file_path = self.__config.get_current_config_path()
