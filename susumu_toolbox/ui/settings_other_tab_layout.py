@@ -82,7 +82,7 @@ class SettingsOtherTabLayout(BaseLayout):
             [Sg.Text('・VMagicMirrorの起動と事前の設定が必要です。')],
         ]
 
-        log_level_value = self._config.get_other_console_log_level()
+        log_level_value = self._config.get_advanced_console_log_level()
         log_level_key = [k for k, v in self._log_level_dic.items() if v == log_level_value][0]
 
         log_level_items = [

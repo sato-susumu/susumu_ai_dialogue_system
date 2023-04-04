@@ -110,7 +110,7 @@ class SettingsLayout(BaseLayout):
         if values[self._config.KEY_OBS_PORT_NO] != "":
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
-        target_config.set_other_console_log_level(self.__other_tab_layout.get_selected_console_log_level(values))
+        target_config.set_advanced_console_log_level(self.__other_tab_layout.get_selected_console_log_level(values))
 
         # 共通設定
         [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in
