@@ -29,8 +29,7 @@ class SettingsOtherTabLayout(BaseLayout):
 
     def get_layout(self):
         obs_items = [
-            [Sg.Text('・obs-websocket 4.xのみ動作確認しています。')],
-            [Sg.Text('・利用には OBS Studio の起動が必要です。')],
+            [Sg.Text('・利用には OBS Studio の起動、設定が必要です。')],
             [Sg.Text('・OBS Studioの ツール > obs-websocket設定 で「ウェブサーバーを有効にする」を有効にしてください。')],
             [Sg.Text('アドレス'),
              Sg.InputText(default_text=self._config.get_obs_host(),
