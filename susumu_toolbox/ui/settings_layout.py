@@ -30,6 +30,15 @@ class SettingsLayout(BaseLayout):
         self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
         self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
         self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
+        self.__tab_layout_list = [
+            self.__common_tab_layout,
+            self.__stt_tab_layout,
+            self.__tts_tab_layout,
+            self.__other_tab_layout,
+            self.__api_key_tab_layout,
+            self.__chat_tab_layout,
+            self.__ai_tab_layout,
+        ]
 
     @classmethod
     def get_key(cls) -> str:
@@ -130,16 +139,12 @@ class SettingsLayout(BaseLayout):
             self._main_window.change_layout(MainLayout.get_key())
             return
         if event == "cancel":
+            self._main_window.update_config()
             self._main_window.change_layout(MainLayout.get_key())
             return
 
         if self.is_linked_text_event(event):
             self.open_linked_text_url(event)
 
-        self.__common_tab_layout.handle_event(event, values)
-        self.__stt_tab_layout.handle_event(event, values)
-        self.__tts_tab_layout.handle_event(event, values)
-        self.__other_tab_layout.handle_event(event, values)
-        self.__api_key_tab_layout.handle_event(event, values)
-        self.__chat_tab_layout.handle_event(event, values)
-        self.__ai_tab_layout.handle_event(event, values)
+        for layout in self.__tab_layout_list:
+            layout.handle_event(event, values)
