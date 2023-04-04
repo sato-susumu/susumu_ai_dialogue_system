@@ -17,7 +17,8 @@ from susumu_toolbox.ui.gui_events import GuiEvents
 
 # noinspection PyMethodMayBeStatic
 class SettingsTtsTabLayout(BaseLayout):
-    _VOICEVOX_SPEAKER_COMBO_KEY = 'voicevox_speaker_combo_key'
+    _KEY_TTS_VOICEVOX_SPEAKER_COMBO = 'key_tts_voicevox_speaker_combo'
+    _KEY_TTS_PLAY_TEXT = "key_tts_play_text"
     # VOICEVOXのスピーカーリスト。
     # TODO: 選択した名前はconfigに保存し、Windowに表示する。設定ボタンを追加し、押したときに動的にスピーカーを取得する
     _voicevox_speaker_dic = {'四国めたん-ノーマル': 2, '四国めたん-あまあま': 0, '四国めたん-ツンツン': 6,
@@ -68,7 +69,7 @@ class SettingsTtsTabLayout(BaseLayout):
              ],
             [Sg.Combo(list(self._voicevox_speaker_dic.keys()),
                       default_value=default_speaker_key,
-                      key=self._VOICEVOX_SPEAKER_COMBO_KEY,
+                      key=self._KEY_TTS_VOICEVOX_SPEAKER_COMBO,
                       size=(30, 1),
                       readonly=True,
                       ),
@@ -101,6 +102,15 @@ class SettingsTtsTabLayout(BaseLayout):
             [Sg.Frame("VOICEVOX 音声合成", voicevox_items, expand_x=True)],
             [Sg.Frame("Google Text-to-Speech 音声合成", google_cloud_tts_items, expand_x=True)],
             [Sg.Frame("Pyttsx3 音声合成", pyttsx3_items, expand_x=True)],
+            [
+                Sg.Text("テスト再生用文字列"),
+                Sg.Multiline(default_text="音声合成の再生テストです",
+                             key=self._KEY_TTS_PLAY_TEXT,
+                             expand_x=True,
+                             size=(50, 3),
+                             horizontal_scroll=False,
+                             ),
+            ],
         ]
         return tts_tab_layout
 
@@ -122,14 +132,15 @@ class SettingsTtsTabLayout(BaseLayout):
         else:
             raise Exception("想定外のイベントです")
 
+        text = values[self._KEY_TTS_PLAY_TEXT]
         try:
-            TTSTest(config).run()
+            TTSTest(config).run(text)
         except Exception as e:
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def get_selected_speaker_no(self, values):
-        selected_speaker_key = values[self._VOICEVOX_SPEAKER_COMBO_KEY]
+        selected_speaker_key = values[self._KEY_TTS_VOICEVOX_SPEAKER_COMBO]
         return self._voicevox_speaker_dic[selected_speaker_key]
 
     def handle_event(self, event, values) -> None:

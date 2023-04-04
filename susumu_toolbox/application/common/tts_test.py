@@ -14,8 +14,8 @@ class TTSTest:
         self._tts.event_subscribe(TTSEvent.START, self._on_tts_start)
         self._tts.event_subscribe(TTSEvent.END, self._on_tts_end)
 
-    def run(self) -> None:
-        self._tts.tts_play_async("テストです。")
+    def run(self, text) -> None:
+        self._tts.tts_play_async(text)
 
     def _on_tts_start(self):
         logger.debug("再生開始")
