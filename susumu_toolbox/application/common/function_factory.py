@@ -1,3 +1,4 @@
+from susumu_toolbox.application.common.log_controller import LogController
 from susumu_toolbox.infrastructure.app_controller.dummy_app_contorller import DummyAppController
 from susumu_toolbox.infrastructure.app_controller.threaded_app_controller import ThreadedAppController
 from susumu_toolbox.infrastructure.app_controller.vmagicmirror_controller import VMagicMirrorController
@@ -7,7 +8,6 @@ from susumu_toolbox.infrastructure.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
 from susumu_toolbox.infrastructure.emotion.dummy_emotion_model import DummyEmotionModel
 from susumu_toolbox.infrastructure.emotion.wrime_emotion_model import WrimeEmotionModel
-from susumu_toolbox.infrastructure.log_controller.log_controller import LogController
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
