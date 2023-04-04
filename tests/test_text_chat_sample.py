@@ -1,21 +1,19 @@
 import threading
 import time
 
-from susumu_toolbox.chat.base_chat import ChatResult
-from susumu_toolbox.sample.text_chat_sample import TextChatSample
-from susumu_toolbox.stt.base_stt import STTResult
-from susumu_toolbox.utility.config import Config
-from susumu_toolbox.utility.system_setting import SystemSettings
+from susumu_toolbox.application.text_chat_framework import TextChatFramework
+from susumu_toolbox.infrastructure.chat.base_chat import ChatResult
+from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction
+from susumu_toolbox.infrastructure.stt.base_stt import STTResult
 
 
 def start_sample():
     _config = Config()
-    _config.set_common_input_function_key(_config.INPUT_FUNCTION_BASE)
-    _config.set_common_output_function_key(_config.OUTPUT_FUNCTION_BASE)
+    _config.set_common_input_function(InputFunction.BASE)
+    _config.set_common_output_function(OutputFunction.BASE)
     _config.set_common_obs_enabled(False)
-    _system_settings = SystemSettings(_config)
 
-    text_chat_sample = TextChatSample(_config, _system_settings)
+    text_chat_sample = TextChatFramework(_config)
 
     thread = threading.Thread(target=text_chat_sample.run_once)
     thread.start()

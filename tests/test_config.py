@@ -1,6 +1,6 @@
 from omegaconf import OmegaConf
 
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.infrastructure.config import Config
 
 
 def test_default():

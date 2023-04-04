@@ -1,5 +1,5 @@
-from susumu_toolbox.obs.obs_client import OBSClient
-from susumu_toolbox.utility.config import Config
+from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
+from susumu_toolbox.infrastructure.config import Config
 
 
 def test_obs():

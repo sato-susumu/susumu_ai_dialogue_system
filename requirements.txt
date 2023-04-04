@@ -9,7 +9,6 @@ pyaudio
 pyttsx3
 pytest
 requests
-six
 pydub
 gtts
 simpleaudio
@@ -23,3 +22,11 @@ webrtcvad
 python-dateutil
 pyinstaller
 omegaconf
+transformers
+fugashi
+ipadic
+torch
+numpy
+mido
+python-rtmidi
+loguru
