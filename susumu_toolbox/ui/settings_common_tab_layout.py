@@ -60,7 +60,7 @@ class SettingsCommonTabLayout(BaseLayout):
                 [Sg.Frame("入力", input_function_items, expand_x=True)],
                 [Sg.Frame("チャットエンジン", chat_function_items, expand_x=True)],
                 [Sg.Frame("出力", output_function_items, expand_x=True)],
-                [Sg.Frame("その他", other_function_items, expand_x=True)],
+                [Sg.Frame("実験", other_function_items, expand_x=True)],
             ],
                 scrollable=True,
                 vertical_scroll_only=True,

@@ -69,7 +69,7 @@ class SettingsLayout(BaseLayout):
                     [Sg.Tab('入力', self.__stt_tab_layout.get_layout())],
                     [Sg.Tab('チャットエンジン', self.__chat_tab_layout.get_layout())],
                     [Sg.Tab('出力', self.__tts_tab_layout.get_layout())],
-                    [Sg.Tab('その他', self.__other_tab_layout.get_layout())],
+                    [Sg.Tab('実験', self.__other_tab_layout.get_layout())],
                 ],
                 # tab_location='left',
                 expand_x=True,
