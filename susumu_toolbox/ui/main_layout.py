@@ -128,4 +128,4 @@ class MainLayout(BaseLayout):
                     self.__main_thread_stop()
                 self._main_window.update_all_elements_in_window(self.get_key())
             case self.KEY_MAIN_SETTINGS:
-                self._main_window.change_layout(SettingsLayout.get_key())
+                self._main_window.create_new_window(SettingsLayout.get_key())

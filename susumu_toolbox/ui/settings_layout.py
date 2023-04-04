@@ -136,11 +136,11 @@ class SettingsLayout(BaseLayout):
         if event == "save":
             self.__save(values)
             self._main_window.update_config()
-            self._main_window.change_layout(MainLayout.get_key())
+            self._main_window.create_new_window(MainLayout.get_key())
             return
         if event == "cancel":
             self._main_window.update_config()
-            self._main_window.change_layout(MainLayout.get_key())
+            self._main_window.create_new_window(MainLayout.get_key())
             return
 
         if self.is_linked_text_event(event):
