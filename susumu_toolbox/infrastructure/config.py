@@ -97,6 +97,7 @@ class Config:
     KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
     KEY_GUI_APP_TITLE = "gui_app_title"
     KEY_GUI_THEME_NAME = "gui_theme_name"
+    KEY_OTHER_CONSOLE_LOG_LEVEL = "other_console_log_level"
 
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
@@ -171,6 +172,8 @@ class Config:
               # 名前の一部でもいい
               pyaudio_second_output_host_api_name: "MME"
               pyaudio_second_output_device_name: "VB-Audio Virtual C"
+            Other:
+              other_console_log_level: "DEBUG"
             GUI:
               gui_app_title: "susumu_toolbox"
               gui_theme_name: "Bright Colors"   
@@ -434,3 +437,9 @@ class Config:
 
     def exists_wrime_model_dir(self) -> bool:
         return os.path.exists(self._wrime_model_dir_path)
+
+    def get_other_console_log_level(self) -> str:
+        return self._config["Other"][self.KEY_OTHER_CONSOLE_LOG_LEVEL]
+
+    def set_other_console_log_level(self, value: str) -> None:
+        self._config["Other"][self.KEY_OTHER_CONSOLE_LOG_LEVEL] = value

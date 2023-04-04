@@ -16,13 +16,13 @@ class LogManager(Singleton):
         if not os.path.exists(model_data_dir):
             os.mkdir(model_data_dir)
 
-    def setup_logger(self):
+    def setup_logger(self, console_log_level: str = "DEBUG"):
         self.__create_log_dir_if_needed()
         logger.remove()
         # noinspection SpellCheckingInspection
         logger.add(
             sys.stdout,
-            level='DEBUG',
+            level=console_log_level,
             # format="<green>{time:YYYY-MM-DD HH:mm:ss.SSSSSS}</green> | <level>{level:<7}</level> | {message}"
             format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level:<8}</level> | {message}"
         )

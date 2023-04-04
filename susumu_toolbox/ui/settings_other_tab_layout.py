@@ -19,6 +19,14 @@ import PySimpleGUI as Sg
 
 # noinspection PyMethodMayBeStatic
 class SettingsOtherTabLayout(BaseLayout):
+    _log_level_dic = {
+        "すべて": "DEBUG",
+        "INFO以上": "INFO",
+        "WARNING以上": "WARNING",
+        "ERROR以上": "ERROR",
+    }
+    _KEY_OTHER_CONSOLE_LOG_LEVEL = "key_other_console_log_level"
+
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
@@ -74,6 +82,21 @@ class SettingsOtherTabLayout(BaseLayout):
             [Sg.Text('・VMagicMirrorの起動と事前の設定が必要です。')],
         ]
 
+        log_level_value = self._config.get_other_console_log_level()
+        log_level_key = [k for k, v in self._log_level_dic.items() if v == log_level_value][0]
+
+        log_level_items = [
+            [
+                Sg.Text('コンソールログ出力'),
+                Sg.Combo(values=list(self._log_level_dic.keys()),
+                         default_value=log_level_key,
+                         key=self._KEY_OTHER_CONSOLE_LOG_LEVEL,
+                         size=(30, 1),
+                         readonly=True,
+                         )
+            ]
+        ]
+
         status_items = [
             [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
         ]
@@ -82,6 +105,7 @@ class SettingsOtherTabLayout(BaseLayout):
             [Sg.Frame("OBS", obs_items, expand_x=True)],
             [Sg.Frame("感情解析", emotion_items, expand_x=True)],
             [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
+            [Sg.Frame("ログ", log_level_items, expand_x=True)],
             [Sg.Frame("APIステータス", status_items, expand_x=True)],
         ]
 
@@ -107,3 +131,7 @@ class SettingsOtherTabLayout(BaseLayout):
 
         if event == GuiEvents.OBS_TEST:
             self.__obs_test(event, values)
+
+    def get_selected_console_log_level(self, values):
+        selected_log_level_key = values[self._KEY_OTHER_CONSOLE_LOG_LEVEL]
+        return self._log_level_dic[selected_log_level_key]

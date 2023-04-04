@@ -7,6 +7,7 @@ from susumu_toolbox.infrastructure.chat.parlai_chat import ParlAIChat
 from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
 from susumu_toolbox.infrastructure.emotion.dummy_emotion_model import DummyEmotionModel
 from susumu_toolbox.infrastructure.emotion.wrime_emotion_model import WrimeEmotionModel
+from susumu_toolbox.infrastructure.log_controller.log_controller import LogController
 from susumu_toolbox.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_toolbox.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_toolbox.infrastructure.obs.obs_client import OBSClient
@@ -90,3 +91,7 @@ class FunctionFactory:
             source_controller = VMagicMirrorController(config)
             return ThreadedAppController(config, source_controller)
         return DummyAppController(config)
+
+    @staticmethod
+    def create_log_controller(config: Config):
+        return LogController(config)
