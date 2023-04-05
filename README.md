@@ -129,7 +129,7 @@ PythonやGitの知識があれば、次の方法で動かすことができま�
 Pythonの動作確認バージョンは3.10です。
 
 ```
-git clone https://github.com/sato-susumu/susumu_toolbox.git
+git clone https://github.com/sato-susumu/susumu-ai-dialogue-system.git
 cd susumu_toolbox
 pip install -r requirements.txt
 python main.py
