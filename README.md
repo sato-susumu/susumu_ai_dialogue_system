@@ -18,7 +18,7 @@
 
 ## 特徴
 
-`susumu-ai-dialogue-system` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AI VTuberシステムです。  
+`susumu_ai_dialogue_system` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AI VTuberシステムです。  
 各モジュールの切り替えは設定画面でワンクリックで行えます。
 <br/>
 
@@ -45,7 +45,7 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ## 実行方法
 
-[リリースページ](https://github.com/sato-susumu/susumu-ai-dialogue-system/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。  
+[リリースページ](https://github.com/sato-susumu/susumu_ai_dialogue_system/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。  
 ダウンロードしたzipを解凍し、 `susumu_toolbox.exe`を実行します。
 
 <br/>
@@ -79,14 +79,14 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ### AI VTuberを動かす
 
-`susumu-ai-dialogue-system` を使えば、プログラミングを行わなくてもAI VTuber(絵や3Dキャラクターを除く)を動かすことができます。
+`susumu_ai_dialogue_system` を使えば、プログラミングを行わなくてもAI VTuber(絵や3Dキャラクターを除く)を動かすことができます。
 AI VTuberとして動かすためには次のステップを踏むだけ、、、ですが、正直なところ、初めてだと敷居がとても高いです。
 
 - `Google Cloud Platform`で `API Key` を発行し、設定画面で `YouTubeコメント取得` に必要な設定を行う
 - `OBS Studio` をインストールし、字幕表示に必要な設定を行う
 - 設定画面の `共通設定` タブで、「ベース機能」は`AI VTuber`、「入力」は `YouTubeコメント取得` 、「その他」は `OBS出力` をONにする
 
-なお、`susumu-ai-dialogue-system`には絵や3Dキャラクターを動かす機能はないため、 `VMagicMirror`などで別のアプリで3Dキャラクターなどを動かす必要があります。
+なお、`susumu_ai_dialogue_system`には絵や3Dキャラクターを動かす機能はないため、 `VMagicMirror`などで別のアプリで3Dキャラクターなどを動かす必要があります。
 
 <br/>
 
@@ -95,7 +95,7 @@ AI VTuberとして動かすためには次のステップを踏むだけ、、�
 ### 簡単なカスタマイズ
 
 `ChatGPT` 使用時は、設定画面の `AI設定` タブで、プロンプトの内容を変更し、AIの性格や口調を変更できます。
-プログラムの挙動も含めてカスタマイズするためには、Pythonを使って `susumu-ai-dialogue-system`のソースコードを直接動かす必要があります。
+プログラムの挙動も含めてカスタマイズするためには、Pythonを使って `susumu_ai_dialogue_system`のソースコードを直接動かす必要があります。
 
 <br/>
 
@@ -118,8 +118,8 @@ PythonやGitの知識があれば、次の方法で動かすことができま�
 Pythonの動作確認バージョンは3.10です。
 
 ```
-git clone https://github.com/sato-susumu/susumu-ai-dialogue-system.git
-cd susumu-ai-dialogue-system
+git clone https://github.com/sato-susumu/susumu_ai_dialogue_system.git
+cd susumu_ai_dialogue_system
 pip install -r requirements.txt
 python main.py
 ```
