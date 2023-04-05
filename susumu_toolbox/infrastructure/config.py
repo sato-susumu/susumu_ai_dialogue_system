@@ -426,8 +426,14 @@ class Config:
     def get_gui_app_title(self) -> str:
         return self._config["GUI"][self.KEY_GUI_APP_TITLE]
 
+    def set_gui_app_title(self, value: str) -> None:
+        self._config["GUI"][self.KEY_GUI_APP_TITLE] = value
+
     def get_gui_theme_name(self) -> str:
         return self._config["GUI"][self.KEY_GUI_THEME_NAME]
+
+    def set_gui_theme_name(self, value: str) -> None:
+        self._config["GUI"][self.KEY_GUI_THEME_NAME] = value
 
     def get_wrime_model_dir_path(self) -> str:
         return self._wrime_model_dir_path

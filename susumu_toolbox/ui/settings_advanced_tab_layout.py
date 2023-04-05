@@ -97,17 +97,41 @@ class SettingsAdvancedTabLayout(BaseLayout):
             ]
         ]
 
+        gui_items = [
+            [Sg.Text("アプリタイトル"),
+             Sg.InputText(default_text=self._config.get_gui_app_title(),
+                          key=self._config.KEY_GUI_APP_TITLE,
+                          size=self.INPUT_SIZE_LONG,
+                          )],
+            [Sg.Text("テーマ"),
+             Sg.Combo(values=Sg.theme_list(),
+                      default_value=self._config.get_gui_theme_name(),
+                      key=self._config.KEY_GUI_THEME_NAME,
+                      size=(30, 1),
+                      readonly=True,
+                      ),
+             ]
+        ]
+
         status_items = [
             [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
         ]
 
-        advanced_tab_layout = [
-            [Sg.Frame("OBS", obs_items, expand_x=True)],
-            [Sg.Frame("感情解析", emotion_items, expand_x=True)],
-            [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
-            [Sg.Frame("ログ", log_level_items, expand_x=True)],
-            [Sg.Frame("APIステータス", status_items, expand_x=True)],
-        ]
+        advanced_tab_layout = [[
+            Sg.Column([
+                [Sg.Frame("OBS", obs_items, expand_x=True)],
+                [Sg.Frame("感情解析", emotion_items, expand_x=True)],
+                [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
+                [Sg.Frame("ログ", log_level_items, expand_x=True)],
+                [Sg.Frame("GUI", gui_items, expand_x=True)],
+                [Sg.Frame("APIステータス", status_items, expand_x=True)],
+            ],
+                scrollable=True,
+                vertical_scroll_only=True,
+                expand_x=True,
+                expand_y=True,
+            ),
+        ]]
 
         return advanced_tab_layout
 
