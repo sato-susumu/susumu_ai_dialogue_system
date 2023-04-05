@@ -23,7 +23,7 @@
 <br/>
 
 <p align="center">
-<img src="./docs/resources/susumu_ai_dialogue_system_modules_ja.png" style="zoom:80%;" />
+<img src="./docs/resources/susumu_ai_dialogue_system_modules_ja.png" />
 </p>
 
 
