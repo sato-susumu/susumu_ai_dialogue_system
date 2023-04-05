@@ -1,10 +1,10 @@
 import threading
 import time
 
-from susumu_toolbox.application.text_chat_framework import TextChatFramework
-from susumu_toolbox.infrastructure.chat.base_chat import ChatResult
-from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction
-from susumu_toolbox.infrastructure.stt.base_stt import STTResult
+from susumu_ai_dialogue_system.application.text_chat_framework import TextChatFramework
+from susumu_ai_dialogue_system.infrastructure.chat.base_chat import ChatResult
+from susumu_ai_dialogue_system.infrastructure.config import Config, OutputFunction, InputFunction
+from susumu_ai_dialogue_system.infrastructure.stt.base_stt import STTResult
 
 
 def start_sample():

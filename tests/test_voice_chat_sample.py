@@ -1,8 +1,8 @@
 import threading
 import time
 
-from susumu_toolbox.application.voice_chat_framework import VoiceChatFramework
-from susumu_toolbox.infrastructure.config import Config, OutputFunction, InputFunction
+from susumu_ai_dialogue_system.application.voice_chat_framework import VoiceChatFramework
+from susumu_ai_dialogue_system.infrastructure.config import Config, OutputFunction, InputFunction
 from tests.test_text_chat_sample import common_bye_1, common_bye_2, common_close
 
 

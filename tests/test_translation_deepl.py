@@ -1,5 +1,5 @@
-from susumu_toolbox.infrastructure.translation.deepl_translator import DeepLTranslator
-from susumu_toolbox.infrastructure.config import Config
+from susumu_ai_dialogue_system.infrastructure.translation.deepl_translator import DeepLTranslator
+from susumu_ai_dialogue_system.infrastructure.config import Config
 
 
 def test_deepl():

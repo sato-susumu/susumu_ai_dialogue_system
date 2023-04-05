@@ -1,5 +1,5 @@
-from susumu_toolbox.infrastructure.language_detector.base_language_detector import BaseLanguageDetector
-from susumu_toolbox.infrastructure.language_detector.lingua_language_detector import LinguaLanguageDetector
+from susumu_ai_dialogue_system.infrastructure.language_detector.base_language_detector import BaseLanguageDetector
+from susumu_ai_dialogue_system.infrastructure.language_detector.lingua_language_detector import LinguaLanguageDetector
 
 
 def test_base_language_detector_jp():

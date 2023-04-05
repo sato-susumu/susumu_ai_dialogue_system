@@ -1,4 +1,4 @@
-from susumu_toolbox.infrastructure.limited_fifo import LimitedFIFO
+from susumu_ai_dialogue_system.infrastructure.limited_fifo import LimitedFIFO
 
 
 def test_fifo_overflow():

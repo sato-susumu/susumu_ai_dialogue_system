@@ -1,4 +1,4 @@
-from susumu_toolbox.infrastructure.pyaudio_utility import PyAudioUtility
+from susumu_ai_dialogue_system.infrastructure.pyaudio_utility import PyAudioUtility
 
 
 def test_print_speaker_list():
