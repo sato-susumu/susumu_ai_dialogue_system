@@ -1,4 +1,6 @@
-[![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
+<p align="center">
+<img src="./docs/resources/demo1.gif" />
+</p>
 <p align="center">
   susumu ai dialogue system<br/><br/>
 </p>
@@ -18,18 +20,14 @@
 
 `susumu-ai-dialogue-system` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AI VTuberシステムです。  
 各モジュールの切り替えは設定画面でワンクリックで行えます。
+<br/>
 
-### 音声認識
+<p align="center">
+<img src="./docs/resources/susumu_ai_dialogue_system_modules_ja.png" style="zoom:80%;" />
+</p>
 
-高速なストリーミング音声認識が行える `Google Speech-to-Text`、登録不要で手軽に試せる `SpeechRecognition(Google)` など複数の音声認識に対応しています。
 
-### 音声合成
 
-無料で魅力的な音声合成ができる`VOICEVOX`、読みが正確な`Google Text-to-Speech`など複数の音声合成に対応しています。
-
-### AI
-
-`ChatGPT API`や`ParlAIクライアント`を活用して、回答を生成します。
 
 ### AI VTuber
 
@@ -102,19 +100,10 @@ AI VTuberとして動かすためには次のステップを踏むだけ、、�
 <br/>
 
 ## 対応モジュール
+### オプション
 
 | カテゴリ | モジュール | 条件        |
 | -------- | ---------- | ------------------ |
-| チャット | [ChatGPT](https://chat.openai.com/)    | APIキーが必要 |
-| チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要 |
-| 音声認識 | Googleストリーミング音声認識 | GCP認証か、APIキーが必要                   |
-| 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |  |
-| 音声認識 | 標準入力を使った<br>擬似的な音声認識モジュール |  |
-| 音声認識 | YouTubeコメント取得による<br>擬似的な音声認識モジュール |  |
-| 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要 |
-| 音声合成 | Google音声合成 | GCP認証か、APIキーが必要 |
-| 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |  |
-| 音声合成 | [gTTS](https://github.com/pndurette/gTTS) |  |
 | 翻訳 | [Googletrans](https://github.com/ssut/py-googletrans) |  |
 | 翻訳 | [DeepL API](https://www.deepl.com/) | API認証キーが必要 |
 | オプション | OBS連携 | OBS Studioの起動と設定が必要 |
