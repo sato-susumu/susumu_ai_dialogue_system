@@ -1,4 +1,4 @@
-set /p version=<version.txt
+set /p version=<build_exe/version.txt
 echo version=%version%
 
 del susumu_toolbox_*.zip
