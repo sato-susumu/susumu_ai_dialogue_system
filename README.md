@@ -1,7 +1,6 @@
 [![紹介動画](https://user-images.githubusercontent.com/75652942/222885020-d49fd936-dd42-456f-8dd1-a0f6c796748c.jpg)](https://www.youtube.com/watch?v=If8LfBJkAtQ)
 <p align="center">
-  susumu_toolbox<br/><br/>
-  AI音声対話 / AI VTuber システム<br/><br/>
+  susumu ai dialogue system<br/><br/>
 </p>
 
 <p align="center">
@@ -17,21 +16,20 @@
 
 ## 特徴
 
-`susumu_toolbox` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AI VTuberシステムです。  
+`susumu-ai-dialogue-system` は音声認識や音声合成のモジュールを入れ替えて実行できるAI音声対話/AI VTuberシステムです。  
 各モジュールの切り替えは設定画面でワンクリックで行えます。
 
 ### 音声認識
 
-`susumu_toolbox` は 高速なストリーミング音声認識が行える `Google Speech-to-Text`、登録不要で手軽に試せる `SpeechRecognition(Google)`
-など複数の音声認識に対応しています。
+高速なストリーミング音声認識が行える `Google Speech-to-Text`、登録不要で手軽に試せる `SpeechRecognition(Google)` など複数の音声認識に対応しています。
 
 ### 音声合成
 
-`susumu_toolbox` は 無料で魅力的な音声合成ができる`VOICEVOX`、読みが正確な`Google Text-to-Speech`など複数の音声合成に対応しています。
+無料で魅力的な音声合成ができる`VOICEVOX`、読みが正確な`Google Text-to-Speech`など複数の音声合成に対応しています。
 
 ### AI
 
-`susumu_toolbox` は `ChatGPT API`や`ParlAIクライアント`を活用して、回答を生成します。
+`ChatGPT API`や`ParlAIクライアント`を活用して、回答を生成します。
 
 ### AI VTuber
 
@@ -49,7 +47,7 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ## 実行方法
 
-[リリースページ](https://github.com/sato-susumu/susumu_toolbox/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。  
+[リリースページ](https://github.com/sato-susumu/susumu-ai-dialogue-system/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。  
 ダウンロードしたzipを解凍し、 `susumu_toolbox.exe`を実行します。
 
 <br/>
@@ -58,7 +56,7 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ### クイックスタート
 
-`OpenAI API Key` を取得し `susumu_toolbox` に設定すれば、まずは最低限の音声対話が動作します。
+`OpenAI API Key` を取得し、設定画面で設定すれば、まずは最低限の音声対話が動作します。
 
 <br/>
 
@@ -83,14 +81,14 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ### AI VTuberを動かす
 
-`susumu_toolbox` を使えば、プログラミングを行わなくてもAI VTuber(絵や3Dキャラクターを除く)を動かすことができます。
+`susumu-ai-dialogue-system` を使えば、プログラミングを行わなくてもAI VTuber(絵や3Dキャラクターを除く)を動かすことができます。
 AI VTuberとして動かすためには次のステップを踏むだけ、、、ですが、正直なところ、初めてだと敷居がとても高いです。
 
 - `Google Cloud Platform`で `API Key` を発行し、設定画面で `YouTubeコメント取得` に必要な設定を行う
 - `OBS Studio` をインストールし、字幕表示に必要な設定を行う
 - 設定画面の `共通設定` タブで、「ベース機能」は`AI VTuber`、「入力」は `YouTubeコメント取得` 、「その他」は `OBS出力` をONにする
 
-なお、`susumu_toolbox`には絵や3Dキャラクターを動かす機能はないため、 `VMagicMirror`などで別のアプリで3Dキャラクターなどを動かす必要があります。
+なお、`susumu-ai-dialogue-system`には絵や3Dキャラクターを動かす機能はないため、 `VMagicMirror`などで別のアプリで3Dキャラクターなどを動かす必要があります。
 
 <br/>
 
@@ -99,7 +97,7 @@ AI VTuberとして動かすためには次のステップを踏むだけ、、�
 ### 簡単なカスタマイズ
 
 `ChatGPT` 使用時は、設定画面の `AI設定` タブで、プロンプトの内容を変更し、AIの性格や口調を変更できます。
-プログラムの挙動も含めてカスタマイズするためには、Pythonを使って `susumu_toolbox`を動かす必要があります。
+プログラムの挙動も含めてカスタマイズするためには、Pythonを使って `susumu-ai-dialogue-system`のソースコードを直接動かす必要があります。
 
 <br/>
 
