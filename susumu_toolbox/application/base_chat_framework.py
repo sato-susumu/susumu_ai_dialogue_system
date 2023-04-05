@@ -24,6 +24,7 @@ class BaseChatFramework:
         self._stt_message_queue = queue.Queue()
         self._termination_flag = Event()
 
+        self._log_controller = self.create_log_controller()
         # speech_contexts = ["後退", "前進", "右旋回", "左旋回", "バック"]
         speech_contexts = []
         self._stt = self.create_stt(speech_contexts=speech_contexts)
@@ -79,6 +80,11 @@ class BaseChatFramework:
     def create_app_controller(self):
         controller = FunctionFactory.create_app_controller(self._config)
         logger.debug(f"app controller:{controller}")
+        return controller
+
+    def create_log_controller(self):
+        controller = FunctionFactory.create_log_controller(self._config)
+        logger.debug(f"log controller:{controller}")
         return controller
 
     def _on_tts_start(self):
@@ -210,6 +216,7 @@ class BaseChatFramework:
 
     def update_config(self, config: Config):
         self._config = config
+        self._log_controller.update_config(config)
         self._obs.update_config(config)
         self._app_controller.update_config(config)
         self._chat.update_config(config)

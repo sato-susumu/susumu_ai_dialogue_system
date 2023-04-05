@@ -1,3 +1,4 @@
+from susumu_toolbox.application.common.log_controller import LogController
 from susumu_toolbox.infrastructure.app_controller.dummy_app_contorller import DummyAppController
 from susumu_toolbox.infrastructure.app_controller.threaded_app_controller import ThreadedAppController
 from susumu_toolbox.infrastructure.app_controller.vmagicmirror_controller import VMagicMirrorController
@@ -90,3 +91,7 @@ class FunctionFactory:
             source_controller = VMagicMirrorController(config)
             return ThreadedAppController(config, source_controller)
         return DummyAppController(config)
+
+    @staticmethod
+    def create_log_controller(config: Config):
+        return LogController(config)

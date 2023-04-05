@@ -6,11 +6,11 @@ import PySimpleGUI as Sg
 
 from susumu_toolbox.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction, OutputFunction
 from susumu_toolbox.ui.base_layout import BaseLayout
+from susumu_toolbox.ui.settings_advanced_tab_layout import SettingsAdvancedTabLayout
 from susumu_toolbox.ui.settings_ai_tab_layout import SettingsAiTabLayout
 from susumu_toolbox.ui.settings_api_key_tab_layout import SettingsApiKeyTabLayout
 from susumu_toolbox.ui.settings_chat_tab_layout import SettingsChatTabLayout
 from susumu_toolbox.ui.settings_common_tab_layout import SettingsCommonTabLayout
-from susumu_toolbox.ui.settings_other_tab_layout import SettingsOtherTabLayout
 from susumu_toolbox.ui.settings_stt_tab_layout import SettingsSttTabLayout
 from susumu_toolbox.ui.settings_tts_tab_layout import SettingsTtsTabLayout
 
@@ -26,10 +26,19 @@ class SettingsLayout(BaseLayout):
         self.__common_tab_layout = SettingsCommonTabLayout(config, self, main_window)
         self.__stt_tab_layout = SettingsSttTabLayout(config, self, main_window)
         self.__tts_tab_layout = SettingsTtsTabLayout(config, self, main_window)
-        self.__other_tab_layout = SettingsOtherTabLayout(config, self, main_window)
+        self.__advanced_tab_layout = SettingsAdvancedTabLayout(config, self, main_window)
         self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
         self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
         self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
+        self.__tab_layout_list = [
+            self.__common_tab_layout,
+            self.__stt_tab_layout,
+            self.__tts_tab_layout,
+            self.__advanced_tab_layout,
+            self.__api_key_tab_layout,
+            self.__chat_tab_layout,
+            self.__ai_tab_layout,
+        ]
 
     @classmethod
     def get_key(cls) -> str:
@@ -39,7 +48,7 @@ class SettingsLayout(BaseLayout):
         self._config = self.update_local_config_by_values(values, self._config)
         self._config.save()
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         if self._config.get_openai_api_key() == "":
             self._main_window.window["api_keys_tab"].select()
 
@@ -60,7 +69,7 @@ class SettingsLayout(BaseLayout):
                     [Sg.Tab('入力', self.__stt_tab_layout.get_layout())],
                     [Sg.Tab('チャットエンジン', self.__chat_tab_layout.get_layout())],
                     [Sg.Tab('出力', self.__tts_tab_layout.get_layout())],
-                    [Sg.Tab('その他', self.__other_tab_layout.get_layout())],
+                    [Sg.Tab('実験', self.__advanced_tab_layout.get_layout())],
                 ],
                 # tab_location='left',
                 expand_x=True,
@@ -101,6 +110,9 @@ class SettingsLayout(BaseLayout):
         if values[self._config.KEY_OBS_PORT_NO] != "":
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
+        target_config.set_advanced_console_log_level(self.__advanced_tab_layout.get_selected_console_log_level(values))
+        target_config.set_gui_app_title(values[self._config.KEY_GUI_APP_TITLE])
+        target_config.set_gui_theme_name(values[self._config.KEY_GUI_THEME_NAME])
 
         # 共通設定
         [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in
@@ -127,19 +139,15 @@ class SettingsLayout(BaseLayout):
         if event == "save":
             self.__save(values)
             self._main_window.update_config()
-            self._main_window.change_layout(MainLayout.get_key())
+            self._main_window.create_new_window(MainLayout.get_key())
             return
         if event == "cancel":
-            self._main_window.change_layout(MainLayout.get_key())
+            self._main_window.update_config()
+            self._main_window.create_new_window(MainLayout.get_key())
             return
 
         if self.is_linked_text_event(event):
             self.open_linked_text_url(event)
 
-        self.__common_tab_layout.handle_event(event, values)
-        self.__stt_tab_layout.handle_event(event, values)
-        self.__tts_tab_layout.handle_event(event, values)
-        self.__other_tab_layout.handle_event(event, values)
-        self.__api_key_tab_layout.handle_event(event, values)
-        self.__chat_tab_layout.handle_event(event, values)
-        self.__ai_tab_layout.handle_event(event, values)
+        for layout in self.__tab_layout_list:
+            layout.handle_event(event, values)

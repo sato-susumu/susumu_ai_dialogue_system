@@ -17,17 +17,42 @@ class MainWindow:
         self.__config = config
         self.__layout_list = [MainLayout(config, self), SettingsLayout(config, self)]
 
-    def change_layout(self, target_layout_name: str) -> None:
+    def create_new_window(self, target_layout_name: str) -> None:
+        # 例えば、設定画面のキャンセルボタンを押した場合、作成済みの各Elementを初期化するか、全Elementを再作成したい。
+        # しかし、ウィンドウを維持したまま簡単に行う手段がない。
+        # そのため、ウィンドウから再作成することで、全Elementを初期化する。
+
+        Sg.theme(self.__config.get_gui_theme_name())
+        window_layout = [
+            [Sg.Column(layout.get_layout(), visible=False, key=layout.get_key()) for layout in self.__layout_list]]
+
+        window_params = {
+            'title': self.__config.get_gui_app_title(),
+            'layout': window_layout,
+            'size': self.__WINDOW_SIZE,
+            'finalize': True
+        }
+
+        if self.window:
+            window_params['location'] = self.window.current_location()
+
+        new_window = Sg.Window(**window_params)
+
         for layout in self.__layout_list:
-            self.window[layout.get_key()].update(visible=False)
+            new_window[layout.get_key()].update(visible=False)
+        new_window[target_layout_name].update(visible=True)
 
-        self.window[target_layout_name].update(visible=True)
-        self.update_layout(target_layout_name)
+        if self.window:
+            self.window.close()
+        self.window = new_window
 
-    def update_layout(self, target_layout_name: str) -> None:
+        # 別に呼ばなくてもいいが、呼ばないと不具合に気付きにくくなるので呼んでおく
+        self.update_all_elements_in_window(target_layout_name)
+
+    def update_all_elements_in_window(self, target_layout_name: str) -> None:
         for layout in self.__layout_list:
             if layout.get_key() == target_layout_name:
-                layout.update_layout()
+                layout.update_elements()
 
     def update_config(self) -> None:
         config_file_path = self.__config.get_current_config_path()
@@ -41,14 +66,7 @@ class MainWindow:
             self.window[event].update(values[event][:-1])
 
     def display(self):
-        window_layout = [[Sg.Column(layout.get_layout(), visible=False, key=layout.get_key())
-                          for layout in self.__layout_list]]
-        self.window = Sg.Window(title=self.__config.get_gui_app_title(),
-                                layout=window_layout,
-                                size=self.__WINDOW_SIZE,
-                                finalize=True,
-                                )
-        self.change_layout(MainLayout.get_key())
+        self.create_new_window(MainLayout.get_key())
 
         path = self.__config.get_current_config_path()
         if not os.path.exists(path):
@@ -62,3 +80,4 @@ class MainWindow:
             for layout in self.__layout_list:
                 layout.handle_event(event, values)
         self.window.close()
+        self.window = None

@@ -70,7 +70,7 @@ class MainLayout(BaseLayout):
         ]
         return window_layout
 
-    def update_layout(self) -> None:
+    def update_elements(self) -> None:
         self._main_window.window["common_config_table"].update(values=self._get_common_config_table())
         self._main_window.window[self.KEY_MAIN_RUN].update(text=self.__get_run_button_text(),
                                                            disabled=self.__run_button_disabled())
@@ -113,11 +113,11 @@ class MainLayout(BaseLayout):
 
     def _handle_main_thread_started(self) -> None:
         logger.debug("メインスレッド起動完了")
-        self._main_window.update_layout(self.get_key())
+        self._main_window.update_all_elements_in_window(self.get_key())
 
     def __handle_main_thread_stopped(self) -> None:
         logger.debug("メインスレッド停止完了")
-        self._main_window.update_layout(self.get_key())
+        self._main_window.update_all_elements_in_window(self.get_key())
 
     def handle_event(self, event, values) -> None:
         match event:
@@ -126,6 +126,6 @@ class MainLayout(BaseLayout):
                     self.__main_thread_start()
                 else:
                     self.__main_thread_stop()
-                self._main_window.update_layout(self.get_key())
+                self._main_window.update_all_elements_in_window(self.get_key())
             case self.KEY_MAIN_SETTINGS:
-                self._main_window.change_layout(SettingsLayout.get_key())
+                self._main_window.create_new_window(SettingsLayout.get_key())
