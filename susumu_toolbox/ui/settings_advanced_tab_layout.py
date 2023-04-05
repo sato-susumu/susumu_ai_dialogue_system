@@ -18,14 +18,14 @@ import PySimpleGUI as Sg
 
 
 # noinspection PyMethodMayBeStatic
-class SettingsOtherTabLayout(BaseLayout):
+class SettingsAdvancedTabLayout(BaseLayout):
     _log_level_dic = {
         "すべて": "DEBUG",
         "INFO以上": "INFO",
         "WARNING以上": "WARNING",
         "ERROR以上": "ERROR",
     }
-    _KEY_OTHER_CONSOLE_LOG_LEVEL = "key_other_console_log_level"
+    _KEY_ADVANCED_CONSOLE_LOG_LEVEL = "key_advanced_console_log_level"
 
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
@@ -33,7 +33,7 @@ class SettingsOtherTabLayout(BaseLayout):
 
     @classmethod
     def get_key(cls) -> str:
-        raise "settings_other_tab_layout"
+        raise "settings_advanced_tab_layout"
 
     def get_layout(self):
         obs_items = [
@@ -90,7 +90,7 @@ class SettingsOtherTabLayout(BaseLayout):
                 Sg.Text('コンソールログ出力'),
                 Sg.Combo(values=list(self._log_level_dic.keys()),
                          default_value=log_level_key,
-                         key=self._KEY_OTHER_CONSOLE_LOG_LEVEL,
+                         key=self._KEY_ADVANCED_CONSOLE_LOG_LEVEL,
                          size=(30, 1),
                          readonly=True,
                          )
@@ -101,7 +101,7 @@ class SettingsOtherTabLayout(BaseLayout):
             [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
         ]
 
-        other_tab_layout = [
+        advanced_tab_layout = [
             [Sg.Frame("OBS", obs_items, expand_x=True)],
             [Sg.Frame("感情解析", emotion_items, expand_x=True)],
             [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
@@ -109,7 +109,7 @@ class SettingsOtherTabLayout(BaseLayout):
             [Sg.Frame("APIステータス", status_items, expand_x=True)],
         ]
 
-        return other_tab_layout
+        return advanced_tab_layout
 
     def update_elements(self) -> None:
         pass
@@ -133,5 +133,5 @@ class SettingsOtherTabLayout(BaseLayout):
             self.__obs_test(event, values)
 
     def get_selected_console_log_level(self, values):
-        selected_log_level_key = values[self._KEY_OTHER_CONSOLE_LOG_LEVEL]
+        selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
         return self._log_level_dic[selected_log_level_key]

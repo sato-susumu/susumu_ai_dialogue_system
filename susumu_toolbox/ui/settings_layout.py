@@ -6,11 +6,11 @@ import PySimpleGUI as Sg
 
 from susumu_toolbox.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction, OutputFunction
 from susumu_toolbox.ui.base_layout import BaseLayout
+from susumu_toolbox.ui.settings_advanced_tab_layout import SettingsAdvancedTabLayout
 from susumu_toolbox.ui.settings_ai_tab_layout import SettingsAiTabLayout
 from susumu_toolbox.ui.settings_api_key_tab_layout import SettingsApiKeyTabLayout
 from susumu_toolbox.ui.settings_chat_tab_layout import SettingsChatTabLayout
 from susumu_toolbox.ui.settings_common_tab_layout import SettingsCommonTabLayout
-from susumu_toolbox.ui.settings_other_tab_layout import SettingsOtherTabLayout
 from susumu_toolbox.ui.settings_stt_tab_layout import SettingsSttTabLayout
 from susumu_toolbox.ui.settings_tts_tab_layout import SettingsTtsTabLayout
 
@@ -26,7 +26,7 @@ class SettingsLayout(BaseLayout):
         self.__common_tab_layout = SettingsCommonTabLayout(config, self, main_window)
         self.__stt_tab_layout = SettingsSttTabLayout(config, self, main_window)
         self.__tts_tab_layout = SettingsTtsTabLayout(config, self, main_window)
-        self.__other_tab_layout = SettingsOtherTabLayout(config, self, main_window)
+        self.__advanced_tab_layout = SettingsAdvancedTabLayout(config, self, main_window)
         self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
         self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
         self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
@@ -34,7 +34,7 @@ class SettingsLayout(BaseLayout):
             self.__common_tab_layout,
             self.__stt_tab_layout,
             self.__tts_tab_layout,
-            self.__other_tab_layout,
+            self.__advanced_tab_layout,
             self.__api_key_tab_layout,
             self.__chat_tab_layout,
             self.__ai_tab_layout,
@@ -69,7 +69,7 @@ class SettingsLayout(BaseLayout):
                     [Sg.Tab('入力', self.__stt_tab_layout.get_layout())],
                     [Sg.Tab('チャットエンジン', self.__chat_tab_layout.get_layout())],
                     [Sg.Tab('出力', self.__tts_tab_layout.get_layout())],
-                    [Sg.Tab('実験', self.__other_tab_layout.get_layout())],
+                    [Sg.Tab('実験', self.__advanced_tab_layout.get_layout())],
                 ],
                 # tab_location='left',
                 expand_x=True,
@@ -110,7 +110,7 @@ class SettingsLayout(BaseLayout):
         if values[self._config.KEY_OBS_PORT_NO] != "":
             target_config.set_obs_port_no(int(values[self._config.KEY_OBS_PORT_NO]))
         target_config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
-        target_config.set_advanced_console_log_level(self.__other_tab_layout.get_selected_console_log_level(values))
+        target_config.set_advanced_console_log_level(self.__advanced_tab_layout.get_selected_console_log_level(values))
 
         # 共通設定
         [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in
