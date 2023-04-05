@@ -130,7 +130,7 @@ Pythonの動作確認バージョンは3.10です。
 
 ```
 git clone https://github.com/sato-susumu/susumu-ai-dialogue-system.git
-cd susumu_toolbox
+cd susumu-ai-dialogue-system
 pip install -r requirements.txt
 python main.py
 ```
