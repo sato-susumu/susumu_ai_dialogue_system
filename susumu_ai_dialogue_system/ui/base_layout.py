@@ -16,6 +16,7 @@ class BaseLayout:
     INPUT_SIZE_NORMAL = (20, 1)
     INPUT_SIZE_LONG = (70, 1)
     BUTTON_SIZE_NORMAL = (10, 1)
+    BUTTON_SIZE_LONG = (20, 1)
 
     def __init__(self, config: Config, main_window: MainWindow):
         self._config = config

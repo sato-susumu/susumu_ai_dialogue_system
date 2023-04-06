@@ -26,6 +26,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
         "ERROR以上": "ERROR",
     }
     _KEY_ADVANCED_CONSOLE_LOG_LEVEL = "key_advanced_console_log_level"
+    _KEY_ADVANCED_GUI_ALL_THEME_PREVIEW = "key_advanced_gui_all_theme_preview"
 
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
@@ -110,7 +111,10 @@ class SettingsAdvancedTabLayout(BaseLayout):
                       size=(30, 1),
                       readonly=True,
                       ),
-             ]
+             Sg.Button("全テーマプレビュー",
+                       size=self.BUTTON_SIZE_LONG,
+                       key=self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW),
+             ],
         ]
 
         status_items = [
@@ -155,6 +159,9 @@ class SettingsAdvancedTabLayout(BaseLayout):
 
         if event == GuiEvents.OBS_TEST:
             self.__obs_test(event, values)
+
+        if event == self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
+            Sg.theme_previewer()
 
     def get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
