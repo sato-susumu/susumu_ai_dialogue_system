@@ -1,6 +1,6 @@
 ### VMagicMirror連携
 #### VMagicMirror連携とは
-VMagicMirror連携とは、人間の3Dアバターを動かすためのオプション機能です。この機能を使用するには、VRMアバターを動かすアプリである「VMagicMirror」を使います。このアプリは、MIDIからの入力でアバターを動かすことができます。そのため、susumu_toolboxからMIDIを制御し、VMagicMirrorで表情を変化させます。
+VMagicMirror連携とは、人間の3Dアバターを動かすための実験的な位置付けの機能です。この機能を使用するには、VRMアバターを動かすアプリである「VMagicMirror」を使います。このアプリは、MIDIからの入力でアバターを動かすことができます。そのため、susumu_toolboxからMIDIを制御し、VMagicMirrorで表情を変化させます。
 
 <img src="./resources/vmagic_mirror_option0.png" style="zoom:50%;" />
 
