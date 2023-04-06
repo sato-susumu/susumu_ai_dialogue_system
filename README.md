@@ -30,8 +30,8 @@
 
 ### AI VTuber
 
-AI VTuberを作るために必要ないくつかの機能をプログラミング不要で実現します。具体的には `YouTuber Data API v3` を使ったYouTubeライブ配信のコメント取得、 `OBS`
-を使った字幕更新に対応しています。
+AI VTuberを作るために必要ないくつかの機能をプログラミング不要で実現します。YouTubeライブ配信のコメント取得、 `OBS`
+を使った字幕更新をサポート。
 
 <br/>
 
@@ -44,8 +44,8 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ## 実行方法
 
-[リリースページ](https://github.com/sato-susumu/susumu_ai_dialogue_system/releases)にある `susumu_toolbox_x.x.x.zip`をダウンロードします。  
-ダウンロードしたzipを解凍し、 `susumu_toolbox.exe`を実行します。
+[リリースページ](https://github.com/sato-susumu/susumu_ai_dialogue_system/releases)にある `susumu_ai_dialogue_system_x.x.x.zip`をダウンロードします。  
+ダウンロードしたzipを解凍し、 `susumu_ai_dialogue_system.exe`を実行します。
 
 <br/>
 
@@ -59,7 +59,7 @@ Windowsに依存しない形で作っていますが、他の環境では動作�
 
 ### OpenAI API Keyを設定する
 
-`susumu_toolbox.exe` を起動すると、`設定` ボタンがあるのでクリックします。 `OpenAI API Key` を入力し、`保存して閉じる`をクリックすればAPI Keyの設定は完了です。
+`susumu_ai_dialogue_system.exe` を起動すると、`設定` ボタンがあるのでクリックします。 `OpenAI API Key` を入力し、`保存して閉じる`をクリックすればAPI Keyの設定は完了です。
 
 <br/>
 
