@@ -37,12 +37,13 @@ class WrimeEmotionClient(BaseEmotionModel):
         return f_x
 
     def get_raw_emotion(self, text: str) -> dict:
-        # 送信するJSONデータを作成する
         request_dic = {'text': text}
         request_json = json.dumps(request_dic)
 
-        # HTTP POSTリクエストを送信する
-        url = 'http://127.0.0.1:56563/analyze_emotion'  # 送信先のURLを指定する
+        host = self._config.get_wrime_emotion_server_host()
+        port_no = self._config.get_wrime_emotion_server_port_no()
+        # noinspection HttpUrlsUsage
+        url = f"http://{host}:{port_no}/analyze_emotion"
         headers = {'Content-Type': 'application/json'}
         response = requests.post(url, data=request_json, headers=headers)
         response_json = response.json()
