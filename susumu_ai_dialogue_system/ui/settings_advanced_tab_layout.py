@@ -193,10 +193,10 @@ class SettingsAdvancedTabLayout(BaseLayout):
 
     def handle_event(self, event, values) -> None:
         if event == self._config.KEY_OBS_PORT_NO:
-            self._main_window.window.input_validation_number_only(event, values)
+            self._main_window.input_validation_number_only(event, values)
 
         if event == self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
-            self._main_window.window.input_validation_number_only(event, values)
+            self._main_window.input_validation_number_only(event, values)
 
         if event == GuiEvents.OBS_TEST:
             self.__obs_test(event, values)

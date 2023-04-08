@@ -145,7 +145,7 @@ class SettingsTtsTabLayout(BaseLayout):
 
     def handle_event(self, event, values) -> None:
         if event in (self._config.KEY_VOICEVOX_PORT_NO, self._config.KEY_VOICEVOX_SPEAKER_NO):
-            self._main_window.window.input_validation_number_only(event, values)
+            self._main_window.input_validation_number_only(event, values)
 
         if event in (
                 GuiEvents.VOICEVOX_TEST, GuiEvents.GTTS_TEST, GuiEvents.GOOGLE_CLOUD_TTS_TEST,

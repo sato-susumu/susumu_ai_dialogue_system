@@ -56,4 +56,4 @@ class SettingsChatTabLayout(BaseLayout):
 
     def handle_event(self, event, values) -> None:
         if event == self._config.KEY_PARLAI_PORT_NO:
-            self._main_window.window.input_validation_number_only(event, values)
+            self._main_window.input_validation_number_only(event, values)
