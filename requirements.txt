@@ -23,5 +23,6 @@ python-dateutil
 pyinstaller
 omegaconf
 mido
+numpy
 python-rtmidi
 loguru
