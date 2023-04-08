@@ -77,7 +77,6 @@ class MainLayout(BaseLayout):
         self._main_window.window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
 
     def update_config(self, config: Config) -> None:
-        logger.info("設定内容の一部をリアルタイム反映")
         super().update_config(config)
         if self.__main_thread:
             self.__main_thread.update_config(config)
