@@ -180,6 +180,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
+    # noinspection PyUnusedLocal
     def __emotion_test(self, event, values):
         config = self._config.clone()
         config = self._settings_layout.update_local_config_by_values(values, config)

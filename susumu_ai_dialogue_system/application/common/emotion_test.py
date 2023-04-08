@@ -1,9 +1,7 @@
 from loguru import logger
 
-from susumu_ai_dialogue_system.application.common.function_factory import FunctionFactory
 from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.wrime_emotion_client import WrimeEmotionClient
-from susumu_ai_dialogue_system.infrastructure.tts.base_tts import TTSEvent
 
 
 # noinspection PyMethodMayBeStatic

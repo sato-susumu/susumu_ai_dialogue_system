@@ -27,4 +27,4 @@ class TTSTest:
 if __name__ == "__main__":
     _config = Config()
     _config.search_and_load()
-    TTSTest(_config).run()
+    TTSTest(_config).run("テストします")

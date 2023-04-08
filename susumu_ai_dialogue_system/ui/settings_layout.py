@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 
 import PySimpleGUI as Sg
 
-from susumu_ai_dialogue_system.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction, OutputFunction
+from susumu_ai_dialogue_system.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction,\
+    OutputFunction
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
 from susumu_ai_dialogue_system.ui.settings_advanced_tab_layout import SettingsAdvancedTabLayout
 from susumu_ai_dialogue_system.ui.settings_ai_tab_layout import SettingsAiTabLayout
