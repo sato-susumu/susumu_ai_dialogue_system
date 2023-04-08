@@ -93,6 +93,8 @@ class Config:
     KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED = "common_v_magic_mirror_connection_enabled"
     KEY_PARLAI_HOST = "parlai_host"
     KEY_PARLAI_PORT_NO = "parlai_port_no"
+    KEY_WRIME_EMOTION_SERVER_HOST = "wrime_emotion_server_host"
+    KEY_WRIME_EMOTION_SERVER_PORT_NO = "wrime_emotion_server_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
     KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
     KEY_GUI_APP_TITLE = "gui_app_title"
@@ -172,6 +174,9 @@ class Config:
               # 名前の一部でもいい
               pyaudio_second_output_host_api_name: "MME"
               pyaudio_second_output_device_name: "VB-Audio Virtual C"
+            WrimeEmotionServer:
+              wrime_emotion_server_host: "127.0.0.1"
+              wrime_emotion_server_port_no: 56563
             Advanced:
               advanced_console_log_level: "DEBUG"
             GUI:
@@ -435,14 +440,17 @@ class Config:
     def set_gui_theme_name(self, value: str) -> None:
         self._config["GUI"][self.KEY_GUI_THEME_NAME] = value
 
-    def get_wrime_model_dir_path(self) -> str:
-        return self._wrime_model_dir_path
+    def get_wrime_emotion_server_host(self) -> str:
+        return self._config["WrimeEmotionServer"][self.KEY_WRIME_EMOTION_SERVER_HOST]
 
-    def set_wrime_model_dir_path(self, value: str) -> None:
-        self._wrime_model_dir_path = value
+    def set_wrime_emotion_server_host(self, value: str) -> None:
+        self._config["WrimeEmotionServer"][self.KEY_WRIME_EMOTION_SERVER_HOST] = value
 
-    def exists_wrime_model_dir(self) -> bool:
-        return os.path.exists(self._wrime_model_dir_path)
+    def get_wrime_emotion_server_port_no(self) -> int:
+        return self._config["WrimeEmotionServer"][self.KEY_WRIME_EMOTION_SERVER_PORT_NO]
+
+    def set_wrime_emotion_server_port_no(self, value: int) -> None:
+        self._config["WrimeEmotionServer"][self.KEY_WRIME_EMOTION_SERVER_PORT_NO] = value
 
     def get_advanced_console_log_level(self) -> str:
         return self._config["Advanced"][self.KEY_ADVANCED_CONSOLE_LOG_LEVEL]

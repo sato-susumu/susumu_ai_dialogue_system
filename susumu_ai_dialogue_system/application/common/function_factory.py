@@ -7,7 +7,7 @@ from susumu_ai_dialogue_system.infrastructure.chat.chatgpt_chat import ChatGPTCh
 from susumu_ai_dialogue_system.infrastructure.chat.parlai_chat import ParlAIChat
 from susumu_ai_dialogue_system.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
 from susumu_ai_dialogue_system.infrastructure.emotion.dummy_emotion_model import DummyEmotionModel
-from susumu_ai_dialogue_system.infrastructure.emotion.wrime_emotion_model import WrimeEmotionModel
+from susumu_ai_dialogue_system.infrastructure.emotion.wrime_emotion_client import WrimeEmotionClient
 from susumu_ai_dialogue_system.infrastructure.obs.base_obs_client import BaseOBSClient
 from susumu_ai_dialogue_system.infrastructure.obs.dummy_obs_client import DummyOBSClient
 from susumu_ai_dialogue_system.infrastructure.obs.obs_client import OBSClient
@@ -81,7 +81,7 @@ class FunctionFactory:
     def create_emotion_model(config: Config):
         value = config.get_common_v_magic_mirror_connection_enabled()
         if value:
-            return WrimeEmotionModel(config)
+            return WrimeEmotionClient(config)
         return DummyEmotionModel(config)
 
     @staticmethod

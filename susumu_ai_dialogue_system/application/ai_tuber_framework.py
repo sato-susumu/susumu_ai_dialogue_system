@@ -67,5 +67,4 @@ class AiVTuberFramework(BaseChatFramework):
 if __name__ == "__main__":
     _config = Config()
     _config.search_and_load()
-    _config.set_wrime_model_dir_path("../../model_data/wrime_model.pth")
     AiVTuberFramework(_config).run_forever()

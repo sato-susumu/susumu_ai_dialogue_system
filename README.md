@@ -101,22 +101,22 @@ AI VTuberとして動かすためには次のステップを踏むだけ、、�
 ## 対応モジュール
 ### オプション
 
-| カテゴリ | モジュール | 条件        |
-| -------- | ---------- | ------------------ |
-| チャット | [ChatGPT](https://chat.openai.com/)    | APIキーが必要 |
-| チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要 |
-| 音声認識 | Googleストリーミング音声認識 | GCP認証か、APIキーが必要                   |
-| 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |  |
-| 音声認識 | 標準入力を使った<br>擬似的な音声認識モジュール |  |
-| 音声認識 | YouTubeコメント取得による<br>擬似的な音声認識モジュール |  |
-| 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要 |
-| 音声合成 | Google音声合成 | GCP認証か、APIキーが必要 |
-| 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |  |
-| 音声合成 | [gTTS](https://github.com/pndurette/gTTS) |  |
-| 翻訳 | [Googletrans](https://github.com/ssut/py-googletrans) |  |
-| 翻訳 | [DeepL API](https://www.deepl.com/) | API認証キーが必要 |
-| オプション | OBS連携 | OBS Studioの起動と設定が必要 |
-| オプション | 感情解析 | [詳細説明](./docs/emotion_analysis.md) |
+| カテゴリ | モジュール | 条件                                     |
+| -------- | ---------- |----------------------------------------|
+| チャット | [ChatGPT](https://chat.openai.com/)    | APIキーが必要                               |
+| チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要                      |
+| 音声認識 | Googleストリーミング音声認識 | GCP認証か、APIキーが必要                        |
+| 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |                                        |
+| 音声認識 | 標準入力を使った<br>擬似的な音声認識モジュール |                                        |
+| 音声認識 | YouTubeコメント取得による<br>擬似的な音声認識モジュール |                                        |
+| 音声合成 | [VOICEVOX](https://voicevox.hiroshiba.jp/) | VOICEVOXサーバーまたはアプリの起動が必要               |
+| 音声合成 | Google音声合成 | GCP認証か、APIキーが必要                        |
+| 音声合成 | [pyttsx3](https://github.com/nateshmbhat/pyttsx3) |                                        |
+| 音声合成 | [gTTS](https://github.com/pndurette/gTTS) |                                        |
+| 翻訳 | [Googletrans](https://github.com/ssut/py-googletrans) |                                        |
+| 翻訳 | [DeepL API](https://www.deepl.com/) | API認証キーが必要                             |
+| オプション | OBS連携 | OBS Studioの起動と設定が必要                    |
+| オプション | 感情解析 | 感情解析サーバーが必要                            |
 | オプション | VMagicMirror連携 | [詳細説明](./docs/vmagic_mirror_option.md) |
 
 <br/>

@@ -113,6 +113,9 @@ class SettingsLayout(BaseLayout):
         target_config.set_advanced_console_log_level(self.__advanced_tab_layout.get_selected_console_log_level(values))
         target_config.set_gui_app_title(values[self._config.KEY_GUI_APP_TITLE])
         target_config.set_gui_theme_name(values[self._config.KEY_GUI_THEME_NAME])
+        target_config.set_wrime_emotion_server_host(values[self._config.KEY_WRIME_EMOTION_SERVER_HOST])
+        if values[self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO] != "":
+            target_config.set_wrime_emotion_server_port_no(int(values[self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO]))
 
         # 共通設定
         [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in

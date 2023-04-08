@@ -1,6 +1,7 @@
 import loguru
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import requests
+import json
 
 from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.base_emotion_model import BaseEmotionModel
@@ -8,22 +9,9 @@ from susumu_ai_dialogue_system.infrastructure.emotion.emotion import Emotion
 
 
 # noinspection PyMethodMayBeStatic
-class WrimeEmotionModel(BaseEmotionModel):
+class WrimeEmotionClient(BaseEmotionModel):
     def __init__(self, config: Config):
         super().__init__(config)
-
-        # noinspection SpellCheckingInspection
-        checkpoint = 'cl-tohoku/bert-base-japanese-whole-word-masking'
-        self._tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-
-        # self._emotion_names_jp = ['喜び', '悲しみ', '期待', '驚き', '怒り', '恐れ', '嫌悪', '信頼']
-        self._emotion_names = ['Joy', 'Sadness', 'Anticipation', 'Surprise', 'Anger', 'Fear', 'Disgust', 'Trust']
-        num_labels = len(self._emotion_names)
-        model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=num_labels)
-
-        self._model = model.from_pretrained(self._config.get_wrime_model_dir_path())
-        # 推論モード
-        self._model.eval()
 
     def get_max_emotion(self, text: str) -> (Emotion, float, dict):
         result_dict, raw_dict = self.get_emotion(text)
@@ -49,30 +37,31 @@ class WrimeEmotionModel(BaseEmotionModel):
         return f_x
 
     def get_raw_emotion(self, text: str) -> dict:
-        tokens = self._tokenizer(text, truncation=True, return_tensors="pt")
-        tokens.to(self._model.device)
-        predictions = self._model(**tokens)
-        probability = self._np_softmax(predictions.logits.cpu().detach().numpy()[0])
-        raw_emotion_dict = {n: p for n, p in zip(self._emotion_names, probability)}
-        return raw_emotion_dict
+        # 送信するJSONデータを作成する
+        request_dic = {'text': text}
+        request_json = json.dumps(request_dic)
+
+        # HTTP POSTリクエストを送信する
+        url = 'http://127.0.0.1:56563/analyze_emotion'  # 送信先のURLを指定する
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, data=request_json, headers=headers)
+        response_json = response.json()
+
+        return response_json["emotions"]
 
 
 if __name__ == '__main__':
 
     _config = Config()
-    _config.set_wrime_model_dir_path("../../../model_data/wrime_model.pth")
-    if not _config.exists_wrime_model_dir():
-        raise FileNotFoundError("WRIME model not found.")
-    _model = WrimeEmotionModel(_config)
-
+    _model = WrimeEmotionClient(_config)
 
     def func(text: str):
         out_dict, raw_dict = _model.get_emotion(text)
         max_key = max(out_dict, key=out_dict.get)
         max_value = out_dict[max_key]
         loguru.logger.debug(text)
-        loguru.logger.debug(out_dict)
         loguru.logger.debug(raw_dict)
+        loguru.logger.debug(out_dict)
         loguru.logger.debug(f"max_key: {max_key}, max_value: {max_value}")
         loguru.logger.debug("")
 

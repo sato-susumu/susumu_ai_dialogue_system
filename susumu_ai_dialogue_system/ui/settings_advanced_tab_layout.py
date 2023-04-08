@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
+from susumu_ai_dialogue_system.application.common.emotion_test import EmotionTest
 from susumu_ai_dialogue_system.application.common.obs_test import OBSTest
 
 if TYPE_CHECKING:
@@ -27,6 +28,8 @@ class SettingsAdvancedTabLayout(BaseLayout):
     }
     _KEY_ADVANCED_CONSOLE_LOG_LEVEL = "key_advanced_console_log_level"
     _KEY_ADVANCED_GUI_ALL_THEME_PREVIEW = "key_advanced_gui_all_theme_preview"
+    _KEY_ADVANCED_EMOTION_TEST_TEXT = "key_advanced_emotion_test_text"
+    _KEY_ADVANCED_EMOTION_TEST = "key_advanced_emotion_test"
 
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
@@ -76,7 +79,31 @@ class SettingsAdvancedTabLayout(BaseLayout):
         ]
 
         emotion_items = [
-            [Sg.Text('・感情解析のモデル入手と配置が必要です。')],
+            [Sg.Text("・感情解析サーバー"),
+             self.create_linked_text("https://github.com/sato-susumu/susumu_emotional_analysis",
+                                     "https://github.com/sato-susumu/susumu_emotional_analysis"),
+             Sg.Text("の起動が必要です。")],
+            [Sg.Text("・起動にはdockerなどの知識が必要です。")],
+            [Sg.Text('アドレス'),
+             Sg.InputText(default_text=self._config.get_wrime_emotion_server_host(),
+                          key=self._config.KEY_WRIME_EMOTION_SERVER_HOST,
+                          size=self.INPUT_SIZE_NORMAL,
+                          ),
+             ],
+            [Sg.Text('ポート番号'),
+             Sg.InputText(default_text=self._config.get_wrime_emotion_server_port_no(),
+                          key=self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO,
+                          size=self.INPUT_SIZE_SHORT,
+                          enable_events=True,
+                          ),
+             ],
+            [Sg.Text('感情解析テスト用文字列'),
+             Sg.InputText(default_text="なお、このメッセージは5秒後に自動的に消滅する。",
+                          key=self._KEY_ADVANCED_EMOTION_TEST_TEXT,
+                          expand_x=True,
+                          ),
+             ],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_ADVANCED_EMOTION_TEST)],
         ]
 
         v_magic_mirror_items = [
@@ -153,12 +180,29 @@ class SettingsAdvancedTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
+    def __emotion_test(self, event, values):
+        config = self._config.clone()
+        config = self._settings_layout.update_local_config_by_values(values, config)
+
+        text = values[self._KEY_ADVANCED_EMOTION_TEST_TEXT]
+        try:
+            EmotionTest(config).run(text)
+        except Exception as e:
+            logger.error(e)
+            Sg.PopupError(e, title="エラー", keep_on_top=True)
+
     def handle_event(self, event, values) -> None:
         if event == self._config.KEY_OBS_PORT_NO:
             self._main_window.window.input_validation_number_only(event, values)
 
+        if event == self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
+            self._main_window.window.input_validation_number_only(event, values)
+
         if event == GuiEvents.OBS_TEST:
             self.__obs_test(event, values)
+
+        if event == self._KEY_ADVANCED_EMOTION_TEST:
+            self.__emotion_test(event, values)
 
         if event == self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
             Sg.theme_previewer()
