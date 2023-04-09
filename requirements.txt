@@ -8,6 +8,7 @@ google-cloud-texttospeech
 pyaudio
 pyttsx3
 pytest
+requests-mock
 requests
 pydub
 gtts
