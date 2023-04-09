@@ -26,8 +26,8 @@ class PyAudioPlayer:
         # 指定されたデバイスのデバイスID取得
         # 見つからない場合は-1
         second_output_device_id = PyAudioUtility().get_speaker_id(
-            self._config.get_pyaudio_second_output_host_api_name(),
-            self._config.get_pyaudio_second_output_device_name()
+            self._config.get_pyaudio_secondary_output_api_name(),
+            self._config.get_pyaudio_secondary_output_device_name()
         )
         return second_output_device_id
 

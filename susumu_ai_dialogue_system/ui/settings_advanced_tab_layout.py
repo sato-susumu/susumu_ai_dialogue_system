@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple, Optional
 
 from loguru import logger
 
 from susumu_ai_dialogue_system.application.common.emotion_test import EmotionTest
 from susumu_ai_dialogue_system.application.common.obs_test import OBSTest
+from susumu_ai_dialogue_system.ui.secondary_audio_select_window import SecondaryAudioSelectWindow
 
 if TYPE_CHECKING:
     from susumu_ai_dialogue_system.ui.settings_layout import SettingsLayout
@@ -30,10 +31,15 @@ class SettingsAdvancedTabLayout(BaseLayout):
     _KEY_ADVANCED_EMOTION_TEST_TEXT = "key_advanced_emotion_test_text"
     _KEY_ADVANCED_EMOTION_TEST = "key_advanced_emotion_test"
     _KEY_ADVANCED_OBS_TEST = "key_advanced_obs_test"
+    _KEY_ADVANCED_SECONDARY_OUTPUT_API_NAME = "key_advanced_secondary_output_api_name"
+    _KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_NAME = "key_advanced_secondary_output_device_name"
+    _KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE = "key_advanced_secondary_output_device_change"
 
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
+        self._selected_api_name = config.get_pyaudio_secondary_output_api_name()
+        self._selected_device_name = config.get_pyaudio_secondary_output_device_name()
 
     @classmethod
     def get_key(cls) -> str:
@@ -125,6 +131,25 @@ class SettingsAdvancedTabLayout(BaseLayout):
             ]
         ]
 
+        secondary_audio_items = [
+            [Sg.Text("・一部の音声合成、一部のデバイスのみ対応しています。")],
+            [Sg.Text("・Windowsでは、MMEおよびWASAPIの一部デバイスのみ動作確認しています。")],
+            [Sg.Checkbox("音声を出力する",
+                         default=self._config.get_pyaudio_second_output_enabled(),
+                         key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED)],
+            [Sg.Text("API名:"),
+             Sg.Text(text=self._config.get_pyaudio_secondary_output_api_name(),
+                     key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME),
+             ],
+            [Sg.Text("デバイス名:"),
+             Sg.Text(text=self._config.get_pyaudio_secondary_output_device_name(),
+                     key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME),
+             ],
+            [Sg.Button("デバイスの変更",
+                       size=self.BUTTON_SIZE_LONG,
+                       key=self._KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE)],
+        ]
+
         gui_items = [
             [Sg.Text("アプリタイトル"),
              Sg.InputText(default_text=self._config.get_gui_app_title(),
@@ -154,6 +179,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 [Sg.Frame("感情解析", emotion_items, expand_x=True)],
                 [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
                 [Sg.Frame("ログ", log_level_items, expand_x=True)],
+                [Sg.Frame("口パク用第二音声デバイス", secondary_audio_items, expand_x=True)],
                 [Sg.Frame("GUI", gui_items, expand_x=True)],
                 [Sg.Frame("APIステータス", status_items, expand_x=True)],
             ],
@@ -167,7 +193,10 @@ class SettingsAdvancedTabLayout(BaseLayout):
         return advanced_tab_layout
 
     def update_elements(self) -> None:
-        pass
+        self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME].update(
+            self._selected_api_name)
+        self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME].update(
+            self._selected_device_name)
 
     # noinspection PyUnusedLocal
     def __obs_test(self, event, values):
@@ -202,7 +231,20 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 self.__emotion_test(event, values)
             case self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
                 Sg.theme_previewer()
+            case self._KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE:
+                self._change_pyaudio_secondary_output_device()
 
     def get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
         return self._log_level_dic[selected_log_level_key]
+
+    def _change_pyaudio_secondary_output_device(self) -> None:
+        window = SecondaryAudioSelectWindow(self._config, self._main_window)
+        api_name, device_name = window.display()
+        if api_name is not None and device_name is not None:
+            self._selected_api_name = api_name
+            self._selected_device_name = device_name
+            self.update_elements()
+
+    def get_selected_pyaudio_secondary_output_device(self) -> Tuple[Optional[str], Optional[str]]:
+        return self._selected_api_name, self._selected_device_name

@@ -99,6 +99,9 @@ class Config:
     KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
     KEY_GUI_APP_TITLE = "gui_app_title"
     KEY_GUI_THEME_NAME = "gui_theme_name"
+    KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED = "pyaudio_secondary_output_enabled"
+    KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME = "pyaudio_secondary_output_api_name"
+    KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME = "pyaudio_secondary_output_device_name"
     KEY_ADVANCED_CONSOLE_LOG_LEVEL = "advanced_console_log_level"
 
     USER_DATA_DIR_NAME = "user_data"
@@ -170,10 +173,10 @@ class Config:
               gcp_speech_to_text_api_key:
             PyAudio:
               # 標準スピーカー以外にも同時出力するかどうか
-              pyaudio_second_output_enabled: false
+              pyaudio_secondary_output_enabled: false
               # 名前の一部でもいい
-              pyaudio_second_output_host_api_name: "MME"
-              pyaudio_second_output_device_name: "VB-Audio Virtual C"
+              pyaudio_secondary_output_api_name: "MME"
+              pyaudio_secondary_output_device_name: "VB-Audio Virtual C"
             WrimeEmotionServer:
               wrime_emotion_server_host: "127.0.0.1"
               wrime_emotion_server_port_no: 56563
@@ -361,13 +364,22 @@ class Config:
         self._config["GoogleSpeechToText"][self.KEY_GCP_SPEECH_TO_TEXT_API_KEY] = value
 
     def get_pyaudio_second_output_enabled(self) -> bool:
-        return self._config["PyAudio"]["pyaudio_second_output_enabled"]
+        return self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED]
 
-    def get_pyaudio_second_output_host_api_name(self) -> str:
-        return self._config["PyAudio"]["pyaudio_second_output_host_api_name"]
+    def set_pyaudio_secondary_output_enabled(self, value: bool) -> None:
+        self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED] = value
 
-    def get_pyaudio_second_output_device_name(self) -> str:
-        return self._config["PyAudio"]["pyaudio_second_output_device_name"]
+    def get_pyaudio_secondary_output_api_name(self) -> str:
+        return self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME]
+
+    def set_pyaudio_secondary_output_api_name(self, value: str) -> None:
+        self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME] = value
+
+    def get_pyaudio_secondary_output_device_name(self) -> str:
+        return self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME]
+
+    def set_pyaudio_secondary_output_device_name(self, value: str) -> None:
+        self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME] = value
 
     def clone(self):
         return copy.deepcopy(self)

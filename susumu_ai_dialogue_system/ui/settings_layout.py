@@ -80,7 +80,7 @@ class SettingsLayout(BaseLayout):
         ]
         return window_layout
 
-    def update_local_config_by_values(self, values, target_config) -> Config:
+    def update_local_config_by_values(self, values, target_config: Config) -> Config:
         # API KEY
         target_config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
         target_config.set_deepl_auth_key(values[self._config.KEY_DEEPL_AUTH_KEY])
@@ -117,6 +117,11 @@ class SettingsLayout(BaseLayout):
         target_config.set_wrime_emotion_server_host(values[self._config.KEY_WRIME_EMOTION_SERVER_HOST])
         if values[self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO] != "":
             target_config.set_wrime_emotion_server_port_no(int(values[self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO]))
+        target_config.set_pyaudio_secondary_output_enabled(values[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED])
+        api_name, device_name = self.__advanced_tab_layout.get_selected_pyaudio_secondary_output_device()
+        if api_name is not None and device_name is not None:
+            target_config.set_pyaudio_secondary_output_api_name(api_name)
+            target_config.set_pyaudio_secondary_output_device_name(device_name)
 
         # 共通設定
         [target_config.set_common_base_function(BaseFunction.str2function(key)) for key in
