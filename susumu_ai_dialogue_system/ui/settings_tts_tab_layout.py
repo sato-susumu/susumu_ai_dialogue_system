@@ -12,11 +12,14 @@ from loguru import logger
 from susumu_ai_dialogue_system.application.common.tts_test import TTSTest
 from susumu_ai_dialogue_system.infrastructure.config import Config, OutputFunction
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
-from susumu_ai_dialogue_system.ui.gui_events import GuiEvents
 
 
 # noinspection PyMethodMayBeStatic
 class SettingsTtsTabLayout(BaseLayout):
+    _KEY_TTS_VOICEVOX_TEST = "key_tts_voicevox_test"
+    _KEY_TTS_GTTS_TEST = "key_tts_gtts_test"
+    _KEY_TTS_GOOGLE_CLOUD_TTS_TEST = "key_tts_google_cloud_tts_test"
+    _KEY_TTS_PYTTSX3_TEST = "key_tts_pyttsx3_test"
     _KEY_TTS_VOICEVOX_SPEAKER_COMBO = 'key_tts_voicevox_speaker_combo'
     _KEY_TTS_PLAY_TEXT = "key_tts_play_text"
     # VOICEVOXのスピーカーリスト。
@@ -74,15 +77,15 @@ class SettingsTtsTabLayout(BaseLayout):
                       readonly=True,
                       ),
              ],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.VOICEVOX_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_VOICEVOX_TEST)],
         ]
 
         gtts_items = [
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.GTTS_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_GTTS_TEST)],
         ]
 
         pyttsx3_items = [
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.PYTTSX3_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_PYTTSX3_TEST)],
         ]
 
         google_cloud_tts_items = [
@@ -94,7 +97,7 @@ class SettingsTtsTabLayout(BaseLayout):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_CLOUD_TTS_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST)],
         ]
 
         tts_tab_layout = [
@@ -121,13 +124,13 @@ class SettingsTtsTabLayout(BaseLayout):
         config = self._config.clone()
         config = self._settings_layout.update_local_config_by_values(values, config)
 
-        if event == GuiEvents.VOICEVOX_TEST:
+        if event == self._KEY_TTS_VOICEVOX_TEST:
             config.set_common_output_function(OutputFunction.VOICEVOX)
-        elif event == GuiEvents.GTTS_TEST:
+        elif event == self._KEY_TTS_GTTS_TEST:
             config.set_common_output_function(OutputFunction.GTTS)
-        elif event == GuiEvents.GOOGLE_CLOUD_TTS_TEST:
+        elif event == self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST:
             config.set_common_output_function(OutputFunction.GOOGLE_CLOUD)
-        elif event == GuiEvents.PYTTSX3_TEST:
+        elif event == self._KEY_TTS_PYTTSX3_TEST:
             config.set_common_output_function(OutputFunction.PYTTSX3)
         else:
             raise Exception("想定外のイベントです")
@@ -148,6 +151,6 @@ class SettingsTtsTabLayout(BaseLayout):
             self._main_window.input_validation_number_only(event, values)
 
         if event in (
-                GuiEvents.VOICEVOX_TEST, GuiEvents.GTTS_TEST, GuiEvents.GOOGLE_CLOUD_TTS_TEST,
-                GuiEvents.PYTTSX3_TEST):
+                self._KEY_TTS_VOICEVOX_TEST, self._KEY_TTS_GTTS_TEST, self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST,
+                self._KEY_TTS_PYTTSX3_TEST):
             self.__tts_test(event, values)

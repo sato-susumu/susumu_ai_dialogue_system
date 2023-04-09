@@ -13,11 +13,16 @@ if TYPE_CHECKING:
 
 from susumu_ai_dialogue_system.infrastructure.config import Config, InputFunction
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
-from susumu_ai_dialogue_system.ui.gui_events import GuiEvents
 
 
 # noinspection PyMethodMayBeStatic
 class SettingsSttTabLayout(BaseLayout):
+    _KEY_STT_YOUTUBE_PSEUD_STT_TEST = "key_stt_youtube_pseud_stt_test"
+    _KEY_STT_GOOGLE_STREAMING_STT_TEST = "key_stt_google_streaming_stt_test"
+    _KEY_STT_SR_GOOGLE_STT_TEST = "key_stt_sr_google_stt_test"
+    _KEY_STT_STDIN_PSEUD_STT_TEST = "key_stt_stdin_pseud_stt_test"
+    _KEY_STT_WHISPER_API_STT_TEST = "key_stt_whisper_api_stt_test"
+
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
@@ -41,7 +46,7 @@ class SettingsSttTabLayout(BaseLayout):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.YOUTUBE_PSEUD_STT_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_YOUTUBE_PSEUD_STT_TEST)],
         ]
 
         google_streaming_stt_items = [
@@ -53,20 +58,20 @@ class SettingsSttTabLayout(BaseLayout):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.GOOGLE_STREAMING_STT_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_GOOGLE_STREAMING_STT_TEST)],
         ]
 
         sr_google_stt_items = [
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.SR_GOOGLE_STT_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_SR_GOOGLE_STT_TEST)],
         ]
 
         stdin_pseud_stt_items = [
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.STDIN_PSEUD_STT_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_STDIN_PSEUD_STT_TEST)],
         ]
 
         whisper_api_stt_items = [
             [Sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.WHISPER_API_STT_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_WHISPER_API_STT_TEST)],
         ]
 
         stt_tab_layout = [
@@ -87,18 +92,19 @@ class SettingsSttTabLayout(BaseLayout):
         config = self._config.clone()
         config = self._settings_layout.update_local_config_by_values(values, config)
 
-        if event == GuiEvents.YOUTUBE_PSEUD_STT_TEST:
-            config.set_common_input_function(InputFunction.YOUTUBE_PSEUD)
-        elif event == GuiEvents.GOOGLE_STREAMING_STT_TEST:
-            config.set_common_input_function(InputFunction.GOOGLE_STREAMING)
-        elif event == GuiEvents.SR_GOOGLE_STT_TEST:
-            config.set_common_input_function(InputFunction.SR_GOOGLE)
-        elif event == GuiEvents.STDIN_PSEUD_STT_TEST:
-            config.set_common_input_function(InputFunction.STDIN_PSEUD)
-        elif event == GuiEvents.WHISPER_API_STT_TEST:
-            config.set_common_input_function(InputFunction.WHISPER_API)
-        else:
-            raise Exception("想定外のイベントです")
+        match event:
+            case self._KEY_STT_YOUTUBE_PSEUD_STT_TEST:
+                config.set_common_input_function(InputFunction.YOUTUBE_PSEUD)
+            case self._KEY_STT_GOOGLE_STREAMING_STT_TEST:
+                config.set_common_input_function(InputFunction.GOOGLE_STREAMING)
+            case self._KEY_STT_SR_GOOGLE_STT_TEST:
+                config.set_common_input_function(InputFunction.SR_GOOGLE)
+            case self._KEY_STT_STDIN_PSEUD_STT_TEST:
+                config.set_common_input_function(InputFunction.STDIN_PSEUD)
+            case self._KEY_STT_WHISPER_API_STT_TEST:
+                config.set_common_input_function(InputFunction.WHISPER_API)
+            case _:
+                raise Exception("想定外のイベントです")
 
         try:
             STTTest(config).run()
@@ -107,7 +113,7 @@ class SettingsSttTabLayout(BaseLayout):
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def handle_event(self, event, values) -> None:
-        if event in (GuiEvents.YOUTUBE_PSEUD_STT_TEST, GuiEvents.GOOGLE_STREAMING_STT_TEST,
-                     GuiEvents.SR_GOOGLE_STT_TEST, GuiEvents.STDIN_PSEUD_STT_TEST,
-                     GuiEvents.WHISPER_API_STT_TEST):
+        if event in (self._KEY_STT_YOUTUBE_PSEUD_STT_TEST, self._KEY_STT_GOOGLE_STREAMING_STT_TEST,
+                     self._KEY_STT_SR_GOOGLE_STT_TEST, self._KEY_STT_STDIN_PSEUD_STT_TEST,
+                     self._KEY_STT_WHISPER_API_STT_TEST):
             self.__stt_test(event, values)

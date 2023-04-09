@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 
 from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
-from susumu_ai_dialogue_system.ui.gui_events import GuiEvents
 
 import PySimpleGUI as Sg
 
@@ -30,6 +29,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
     _KEY_ADVANCED_GUI_ALL_THEME_PREVIEW = "key_advanced_gui_all_theme_preview"
     _KEY_ADVANCED_EMOTION_TEST_TEXT = "key_advanced_emotion_test_text"
     _KEY_ADVANCED_EMOTION_TEST = "key_advanced_emotion_test"
+    _KEY_ADVANCED_OBS_TEST = "key_advanced_obs_test"
 
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
@@ -75,7 +75,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                           size=self.INPUT_SIZE_LONG,
                           ),
              ],
-            [Sg.Button("テスト", size=(15, 1), key=GuiEvents.OBS_TEST)],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_ADVANCED_OBS_TEST)],
         ]
 
         emotion_items = [
@@ -193,20 +193,15 @@ class SettingsAdvancedTabLayout(BaseLayout):
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def handle_event(self, event, values) -> None:
-        if event == self._config.KEY_OBS_PORT_NO:
-            self._main_window.input_validation_number_only(event, values)
-
-        if event == self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
-            self._main_window.input_validation_number_only(event, values)
-
-        if event == GuiEvents.OBS_TEST:
-            self.__obs_test(event, values)
-
-        if event == self._KEY_ADVANCED_EMOTION_TEST:
-            self.__emotion_test(event, values)
-
-        if event == self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
-            Sg.theme_previewer()
+        match event:
+            case self._config.KEY_OBS_PORT_NO | self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
+                self._main_window.input_validation_number_only(event, values)
+            case self._KEY_ADVANCED_OBS_TEST:
+                self.__obs_test(event, values)
+            case self._KEY_ADVANCED_EMOTION_TEST:
+                self.__emotion_test(event, values)
+            case self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
+                Sg.theme_previewer()
 
     def get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
