@@ -239,12 +239,16 @@ class SettingsAdvancedTabLayout(BaseLayout):
         return self._log_level_dic[selected_log_level_key]
 
     def _change_pyaudio_secondary_output_device(self) -> None:
-        window = SecondaryAudioSelectWindow(self._config, self._main_window)
-        api_name, device_name = window.display()
-        if api_name is not None and device_name is not None:
-            self._selected_api_name = api_name
-            self._selected_device_name = device_name
-            self.update_elements()
+        try:
+            window = SecondaryAudioSelectWindow(self._config, self._main_window)
+            api_name, device_name = window.display()
+            if api_name is not None and device_name is not None:
+                self._selected_api_name = api_name
+                self._selected_device_name = device_name
+                self.update_elements()
+        except Exception as e:
+            logger.error(e)
+            Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def get_selected_pyaudio_secondary_output_device(self) -> Tuple[Optional[str], Optional[str]]:
         return self._selected_api_name, self._selected_device_name

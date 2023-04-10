@@ -103,8 +103,9 @@ class SettingsLayout(BaseLayout):
         target_config.set_voicevox_host(values[self._config.KEY_VOICEVOX_HOST])
         if values[self._config.KEY_VOICEVOX_PORT_NO] != "":
             target_config.set_voicevox_port_no(int(values[self._config.KEY_VOICEVOX_PORT_NO]))
-        target_config.set_voicevox_speaker_no(self.__tts_tab_layout.get_selected_speaker_no(values))
+        target_config.set_voicevox_speaker_no(self.__tts_tab_layout.get_selected_voicevox_speaker_no(values))
         target_config.set_gcp_text_to_speech_api_key(values[self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY])
+        target_config.set_gcp_text_to_speech_speaker_name(self.__tts_tab_layout.get_selected_gcp_tts_speaker_name())
 
         # その他
         target_config.set_obs_host(values[self._config.KEY_OBS_HOST])

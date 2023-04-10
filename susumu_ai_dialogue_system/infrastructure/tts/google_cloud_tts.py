@@ -1,6 +1,6 @@
 import time
+from dataclasses import dataclass
 
-# noinspection PyPackageRequirements
 from google.cloud import texttospeech
 from loguru import logger
 
@@ -8,6 +8,13 @@ from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.tts.base_tts import BaseTTS
 
 
+@dataclass
+class GoogleCloudTTSSpeaker:
+    display_name: str
+    speaker_name: str
+
+
+# noinspection PyPackageRequirements
 class GoogleCloudTTS(BaseTTS):
     def __init__(self, config: Config):
         super().__init__(config)
@@ -47,15 +54,21 @@ class GoogleCloudTTS(BaseTTS):
         with open(file_path, "wb") as out:
             out.write(audio_content)
 
+    # noinspection PyMethodMayBeStatic
+    def _speaker_name_to_language_code(self, speaker_name: str) -> str:
+        return speaker_name.split("-")[0] + "-" + speaker_name.split("-")[1]
+
     # 型の不一致はあとまわし
     # noinspection PyTypeChecker
     def _tts(self, text: str, format_name: texttospeech.AudioEncoding) -> bytes:
         synthesis_input = texttospeech.SynthesisInput(text=text)
 
+        speaker_name = self._config.get_gcp_text_to_speech_speaker_name()
+        language_code = self._speaker_name_to_language_code(speaker_name)
+
         voice = texttospeech.VoiceSelectionParams(
-            name='ja-JP-Neural2-B',
-            language_code="ja-JP",
-            ssml_gender=texttospeech.SsmlVoiceGender.SSML_VOICE_GENDER_UNSPECIFIED
+            name=speaker_name,
+            language_code=language_code,
         )
 
         audio_config = texttospeech.AudioConfig(
@@ -74,3 +87,40 @@ class GoogleCloudTTS(BaseTTS):
         after = time.perf_counter()
         logger.debug(f"GoogleCloudTTS processing time={after - before:.3f} s")
         return response.audio_content
+
+    _sort_priority_order = ["ja-JP", "en-US"]
+
+    def _get_priority(self, item: GoogleCloudTTSSpeaker) -> int:
+        lang_code = item.display_name[:5]
+        if lang_code in self._sort_priority_order:
+            return self._sort_priority_order.index(lang_code)
+        else:
+            return len(self._sort_priority_order)
+
+    def _sort_speaker(self, speakers: list[GoogleCloudTTSSpeaker]) -> list[GoogleCloudTTSSpeaker]:
+        sorted_list = sorted(speakers, key=self._get_priority)
+        sorted_list += [x for x in speakers if x not in sorted_list]
+        return sorted_list
+
+    def get_speakers(self) -> list[GoogleCloudTTSSpeaker]:
+        voices = self.client.list_voices()
+        speakers: list[GoogleCloudTTSSpeaker] = []
+
+        for voice in voices.voices:
+            ssml_gender = voice.ssml_gender
+            gender = "MALE" if ssml_gender.value == 1 else "FEMALE"
+            name = voice.name
+            speakers.append(GoogleCloudTTSSpeaker(f"{name}-{gender}", f"{name}"))
+
+        return self._sort_speaker(speakers)
+
+
+if __name__ == '__main__':
+    from susumu_ai_dialogue_system.infrastructure.config import Config
+    from pprint import pprint
+
+    _config = Config()
+    _config.search_and_load()
+    _tts = GoogleCloudTTS(_config)
+    _speakers = _tts.get_speakers()
+    pprint(_speakers)

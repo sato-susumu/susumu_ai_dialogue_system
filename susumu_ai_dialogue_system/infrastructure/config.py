@@ -96,6 +96,7 @@ class Config:
     KEY_WRIME_EMOTION_SERVER_HOST = "wrime_emotion_server_host"
     KEY_WRIME_EMOTION_SERVER_PORT_NO = "wrime_emotion_server_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
+    KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME = "gcp_text_to_speech_speaker_name"
     KEY_GCP_SPEECH_TO_TEXT_API_KEY = "gcp_speech_to_text_api_key"
     KEY_GUI_APP_TITLE = "gui_app_title"
     KEY_GUI_THEME_NAME = "gui_theme_name"
@@ -169,6 +170,7 @@ class Config:
               youtube_live_url: ""
             GoogleTextToSpeech:
               gcp_text_to_speech_api_key:
+              gcp_text_to_speech_speaker_name: "ja-JP-Neural2-B"
             GoogleSpeechToText:
               gcp_speech_to_text_api_key:
             PyAudio:
@@ -257,6 +259,7 @@ class Config:
             f"./{self.USER_DATA_DIR_NAME}/",
             f"../{self.USER_DATA_DIR_NAME}/",
             f"../../{self.USER_DATA_DIR_NAME}/",
+            f"../../../{self.USER_DATA_DIR_NAME}/",
             f"./{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
             f"../{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
             f"../../{self.SAMPLE_DIR_NAME}/{self.USER_DATA_DIR_NAME}/",
@@ -356,6 +359,12 @@ class Config:
 
     def set_gcp_text_to_speech_api_key(self, value: str) -> None:
         self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_API_KEY] = value
+
+    def get_gcp_text_to_speech_speaker_name(self) -> str:
+        return self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME]
+
+    def set_gcp_text_to_speech_speaker_name(self, value: str) -> None:
+        self._config["GoogleTextToSpeech"][self.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME] = value
 
     def get_gcp_speech_to_text_api_key(self):
         return self._config["GoogleSpeechToText"][self.KEY_GCP_SPEECH_TO_TEXT_API_KEY]

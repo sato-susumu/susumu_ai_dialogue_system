@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from susumu_ai_dialogue_system.ui.gcp_tts_speaker_select_window import GcpTtsSpeakerSelectWindow
+
 if TYPE_CHECKING:
     from susumu_ai_dialogue_system.ui.settings_layout import SettingsLayout
     from susumu_ai_dialogue_system.ui.main_window import MainWindow
@@ -18,7 +20,8 @@ from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
 class SettingsTtsTabLayout(BaseLayout):
     _KEY_TTS_VOICEVOX_TEST = "key_tts_voicevox_test"
     _KEY_TTS_GTTS_TEST = "key_tts_gtts_test"
-    _KEY_TTS_GOOGLE_CLOUD_TTS_TEST = "key_tts_google_cloud_tts_test"
+    _KEY_TTS_GCP_TTS_TEST = "key_tts_gcp_tts_test"
+    _KEY_TTS_GCP_TTS_CHANGE_SPEAKER_NAME = "key_tts_gcp_tts_change_speaker_name"
     _KEY_TTS_PYTTSX3_TEST = "key_tts_pyttsx3_test"
     _KEY_TTS_VOICEVOX_SPEAKER_COMBO = 'key_tts_voicevox_speaker_combo'
     _KEY_TTS_PLAY_TEXT = "key_tts_play_text"
@@ -46,6 +49,7 @@ class SettingsTtsTabLayout(BaseLayout):
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
+        self._selected_gcp_tts_speaker_name = self._config.get_gcp_text_to_speech_speaker_name()
 
     @classmethod
     def get_key(cls) -> str:
@@ -88,6 +92,7 @@ class SettingsTtsTabLayout(BaseLayout):
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_PYTTSX3_TEST)],
         ]
 
+        gcp_speaker_name = self._config.get_gcp_text_to_speech_speaker_name()
         google_cloud_tts_items = [
             [Sg.Text('・利用には別途GCP認証もしくは下記APIキーの設定が必要です。')],
             [Sg.Text('Google Text-to-SpeechのAPIキー'),
@@ -97,7 +102,12 @@ class SettingsTtsTabLayout(BaseLayout):
                           size=self.INPUT_SIZE_LONG,
                           )
              ],
-            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST)],
+            [Sg.Text('スピーカー名:'),
+             Sg.Text(gcp_speaker_name,
+                     key=self._config.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME),
+             Sg.Button("スピーカー変更", size=(15, 1), key=self._KEY_TTS_GCP_TTS_CHANGE_SPEAKER_NAME)
+             ],
+            [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_GCP_TTS_TEST)],
         ]
 
         tts_tab_layout = [
@@ -118,7 +128,8 @@ class SettingsTtsTabLayout(BaseLayout):
         return tts_tab_layout
 
     def update_elements(self) -> None:
-        pass
+        self._main_window.window[self._config.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME].update(
+            self._selected_gcp_tts_speaker_name)
 
     def __tts_test(self, event, values) -> None:
         config = self._config.clone()
@@ -128,7 +139,7 @@ class SettingsTtsTabLayout(BaseLayout):
             config.set_common_output_function(OutputFunction.VOICEVOX)
         elif event == self._KEY_TTS_GTTS_TEST:
             config.set_common_output_function(OutputFunction.GTTS)
-        elif event == self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST:
+        elif event == self._KEY_TTS_GCP_TTS_TEST:
             config.set_common_output_function(OutputFunction.GOOGLE_CLOUD)
         elif event == self._KEY_TTS_PYTTSX3_TEST:
             config.set_common_output_function(OutputFunction.PYTTSX3)
@@ -142,7 +153,24 @@ class SettingsTtsTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def get_selected_speaker_no(self, values):
+    def _change_gcp_tts_speaker_name(self, values) -> None:
+        config = self._config.clone()
+        config = self._settings_layout.update_local_config_by_values(values, config)
+
+        window = GcpTtsSpeakerSelectWindow(config, self._main_window)
+        try:
+            speaker_name = window.display()
+            if speaker_name is not None:
+                self._selected_gcp_tts_speaker_name = speaker_name
+                self.update_elements()
+        except Exception as e:
+            logger.error(e)
+            Sg.PopupError(e, title="エラー", keep_on_top=True)
+
+    def get_selected_gcp_tts_speaker_name(self) -> str:
+        return self._selected_gcp_tts_speaker_name
+
+    def get_selected_voicevox_speaker_no(self, values):
         selected_speaker_key = values[self._KEY_TTS_VOICEVOX_SPEAKER_COMBO]
         return self._voicevox_speaker_dic[selected_speaker_key]
 
@@ -151,6 +179,8 @@ class SettingsTtsTabLayout(BaseLayout):
             self._main_window.input_validation_number_only(event, values)
 
         if event in (
-                self._KEY_TTS_VOICEVOX_TEST, self._KEY_TTS_GTTS_TEST, self._KEY_TTS_GOOGLE_CLOUD_TTS_TEST,
+                self._KEY_TTS_VOICEVOX_TEST, self._KEY_TTS_GTTS_TEST, self._KEY_TTS_GCP_TTS_TEST,
                 self._KEY_TTS_PYTTSX3_TEST):
             self.__tts_test(event, values)
+        if event == self._KEY_TTS_GCP_TTS_CHANGE_SPEAKER_NAME:
+            self._change_gcp_tts_speaker_name(values)
