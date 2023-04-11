@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 
 # noinspection PyMethodMayBeStatic
 class MainLayout(BaseLayout):
-    KEY_MAIN_RUN = "key_main_run"
-    KEY_MAIN_SETTINGS = "key_main_settings"
+    _KEY_MAIN_RUN = "key_main_run"
+    _KEY_MAIN_SETTINGS = "key_main_settings"
 
     def __init__(self, config: Config, main_window: MainWindow):
         super().__init__(config, main_window)
@@ -47,9 +47,9 @@ class MainLayout(BaseLayout):
         from susumu_ai_dialogue_system.ui.main_window import MainWindow
 
         buttons_layout = [[
-            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_SETTINGS,
+            Sg.Button('設定', size=self.BUTTON_SIZE_NORMAL, key=self._KEY_MAIN_SETTINGS,
                       disabled=self.__settings_button_disabled()),
-            Sg.Button(self.__get_run_button_text(), size=self.BUTTON_SIZE_NORMAL, key=self.KEY_MAIN_RUN),
+            Sg.Button(self.__get_run_button_text(), size=self.BUTTON_SIZE_NORMAL, key=self._KEY_MAIN_RUN),
             Sg.Button('終了', size=self.BUTTON_SIZE_NORMAL, key=MainWindow.KEY_WINDOW_EXIT),
         ]]
 
@@ -72,9 +72,9 @@ class MainLayout(BaseLayout):
 
     def update_elements(self) -> None:
         self._main_window.window["common_config_table"].update(values=self._get_common_config_table())
-        self._main_window.window[self.KEY_MAIN_RUN].update(text=self.__get_run_button_text(),
-                                                           disabled=self.__run_button_disabled())
-        self._main_window.window[self.KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
+        self._main_window.window[self._KEY_MAIN_RUN].update(text=self.__get_run_button_text(),
+                                                            disabled=self.__run_button_disabled())
+        self._main_window.window[self._KEY_MAIN_SETTINGS].update(disabled=self.__settings_button_disabled())
 
     def update_config(self, config: Config) -> None:
         super().update_config(config)
@@ -120,11 +120,13 @@ class MainLayout(BaseLayout):
 
     def handle_event(self, event, values) -> None:
         match event:
-            case self.KEY_MAIN_RUN:
+            case self._KEY_MAIN_RUN:
                 if self.__main_thread is None:
                     self.__main_thread_start()
                 else:
                     self.__main_thread_stop()
                 self._main_window.update_all_elements_in_window(self.get_key())
-            case self.KEY_MAIN_SETTINGS:
+            case self._KEY_MAIN_SETTINGS:
+                temp_config = self._config.clone()
+                self._main_window.set_temporary_config(SettingsLayout.get_key(), temp_config)
                 self._main_window.create_new_window(SettingsLayout.get_key())

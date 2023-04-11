@@ -38,12 +38,14 @@ class SettingsSttTabLayout(BaseLayout):
                           key=self._config.KEY_GCP_YOUTUBE_DATA_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           )
              ],
             [Sg.Text('ライブ配信URL'),
              Sg.InputText(default_text=self._config.get_youtube_live_url(),
                           key=self._config.KEY_YOUTUBE_LIVE_URL,
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           )
              ],
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_YOUTUBE_PSEUD_STT_TEST)],
@@ -56,6 +58,7 @@ class SettingsSttTabLayout(BaseLayout):
                           key=self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           )
              ],
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_STT_GOOGLE_STREAMING_STT_TEST)],
@@ -85,13 +88,9 @@ class SettingsSttTabLayout(BaseLayout):
 
         return stt_tab_layout
 
-    def update_elements(self) -> None:
-        pass
-
+    # noinspection PyUnusedLocal
     def __stt_test(self, event, values):
         config = self._config.clone()
-        config = self._settings_layout.update_local_config_by_values(values, config)
-
         match event:
             case self._KEY_STT_YOUTUBE_PSEUD_STT_TEST:
                 config.set_common_input_function(InputFunction.YOUTUBE_PSEUD)
@@ -113,6 +112,14 @@ class SettingsSttTabLayout(BaseLayout):
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
     def handle_event(self, event, values) -> None:
+        match event:
+            case self._config.KEY_GCP_YOUTUBE_DATA_API_KEY:
+                self._config.set_gcp_youtube_data_api_key(values[self._config.KEY_GCP_YOUTUBE_DATA_API_KEY])
+            case self._config.KEY_YOUTUBE_LIVE_URL:
+                self._config.set_youtube_live_url(values[self._config.KEY_YOUTUBE_LIVE_URL])
+            case self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY:
+                self._config.set_gcp_speech_to_text_api_key(values[self._config.KEY_GCP_SPEECH_TO_TEXT_API_KEY])
+
         if event in (self._KEY_STT_YOUTUBE_PSEUD_STT_TEST, self._KEY_STT_GOOGLE_STREAMING_STT_TEST,
                      self._KEY_STT_SR_GOOGLE_STT_TEST, self._KEY_STT_STDIN_PSEUD_STT_TEST,
                      self._KEY_STT_WHISPER_API_STT_TEST):

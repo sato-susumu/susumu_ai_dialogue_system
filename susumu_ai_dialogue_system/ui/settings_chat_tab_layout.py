@@ -29,6 +29,7 @@ class SettingsChatTabLayout(BaseLayout):
              Sg.InputText(key=self._config.KEY_PARLAI_HOST,
                           default_text=self._config.get_parlai_host(),
                           size=self.INPUT_SIZE_NORMAL,
+                          enable_events=True,
                           )
              ],
             [Sg.Text('ポート番号'),
@@ -51,9 +52,10 @@ class SettingsChatTabLayout(BaseLayout):
 
         return chat_tab_layout
 
-    def update_elements(self) -> None:
-        pass
-
     def handle_event(self, event, values) -> None:
-        if event == self._config.KEY_PARLAI_PORT_NO:
-            self._main_window.input_validation_number_only(event, values)
+        match event:
+            case self._config.KEY_PARLAI_HOST:
+                self._config.set_parlai_host(values[self._config.KEY_PARLAI_HOST])
+            case self._config.KEY_PARLAI_PORT_NO:
+                new_value = self._main_window.input_validation_number_only(event, values)
+                self._config.set_parlai_port_no(int(new_value))

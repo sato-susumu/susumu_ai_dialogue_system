@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from susumu_ai_dialogue_system.infrastructure.config import Config
-from susumu_ai_dialogue_system.infrastructure.tts.google_cloud_tts import GoogleCloudTTS, GoogleCloudTTSSpeaker
+from susumu_ai_dialogue_system.infrastructure.tts.google_cloud_tts import GoogleCloudTTS
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
 if TYPE_CHECKING:
     from susumu_ai_dialogue_system.ui.main_window import MainWindow

@@ -30,6 +30,7 @@ class SettingsApiKeyTabLayout(BaseLayout):
                  key=self._config.KEY_OPENAI_API_KEY,
                  password_char="*",
                  size=self.INPUT_SIZE_LONG,
+                 enable_events=True,
              )],
             [Sg.Text("API KeyはOpenAIでユーザー登録後、"),
              self.create_linked_text("https://platform.openai.com/account/api-keys",
@@ -45,6 +46,7 @@ class SettingsApiKeyTabLayout(BaseLayout):
                  key=self._config.KEY_DEEPL_AUTH_KEY,
                  password_char="*",
                  size=self.INPUT_SIZE_LONG,
+                 enable_events=True,
              )],
         ]
 
@@ -54,8 +56,9 @@ class SettingsApiKeyTabLayout(BaseLayout):
         ]
         return api_keys_tab_layout
 
-    def update_elements(self) -> None:
-        pass
-
     def handle_event(self, event, values) -> None:
-        pass
+        match event:
+            case self._config.KEY_OPENAI_API_KEY:
+                self._config.set_openai_api_key(values[self._config.KEY_OPENAI_API_KEY])
+            case self._config.KEY_DEEPL_AUTH_KEY:
+                self._config.set_deepl_auth_key(values[self._config.KEY_DEEPL_AUTH_KEY])

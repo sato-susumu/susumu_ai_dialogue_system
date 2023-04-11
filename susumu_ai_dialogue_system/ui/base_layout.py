@@ -29,9 +29,6 @@ class BaseLayout:
     def get_layout(self):
         raise NotImplementedError
 
-    def update_elements(self) -> None:
-        raise NotImplementedError
-
     def handle_event(self, event, values) -> None:
         raise NotImplementedError
 

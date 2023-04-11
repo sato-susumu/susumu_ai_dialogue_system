@@ -13,7 +13,7 @@ import PySimpleGUI as Sg
 
 # noinspection DuplicatedCode
 class SecondaryAudioSelectWindow(BaseLayout):
-    __KEY_OK = "OK"
+    __KEY_OK = "ok"
     __KEY_CANCEL = "cancel"
     __KEY_LISTBOX = "listbox"
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from susumu_ai_dialogue_system.ui.gcp_tts_speaker_select_window import GcpTtsSpeakerSelectWindow
 
@@ -49,7 +49,6 @@ class SettingsTtsTabLayout(BaseLayout):
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
-        self._selected_gcp_tts_speaker_name = self._config.get_gcp_text_to_speech_speaker_name()
 
     @classmethod
     def get_key(cls) -> str:
@@ -65,6 +64,7 @@ class SettingsTtsTabLayout(BaseLayout):
              Sg.InputText(default_text=self._config.get_voicevox_host(),
                           key=self._config.KEY_VOICEVOX_HOST,
                           size=self.INPUT_SIZE_NORMAL,
+                          enable_events=True,
                           ),
              ],
             [Sg.Text('ポート番号'),
@@ -79,6 +79,7 @@ class SettingsTtsTabLayout(BaseLayout):
                       key=self._KEY_TTS_VOICEVOX_SPEAKER_COMBO,
                       size=(30, 1),
                       readonly=True,
+                      enable_events=True,
                       ),
              ],
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_TTS_VOICEVOX_TEST)],
@@ -100,6 +101,7 @@ class SettingsTtsTabLayout(BaseLayout):
                           key=self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           )
              ],
             [Sg.Text('スピーカー名:'),
@@ -122,19 +124,14 @@ class SettingsTtsTabLayout(BaseLayout):
                              expand_x=True,
                              size=(50, 3),
                              horizontal_scroll=False,
+                             enable_events=True,
                              ),
             ],
         ]
         return tts_tab_layout
 
-    def update_elements(self) -> None:
-        self._main_window.window[self._config.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME].update(
-            self._selected_gcp_tts_speaker_name)
-
     def __tts_test(self, event, values) -> None:
         config = self._config.clone()
-        config = self._settings_layout.update_local_config_by_values(values, config)
-
         if event == self._KEY_TTS_VOICEVOX_TEST:
             config.set_common_output_function(OutputFunction.VOICEVOX)
         elif event == self._KEY_TTS_GTTS_TEST:
@@ -153,34 +150,38 @@ class SettingsTtsTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
 
-    def _change_gcp_tts_speaker_name(self, values) -> None:
-        config = self._config.clone()
-        config = self._settings_layout.update_local_config_by_values(values, config)
-
-        window = GcpTtsSpeakerSelectWindow(config, self._main_window)
+    # noinspection PyUnusedLocal
+    def _change_gcp_tts_speaker_name(self, values) -> Optional[str]:
+        speaker_name = None
         try:
+            window = GcpTtsSpeakerSelectWindow(self._config, self._main_window)
             speaker_name = window.display()
-            if speaker_name is not None:
-                self._selected_gcp_tts_speaker_name = speaker_name
-                self.update_elements()
         except Exception as e:
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
-
-    def get_selected_gcp_tts_speaker_name(self) -> str:
-        return self._selected_gcp_tts_speaker_name
-
-    def get_selected_voicevox_speaker_no(self, values):
-        selected_speaker_key = values[self._KEY_TTS_VOICEVOX_SPEAKER_COMBO]
-        return self._voicevox_speaker_dic[selected_speaker_key]
+        return speaker_name
 
     def handle_event(self, event, values) -> None:
-        if event in (self._config.KEY_VOICEVOX_PORT_NO, self._config.KEY_VOICEVOX_SPEAKER_NO):
-            self._main_window.input_validation_number_only(event, values)
+        match event:
+            case self._config.KEY_VOICEVOX_HOST:
+                self._config.set_voicevox_host(values[self._config.KEY_VOICEVOX_HOST])
+            case self._config.KEY_VOICEVOX_PORT_NO:
+                new_value = self._main_window.input_validation_number_only(event, values)
+                self._config.set_voicevox_port_no(int(new_value))
+            case self._KEY_TTS_VOICEVOX_SPEAKER_COMBO:
+                selected_speaker_key = values[self._KEY_TTS_VOICEVOX_SPEAKER_COMBO]
+                speaker_no = self._voicevox_speaker_dic[selected_speaker_key]
+                self._config.set_voicevox_speaker_no(speaker_no)
+            case self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY:
+                self._config.set_gcp_text_to_speech_api_key(values[self._config.KEY_GCP_TEXT_TO_SPEECH_API_KEY])
+            case self._KEY_TTS_GCP_TTS_CHANGE_SPEAKER_NAME:
+                new_speaker_name = self._change_gcp_tts_speaker_name(values)
+                if new_speaker_name is not None:
+                    self._config.set_gcp_text_to_speech_speaker_name(new_speaker_name)
+                    self._main_window.window[self._config.KEY_GCP_TEXT_TO_SPEECH_SPEAKER_NAME].update(
+                        new_speaker_name)
 
         if event in (
                 self._KEY_TTS_VOICEVOX_TEST, self._KEY_TTS_GTTS_TEST, self._KEY_TTS_GCP_TTS_TEST,
                 self._KEY_TTS_PYTTSX3_TEST):
             self.__tts_test(event, values)
-        if event == self._KEY_TTS_GCP_TTS_CHANGE_SPEAKER_NAME:
-            self._change_gcp_tts_speaker_name(values)

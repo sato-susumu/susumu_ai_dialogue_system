@@ -32,17 +32,18 @@ class SettingsAiTabLayout(BaseLayout):
                 default_text=self._config.get_ai_system_settings_text(self.__current_ai_id),
                 key=self._config.KEY_AI_SYSTEM_SETTINGS_TEXT,
                 expand_x=True,
-                expand_y=True
+                expand_y=True,
+                enable_events=True,
             )]
         ]
 
         return ai_tab_layout
 
-    def update_elements(self) -> None:
-        pass
-
     def get_current_ai_id(self) -> str:
         return self.__current_ai_id
 
     def handle_event(self, event, values) -> None:
-        pass
+        match event:
+            case self._config.KEY_AI_SYSTEM_SETTINGS_TEXT:
+                self._config.set_ai_system_settings_text(self.get_current_ai_id(),
+                                                         values[self._config.KEY_AI_SYSTEM_SETTINGS_TEXT])

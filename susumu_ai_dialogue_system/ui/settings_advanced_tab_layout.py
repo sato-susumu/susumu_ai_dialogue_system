@@ -38,8 +38,6 @@ class SettingsAdvancedTabLayout(BaseLayout):
     def __init__(self, config: Config, settings_layout: SettingsLayout, main_window: MainWindow):
         super().__init__(config, main_window)
         self._settings_layout = settings_layout
-        self._selected_api_name = config.get_pyaudio_secondary_output_api_name()
-        self._selected_device_name = config.get_pyaudio_secondary_output_device_name()
 
     @classmethod
     def get_key(cls) -> str:
@@ -53,6 +51,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
              Sg.InputText(default_text=self._config.get_obs_host(),
                           key=self._config.KEY_OBS_HOST,
                           size=self.INPUT_SIZE_NORMAL,
+                          enable_events=True,
                           ),
              ],
             [Sg.Text('ポート番号'),
@@ -67,18 +66,21 @@ class SettingsAdvancedTabLayout(BaseLayout):
                           key=self._config.KEY_OBS_PASSWORD,
                           password_char="*",
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           ),
              ],
             [Sg.Text('AIの発話を表示するテキスト(GDI+)ソース名'),
              Sg.InputText(default_text=self._config.get_obs_ai_utterance_source_name(),
                           key=self._config.KEY_OBS_AI_UTTERANCE_SOURCE_NAME,
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           ),
              ],
             [Sg.Text('ユーザーの発話を表示するテキスト(GDI+)ソース名'),
              Sg.InputText(default_text=self._config.get_obs_user_utterance_source_name(),
                           key=self._config.KEY_OBS_USER_UTTERANCE_SOURCE_NAME,
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           ),
              ],
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_ADVANCED_OBS_TEST)],
@@ -94,6 +96,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
              Sg.InputText(default_text=self._config.get_wrime_emotion_server_host(),
                           key=self._config.KEY_WRIME_EMOTION_SERVER_HOST,
                           size=self.INPUT_SIZE_NORMAL,
+                          enable_events=True,
                           ),
              ],
             [Sg.Text('ポート番号'),
@@ -107,6 +110,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
              Sg.InputText(default_text="なお、このメッセージは5秒後に自動的に消滅する。",
                           key=self._KEY_ADVANCED_EMOTION_TEST_TEXT,
                           expand_x=True,
+                          enable_events=True,
                           ),
              ],
             [Sg.Button("テスト", size=(15, 1), key=self._KEY_ADVANCED_EMOTION_TEST)],
@@ -127,6 +131,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                          key=self._KEY_ADVANCED_CONSOLE_LOG_LEVEL,
                          size=(30, 1),
                          readonly=True,
+                         enable_events=True,
                          )
             ]
         ]
@@ -136,7 +141,9 @@ class SettingsAdvancedTabLayout(BaseLayout):
             [Sg.Text("・Windowsでは、MMEおよびWASAPIの一部デバイスのみ動作確認しています。")],
             [Sg.Checkbox("音声を出力する",
                          default=self._config.get_pyaudio_second_output_enabled(),
-                         key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED)],
+                         key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED,
+                         enable_events=True,
+                         )],
             [Sg.Text("API名:"),
              Sg.Text(text=self._config.get_pyaudio_secondary_output_api_name(),
                      key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME),
@@ -155,6 +162,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
              Sg.InputText(default_text=self._config.get_gui_app_title(),
                           key=self._config.KEY_GUI_APP_TITLE,
                           size=self.INPUT_SIZE_LONG,
+                          enable_events=True,
                           )],
             [Sg.Text("テーマ"),
              Sg.Combo(values=Sg.theme_list(),
@@ -162,6 +170,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                       key=self._config.KEY_GUI_THEME_NAME,
                       size=(30, 1),
                       readonly=True,
+                      enable_events=True,
                       ),
              Sg.Button("全テーマプレビュー",
                        size=self.BUTTON_SIZE_LONG,
@@ -192,16 +201,9 @@ class SettingsAdvancedTabLayout(BaseLayout):
 
         return advanced_tab_layout
 
-    def update_elements(self) -> None:
-        self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME].update(
-            self._selected_api_name)
-        self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME].update(
-            self._selected_device_name)
-
     # noinspection PyUnusedLocal
     def __obs_test(self, event, values):
         config = self._config.clone()
-        config = self._settings_layout.update_local_config_by_values(values, config)
         config.set_common_obs_enabled(True)
         try:
             OBSTest(config).run()
@@ -212,8 +214,6 @@ class SettingsAdvancedTabLayout(BaseLayout):
     # noinspection PyUnusedLocal
     def __emotion_test(self, event, values):
         config = self._config.clone()
-        config = self._settings_layout.update_local_config_by_values(values, config)
-
         text = values[self._KEY_ADVANCED_EMOTION_TEST_TEXT]
         try:
             EmotionTest(config).run(text)
@@ -223,32 +223,63 @@ class SettingsAdvancedTabLayout(BaseLayout):
 
     def handle_event(self, event, values) -> None:
         match event:
-            case self._config.KEY_OBS_PORT_NO | self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
-                self._main_window.input_validation_number_only(event, values)
+            case self._config.KEY_OBS_HOST:
+                self._config.set_obs_host(values[self._config.KEY_OBS_HOST])
+            case self._config.KEY_OBS_PORT_NO:
+                new_value = self._main_window.input_validation_number_only(event, values)
+                self._config.set_obs_port_no(int(new_value))
+            case self._config.KEY_OBS_PASSWORD:
+                self._config.set_obs_password(values[self._config.KEY_OBS_PASSWORD])
+            case self._config.KEY_OBS_AI_UTTERANCE_SOURCE_NAME:
+                self._config.set_obs_ai_utterance_source_name(
+                    values[self._config.KEY_OBS_AI_UTTERANCE_SOURCE_NAME])
+            case self._config.KEY_OBS_USER_UTTERANCE_SOURCE_NAME:
+                self._config.set_obs_user_utterance_source_name(
+                    values[self._config.KEY_OBS_USER_UTTERANCE_SOURCE_NAME])
             case self._KEY_ADVANCED_OBS_TEST:
                 self.__obs_test(event, values)
-            case self._KEY_ADVANCED_EMOTION_TEST:
-                self.__emotion_test(event, values)
+
+            case self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED:
+                self._config.set_pyaudio_secondary_output_enabled(
+                    values[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED])
+            case self._KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE:
+                api_name, device_name = self._change_pyaudio_secondary_output_device()
+                if api_name is not None and device_name is not None:
+                    self._config.set_pyaudio_secondary_output_api_name(api_name)
+                    self._config.set_pyaudio_secondary_output_device_name(device_name)
+                    self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME].update(api_name)
+                    self._main_window.window[self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME].update(device_name)
+
+            case self._KEY_ADVANCED_CONSOLE_LOG_LEVEL:
+                self._config.set_advanced_console_log_level(self.__get_selected_console_log_level(values))
+
+            case self._config.KEY_GUI_APP_TITLE:
+                self._config.set_gui_app_title(values[self._config.KEY_GUI_APP_TITLE])
+            case self._config.KEY_GUI_THEME_NAME:
+                self._config.set_gui_theme_name(values[self._config.KEY_GUI_THEME_NAME])
+
             case self._KEY_ADVANCED_GUI_ALL_THEME_PREVIEW:
                 Sg.theme_previewer()
-            case self._KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE:
-                self._change_pyaudio_secondary_output_device()
 
-    def get_selected_console_log_level(self, values):
+            case self._config.KEY_WRIME_EMOTION_SERVER_HOST:
+                self._config.set_wrime_emotion_server_host(values[self._config.KEY_WRIME_EMOTION_SERVER_HOST])
+            case self._config.KEY_WRIME_EMOTION_SERVER_PORT_NO:
+                new_value = self._main_window.input_validation_number_only(event, values)
+                self._config.set_wrime_emotion_server_port_no(int(new_value))
+            case self._KEY_ADVANCED_EMOTION_TEST:
+                self.__emotion_test(event, values)
+
+    def __get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
         return self._log_level_dic[selected_log_level_key]
 
-    def _change_pyaudio_secondary_output_device(self) -> None:
+    def _change_pyaudio_secondary_output_device(self) -> Tuple[Optional[str], Optional[str]]:
+        api_name, device_name = None, None
         try:
             window = SecondaryAudioSelectWindow(self._config, self._main_window)
             api_name, device_name = window.display()
-            if api_name is not None and device_name is not None:
-                self._selected_api_name = api_name
-                self._selected_device_name = device_name
-                self.update_elements()
         except Exception as e:
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
+        return api_name, device_name
 
-    def get_selected_pyaudio_secondary_output_device(self) -> Tuple[Optional[str], Optional[str]]:
-        return self._selected_api_name, self._selected_device_name

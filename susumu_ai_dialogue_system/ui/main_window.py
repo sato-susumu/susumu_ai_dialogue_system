@@ -54,16 +54,27 @@ class MainWindow:
             if layout.get_key() == target_layout_name:
                 layout.update_elements()
 
-    def update_config(self) -> None:
+    def reload_and_update_config(self) -> None:
         config_file_path = self.__config.get_current_config_path()
         if os.path.exists(config_file_path):
             self.__config.load(config_file_path)
         for layout in self.__layout_list:
             layout.update_config(self.__config)
 
-    def input_validation_number_only(self, event, values):
-        if values[event] and values[event][-1] not in '0123456789':
-            self.window[event].update(values[event][:-1])
+    def set_temporary_config(self, target_layout_name: str,  config: Config) -> None:
+        for layout in self.__layout_list:
+            if layout.get_key() == target_layout_name:
+                layout.update_config(config)
+
+    def input_validation_number_only(self, event, values) -> str:
+        new_value = values[event]
+        if len(new_value) == 0:
+            new_value = "0"
+            self.window[event].update(new_value)
+        elif len(new_value) >= 1 and new_value[-1] not in '0123456789':
+            new_value = values[event][:-1]
+            self.window[event].update(new_value)
+        return new_value
 
     def display(self):
         self.create_new_window(MainLayout.get_key())
