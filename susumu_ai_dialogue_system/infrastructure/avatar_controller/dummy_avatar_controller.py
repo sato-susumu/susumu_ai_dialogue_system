@@ -1,9 +1,9 @@
-from susumu_ai_dialogue_system.infrastructure.app_controller.base_app_contorller import BaseAppController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.base_avatar_controller import BaseAvatarController
 from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.emotion import Emotion
 
 
-class DummyAppController(BaseAppController):
+class DummyAvatarController(BaseAvatarController):
     def __init__(self, config: Config):
         super().__init__(config)
 

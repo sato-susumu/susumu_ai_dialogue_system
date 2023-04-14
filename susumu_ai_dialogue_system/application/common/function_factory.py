@@ -1,7 +1,7 @@
 from susumu_ai_dialogue_system.application.common.log_controller import LogController
-from susumu_ai_dialogue_system.infrastructure.app_controller.dummy_app_contorller import DummyAppController
-from susumu_ai_dialogue_system.infrastructure.app_controller.threaded_app_controller import ThreadedAppController
-from susumu_ai_dialogue_system.infrastructure.app_controller.vmagicmirror_controller import VMagicMirrorController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.dummy_avatar_controller import DummyAvatarController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.threaded_avatar_controller import ThreadedAvatarController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.vmagicmirror_avatar_controller import VMagicMirrorController
 from susumu_ai_dialogue_system.infrastructure.chat.base_chat import BaseChat
 from susumu_ai_dialogue_system.infrastructure.chat.chatgpt_chat import ChatGPTChat
 from susumu_ai_dialogue_system.infrastructure.chat.parlai_chat import ParlAIChat
@@ -89,8 +89,8 @@ class FunctionFactory:
         value = config.get_common_v_magic_mirror_connection_enabled()
         if value:
             source_controller = VMagicMirrorController(config)
-            return ThreadedAppController(config, source_controller)
-        return DummyAppController(config)
+            return ThreadedAvatarController(config, source_controller)
+        return DummyAvatarController(config)
 
     @staticmethod
     def create_log_controller(config: Config):

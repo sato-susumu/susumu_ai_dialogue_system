@@ -2,13 +2,13 @@ from threading import Thread, Event
 
 import loguru
 
-from susumu_ai_dialogue_system.infrastructure.app_controller.base_app_contorller import BaseAppController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.base_avatar_controller import BaseAvatarController
 from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.emotion import Emotion
 
 
-class ThreadedAppController(BaseAppController):
-    def __init__(self, config: Config, source_controller: BaseAppController):
+class ThreadedAvatarController(BaseAvatarController):
+    def __init__(self, config: Config, source_controller: BaseAvatarController):
         super().__init__(config)
 
         self._source_controller = source_controller
@@ -38,13 +38,13 @@ class ThreadedAppController(BaseAppController):
 
 
 if __name__ == '__main__':
-    from susumu_ai_dialogue_system.infrastructure.app_controller.vmagicmirror_controller import VMagicMirrorController
+    from susumu_ai_dialogue_system.infrastructure.avatar_controller.vmagicmirror_avatar_controller import VMagicMirrorController
     import random
     from time import sleep
 
     _config = Config()
     _source_controller = VMagicMirrorController(_config)
-    _controller = ThreadedAppController(_config, _source_controller)
+    _controller = ThreadedAvatarController(_config, _source_controller)
     _controller.connect()
     try:
         while True:

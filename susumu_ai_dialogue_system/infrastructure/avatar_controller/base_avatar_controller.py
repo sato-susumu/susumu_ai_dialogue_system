@@ -2,7 +2,7 @@ from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.emotion import Emotion
 
 
-class BaseAppController:
+class BaseAvatarController:
     def __init__(self, config: Config):
         self._config = config
 
