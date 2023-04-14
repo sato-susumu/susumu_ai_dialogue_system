@@ -11,9 +11,9 @@ from susumu_ai_dialogue_system.infrastructure.pyaudio_player import PyAudioPlaye
 @pytest.fixture
 def config():
     config_mock = Mock(spec=Config)
-    config_mock.get_pyaudio_second_output_enabled.return_value = False
-    config_mock.get_pyaudio_second_output_host_api_name.return_value = ''
-    config_mock.get_pyaudio_second_output_device_name.return_value = ''
+    config_mock.get_pyaudio_secondary_output_enabled.return_value = False
+    config_mock.get_pyaudio_secondary_output_api_name.return_value = ''
+    config_mock.get_pyaudio_secondary_output_device_name.return_value = ''
     return config_mock
 
 

@@ -140,7 +140,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
             [Sg.Text("・一部の音声合成、一部のデバイスのみ対応しています。")],
             [Sg.Text("・Windowsでは、MMEおよびWASAPIの一部デバイスのみ動作確認しています。")],
             [Sg.Checkbox("音声を出力する",
-                         default=self._config.get_pyaudio_second_output_enabled(),
+                         default=self._config.get_pyaudio_secondary_output_enabled(),
                          key=self._config.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED,
                          enable_events=True,
                          )],

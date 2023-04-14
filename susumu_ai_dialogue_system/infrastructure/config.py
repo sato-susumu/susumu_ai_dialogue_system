@@ -374,7 +374,7 @@ class Config:
     def set_gcp_speech_to_text_api_key(self, value: str) -> None:
         self._config["GoogleSpeechToText"][self.KEY_GCP_SPEECH_TO_TEXT_API_KEY] = value
 
-    def get_pyaudio_second_output_enabled(self) -> bool:
+    def get_pyaudio_secondary_output_enabled(self) -> bool:
         return self._config["PyAudio"][self.KEY_PYAUDIO_SECONDARY_OUTPUT_ENABLED]
 
     def set_pyaudio_secondary_output_enabled(self, value: bool) -> None:

@@ -20,7 +20,7 @@ class PyAudioPlayer:
         self._stop_requested_event = threading.Event()
 
     def _get_second_output_device_id(self) -> int:
-        second_output_enabled = self._config.get_pyaudio_second_output_enabled()
+        second_output_enabled = self._config.get_pyaudio_secondary_output_enabled()
         if not second_output_enabled:
             return -1
         # 指定されたデバイスのデバイスID取得
