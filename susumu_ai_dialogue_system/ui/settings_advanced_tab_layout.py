@@ -157,6 +157,14 @@ class SettingsAdvancedTabLayout(BaseLayout):
                        key=self._KEY_ADVANCED_SECONDARY_OUTPUT_DEVICE_CHANGE)],
         ]
 
+        chat_gpt_items = [
+            [Sg.Checkbox("履歴をログに出力する",
+                         default=self._config.get_advanced_chat_gpt_history_log_enabled(),
+                         key=self._config.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED,
+                         enable_events=True,
+                         )],
+        ]
+
         gui_items = [
             [Sg.Text("アプリタイトル"),
              Sg.InputText(default_text=self._config.get_gui_app_title(),
@@ -189,6 +197,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 [Sg.Frame("VMagicMirror連携", v_magic_mirror_items, expand_x=True)],
                 [Sg.Frame("ログ", log_level_items, expand_x=True)],
                 [Sg.Frame("口パク用第二音声デバイス", secondary_audio_items, expand_x=True)],
+                [Sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
                 [Sg.Frame("GUI", gui_items, expand_x=True)],
                 [Sg.Frame("APIステータス", status_items, expand_x=True)],
             ],
@@ -268,6 +277,9 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 self._config.set_wrime_emotion_server_port_no(int(new_value))
             case self._KEY_ADVANCED_EMOTION_TEST:
                 self.__emotion_test(event, values)
+            case self._config.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED:
+                self._config.set_advanced_chat_gpt_history_log_enabled(
+                    values[self._config.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED])
 
     def __get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]

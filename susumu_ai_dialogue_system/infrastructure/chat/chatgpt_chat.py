@@ -33,7 +33,8 @@ class ChatGPTChat(BaseChat):
         before = time.perf_counter()
         try:
             messages = self._create_prompt()
-            # logger.debug(f"ChatGPT prompt={messages}")
+            if self._config.get_advanced_chat_gpt_history_log_enabled():
+                logger.debug(f"ChatGPT history={messages}")
             result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=messages,

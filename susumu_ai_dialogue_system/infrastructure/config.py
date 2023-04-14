@@ -104,6 +104,7 @@ class Config:
     KEY_PYAUDIO_SECONDARY_OUTPUT_API_NAME = "pyaudio_secondary_output_api_name"
     KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME = "pyaudio_secondary_output_device_name"
     KEY_ADVANCED_CONSOLE_LOG_LEVEL = "advanced_console_log_level"
+    KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED = "advanced_chat_gpt_history_log_enabled"
 
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
@@ -183,6 +184,7 @@ class Config:
               wrime_emotion_server_host: "127.0.0.1"
               wrime_emotion_server_port_no: 56563
             Advanced:
+              advanced_chat_gpt_history_log_enabled: false
               advanced_console_log_level: "DEBUG"
             GUI:
               gui_app_title: "susumu_ai_dialogue_system"
@@ -478,3 +480,10 @@ class Config:
 
     def set_advanced_console_log_level(self, value: str) -> None:
         self._config["Advanced"][self.KEY_ADVANCED_CONSOLE_LOG_LEVEL] = value
+
+    def get_advanced_chat_gpt_history_log_enabled(self) -> bool:
+        return self._config["Advanced"][self.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED]
+
+    def set_advanced_chat_gpt_history_log_enabled(self, value: bool) -> None:
+        self._config["Advanced"][self.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED] = value
+
