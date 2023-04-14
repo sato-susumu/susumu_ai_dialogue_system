@@ -1,6 +1,6 @@
 from susumu_ai_dialogue_system.application.common.log_controller import LogController
 from susumu_ai_dialogue_system.infrastructure.avatar_controller.dummy_avatar_controller import DummyAvatarController
-from susumu_ai_dialogue_system.infrastructure.avatar_controller.threaded_avatar_controller import ThreadedAvatarController
+from susumu_ai_dialogue_system.infrastructure.avatar_controller.async_repeat_avatar_controller import AsyncRepeatAvatarController
 from susumu_ai_dialogue_system.infrastructure.avatar_controller.vmagicmirror_avatar_controller import VMagicMirrorController
 from susumu_ai_dialogue_system.infrastructure.chat.base_chat import BaseChat
 from susumu_ai_dialogue_system.infrastructure.chat.chatgpt_chat import ChatGPTChat
@@ -89,7 +89,7 @@ class FunctionFactory:
         value = config.get_common_v_magic_mirror_connection_enabled()
         if value:
             source_controller = VMagicMirrorController(config)
-            return ThreadedAvatarController(config, source_controller)
+            return AsyncRepeatAvatarController(config, source_controller)
         return DummyAvatarController(config)
 
     @staticmethod

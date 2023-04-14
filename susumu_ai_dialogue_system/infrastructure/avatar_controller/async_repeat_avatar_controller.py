@@ -7,7 +7,7 @@ from susumu_ai_dialogue_system.infrastructure.config import Config
 from susumu_ai_dialogue_system.infrastructure.emotion.emotion import Emotion
 
 
-class ThreadedAvatarController(BaseAvatarController):
+class AsyncRepeatAvatarController(BaseAvatarController):
     def __init__(self, config: Config, source_controller: BaseAvatarController):
         super().__init__(config)
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     _config = Config()
     _source_controller = VMagicMirrorController(_config)
-    _controller = ThreadedAvatarController(_config, _source_controller)
+    _controller = AsyncRepeatAvatarController(_config, _source_controller)
     _controller.connect()
     try:
         while True:
