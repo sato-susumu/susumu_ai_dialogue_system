@@ -237,7 +237,7 @@ class Config:
     def get_ai_system_settings_file_path(self, ai_id: str) -> str:
         return f"./{self.USER_DATA_DIR_NAME}/ai_system_settings_{ai_id}.txt"
 
-    def make_ai_config_dir_if_needed(self) -> None:
+    def make_user_data_dir_if_not_exists(self) -> None:
         dir_path = self.get_user_data_dir_path()
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)

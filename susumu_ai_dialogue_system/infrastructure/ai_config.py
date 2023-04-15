@@ -34,7 +34,7 @@ class AiConfig:
         }
         config = OmegaConf.create(dict_conf)
 
-        self._config.make_ai_config_dir_if_needed()
+        self._config.make_user_data_dir_if_not_exists()
         config_file_path = self._config.get_ai_config_file_path(self._ai_id)
         OmegaConf.save(config, config_file_path)
 
