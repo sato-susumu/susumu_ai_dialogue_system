@@ -70,6 +70,25 @@ class ChatFunction(Enum):
         raise ValueError(f"{function_str} is not found in ChatFunction.")
 
 
+class LangChainMemoryType(Enum):
+    ConversationBufferWindowMemory = "conversation_buffer_window_memory"
+    ConversationBufferMemory = "conversation_buffer_memory"
+    ConversationSummaryMemory = "conversation_summary_memory"
+    ConversationSummaryBufferMemory = "conversation_summary_buffer_memory"
+    CombinedMemory = "combined_memory"
+
+    @classmethod
+    def name2memory_type(cls, memory_type_str: str) -> Any:
+        for function in LangChainMemoryType:
+            if function.name == memory_type_str:
+                return function
+        raise ValueError(f"{memory_type_str} is not found in LangChainMemory.")
+
+    @classmethod
+    def keys(cls):
+        return [memory_type.name for memory_type in LangChainMemoryType]
+
+
 # noinspection PyMethodMayBeStatic
 class Config:
     _CONFIG_FILE_NAME = "config.yaml"
@@ -107,6 +126,7 @@ class Config:
     KEY_ADVANCED_CONSOLE_LOG_LEVEL = "advanced_console_log_level"
     KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED = "advanced_chat_gpt_history_log_enabled"
     KEY_LANGCHAIN_CONVERSATION_VERBOSE = "langchain_conversation_verbose"
+    KEY_LANGCHAIN_MEMORY_TYPE = "langchain_memory_type"
 
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
@@ -188,6 +208,7 @@ class Config:
               wrime_emotion_server_port_no: 56563
             LangChain:
               langchain_conversation_verbose: false
+              langchain_memory_type: "ConversationBufferWindowMemory"
             Advanced:
               advanced_chat_gpt_history_log_enabled: false
               advanced_console_log_level: "DEBUG"
@@ -498,3 +519,10 @@ class Config:
 
     def set_langchain_conversation_verbose(self, value: bool) -> None:
         self._config["LangChain"][self.KEY_LANGCHAIN_CONVERSATION_VERBOSE] = value
+
+    def get_langchain_memory_type(self) -> LangChainMemoryType:
+        result = self._config["LangChain"][self.KEY_LANGCHAIN_MEMORY_TYPE]
+        return LangChainMemoryType.name2memory_type(result)
+
+    def set_langchain_memory_type(self, memory_type: LangChainMemoryType) -> None:
+        self._config["LangChain"][self.KEY_LANGCHAIN_MEMORY_TYPE] = memory_type.name

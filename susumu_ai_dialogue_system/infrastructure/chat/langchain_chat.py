@@ -10,6 +10,7 @@ from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, M
 from langchain.schema import messages_to_dict
 from loguru import logger
 
+from susumu_ai_dialogue_system.application.common.langchain_parts_factory import LangChainPartsFactory
 from susumu_ai_dialogue_system.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatEvent
 from susumu_ai_dialogue_system.infrastructure.config import Config
 
@@ -22,12 +23,8 @@ class LangChainChat(BaseChat):
 
         chat = ChatOpenAI(temperature=0)
 
-        # conv_memory = ConversationBufferMemory(return_messages=True)
-        self._conv_buffer_window_memory = ConversationBufferWindowMemory(k=10, return_messages=True)
-        # summary_memory = ConversationSummaryMemory(llm=OpenAI(verbose=True), input_key="input", return_messages=True)
-        # combined_memory = CombinedMemory(memories=[conv_memory, summary_memory])
-        # conversation_summary_buffer_memory = ConversationSummaryBufferMemory(llm=chat, max_token_limit=40,
-        #                                                                      return_messages=True)
+        self._conv_buffer_window_memory = LangChainPartsFactory.create_memory(config)
+        logger.debug(f"memory: {type(self._conv_buffer_window_memory).__name__}")
 
         current_ai_id = config.get_ai_id_list()[0]
         system_settings = config.get_ai_system_settings(current_ai_id)
