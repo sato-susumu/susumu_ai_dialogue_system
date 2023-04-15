@@ -4,6 +4,7 @@ from susumu_ai_dialogue_system.infrastructure.avatar_controller.async_repeat_ava
 from susumu_ai_dialogue_system.infrastructure.avatar_controller.vmagicmirror_avatar_controller import VMagicMirrorController
 from susumu_ai_dialogue_system.infrastructure.chat.base_chat import BaseChat
 from susumu_ai_dialogue_system.infrastructure.chat.chatgpt_chat import ChatGPTChat
+from susumu_ai_dialogue_system.infrastructure.chat.langchain_chat import LangChainChat
 from susumu_ai_dialogue_system.infrastructure.chat.parlai_chat import ParlAIChat
 from susumu_ai_dialogue_system.infrastructure.config import Config, OutputFunction, InputFunction, ChatFunction
 from susumu_ai_dialogue_system.infrastructure.emotion.dummy_emotion_model import DummyEmotionModel
@@ -47,11 +48,15 @@ class FunctionFactory:
     @staticmethod
     def create_chat(config: Config) -> BaseChat:
         chat_function = config.get_common_chat_function()
-        if chat_function == ChatFunction.PARLAI:
-            return ParlAIChat(config)
-        if chat_function == ChatFunction.CHATGPT:
-            return ChatGPTChat(config)
-        raise ValueError(f"Invalid chat_function: {chat_function}")
+        match chat_function:
+            case ChatFunction.PARLAI:
+                return ParlAIChat(config)
+            case ChatFunction.CHATGPT:
+                return ChatGPTChat(config)
+            case ChatFunction.LANGCHAIN:
+                return LangChainChat(config)
+            case _:
+                raise ValueError(f"Invalid chat_function: {chat_function}")
 
     @staticmethod
     def create_tts(config: Config) -> BaseTTS:

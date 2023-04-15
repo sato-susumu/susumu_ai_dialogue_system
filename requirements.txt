@@ -27,3 +27,4 @@ mido
 numpy
 python-rtmidi
 loguru
+langchain

@@ -60,6 +60,7 @@ class BaseFunction(Enum):
 class ChatFunction(Enum):
     CHATGPT = "chatgpt"
     PARLAI = "parlai"
+    LANGCHAIN = "langchain"
 
     @classmethod
     def str2function(cls, function_str: str) -> Any:
@@ -124,6 +125,7 @@ class Config:
     chat_function_dict = {
         ChatFunction.CHATGPT.value: "ChatGPT API (OpenAI API Key設定が必要)",
         ChatFunction.PARLAI.value: "ParlAIクライント (追加設定が必要)",
+        ChatFunction.LANGCHAIN.value: "LangChain (追加設定が必要)",
     }
     output_function_dict = {
         OutputFunction.NONE.value: "なし",

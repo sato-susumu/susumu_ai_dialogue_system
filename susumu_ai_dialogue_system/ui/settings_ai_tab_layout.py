@@ -24,9 +24,7 @@ class SettingsAiTabLayout(BaseLayout):
         raise "settings_ai_tab_layout"
 
     def get_layout(self):
-        # TODO: (低)AI設定の複数対応
         ai_tab_layout = [
-            [Sg.Text('・チャットエンジンが ChatGPTの場合のみプロンプトを利用します。')],
             [Sg.Text('プロンプト')],
             [Sg.Multiline(
                 default_text=self._config.get_ai_system_settings_text(self.__current_ai_id),

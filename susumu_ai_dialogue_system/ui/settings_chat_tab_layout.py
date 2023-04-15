@@ -25,6 +25,7 @@ class SettingsChatTabLayout(BaseLayout):
     def get_layout(self):
         parlai_items = [
             [Sg.Text('・利用には ParlAI Chat Server の起動が必要です。')],
+            [Sg.Text('・ParlAIの場合、AI設定タブの内容は利用できません。')],
             [Sg.Text('アドレス'),
              Sg.InputText(key=self._config.KEY_PARLAI_HOST,
                           default_text=self._config.get_parlai_host(),
@@ -45,9 +46,14 @@ class SettingsChatTabLayout(BaseLayout):
             [Sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
         ]
 
+        langchain_items = [
+            [Sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
+        ]
+
         chat_tab_layout = [
             [Sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
             [Sg.Frame("ParlAI", parlai_items, expand_x=True)],
+            [Sg.Frame("LangChain", langchain_items, expand_x=True)],
         ]
 
         return chat_tab_layout
