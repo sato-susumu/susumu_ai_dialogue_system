@@ -39,7 +39,12 @@ class LangChainChat(BaseChat):
             HumanMessagePromptTemplate.from_template("{input}")
         ])
 
-        self._conversation = ConversationChain(llm=chat, memory=self._conv_buffer_window_memory, prompt=prompt, verbose=True)
+        self._conversation = ConversationChain(
+            llm=chat,
+            memory=self._conv_buffer_window_memory,
+            prompt=prompt,
+            verbose=self._config.get_langchain_conversation_verbose(),
+        )
 
     def send_message(self, text: str) -> None:
         before = time.perf_counter()

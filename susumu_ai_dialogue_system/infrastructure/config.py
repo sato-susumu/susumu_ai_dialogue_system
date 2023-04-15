@@ -106,6 +106,7 @@ class Config:
     KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME = "pyaudio_secondary_output_device_name"
     KEY_ADVANCED_CONSOLE_LOG_LEVEL = "advanced_console_log_level"
     KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED = "advanced_chat_gpt_history_log_enabled"
+    KEY_LANGCHAIN_CONVERSATION_VERBOSE = "langchain_conversation_verbose"
 
     USER_DATA_DIR_NAME = "user_data"
     SAMPLE_DIR_NAME = "application"
@@ -185,6 +186,8 @@ class Config:
             WrimeEmotionServer:
               wrime_emotion_server_host: "127.0.0.1"
               wrime_emotion_server_port_no: 56563
+            LangChain:
+              langchain_conversation_verbose: false
             Advanced:
               advanced_chat_gpt_history_log_enabled: false
               advanced_console_log_level: "DEBUG"
@@ -489,3 +492,9 @@ class Config:
     def set_advanced_chat_gpt_history_log_enabled(self, value: bool) -> None:
         self._config["Advanced"][self.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED] = value
 
+    # langchain_conversation_verbose
+    def get_langchain_conversation_verbose(self) -> bool:
+        return self._config["LangChain"][self.KEY_LANGCHAIN_CONVERSATION_VERBOSE]
+
+    def set_langchain_conversation_verbose(self, value: bool) -> None:
+        self._config["LangChain"][self.KEY_LANGCHAIN_CONVERSATION_VERBOSE] = value
