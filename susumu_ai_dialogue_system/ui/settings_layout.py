@@ -11,6 +11,7 @@ from susumu_ai_dialogue_system.ui.settings_ai_tab_layout import SettingsAiTabLay
 from susumu_ai_dialogue_system.ui.settings_api_key_tab_layout import SettingsApiKeyTabLayout
 from susumu_ai_dialogue_system.ui.settings_chat_tab_layout import SettingsChatTabLayout
 from susumu_ai_dialogue_system.ui.settings_common_tab_layout import SettingsCommonTabLayout
+from susumu_ai_dialogue_system.ui.settings_langchain_tab_layout import SettingsLangchainTabLayout
 from susumu_ai_dialogue_system.ui.settings_stt_tab_layout import SettingsSttTabLayout
 from susumu_ai_dialogue_system.ui.settings_tts_tab_layout import SettingsTtsTabLayout
 
@@ -29,6 +30,7 @@ class SettingsLayout(BaseLayout):
         self.__stt_tab_layout = SettingsSttTabLayout(config, self, main_window)
         self.__tts_tab_layout = SettingsTtsTabLayout(config, self, main_window)
         self.__advanced_tab_layout = SettingsAdvancedTabLayout(config, self, main_window)
+        self.__langchain_tab_layout = SettingsLangchainTabLayout(config, self, main_window)
         self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
         self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
         self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
@@ -50,8 +52,7 @@ class SettingsLayout(BaseLayout):
         self._config.save()
 
     def update_elements(self) -> None:
-        if self._config.get_openai_api_key() == "":
-            self._main_window.window["api_keys_tab"].select()
+        self._main_window.window["langchain_tab"].update(visible=self._config.get_advanced_langchain_enabled())
 
     def update_config(self, config: Config) -> None:
         self._config = config
@@ -76,6 +77,11 @@ class SettingsLayout(BaseLayout):
                     [Sg.Tab('チャットエンジン', self.__chat_tab_layout.get_layout())],
                     [Sg.Tab('出力', self.__tts_tab_layout.get_layout())],
                     [Sg.Tab('実験', self.__advanced_tab_layout.get_layout())],
+                    [Sg.Tab(title="LangChain",
+                            layout=self.__langchain_tab_layout.get_layout(),
+                            key="langchain_tab",
+                            visible=self._config.get_advanced_langchain_enabled(),
+                            )],
                 ],
                 # tab_location='left',
                 expand_x=True,

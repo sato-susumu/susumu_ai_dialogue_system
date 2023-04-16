@@ -46,27 +46,9 @@ class SettingsChatTabLayout(BaseLayout):
             [Sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
         ]
 
-        memory_items = [[
-            Sg.Radio(key=name, text=name, group_id='memory_type',
-                     default=self._config.get_langchain_memory_type().name == name,
-                     enable_events=True,
-                     )
-        ] for name in LangChainMemoryType.keys()]
-
-        langchain_items = [
-            [Sg.Text('・利用には API KEYタブ > OpenAI API Key の入力が必要です。')],
-            [Sg.Checkbox('Conversationの詳細をログに出力する',
-                         key=self._config.KEY_LANGCHAIN_CONVERSATION_VERBOSE,
-                         default=self._config.get_langchain_conversation_verbose(),
-                         enable_events=True,
-                         )],
-            [Sg.Frame("Memory", memory_items, expand_x=True)],
-        ]
-
         chat_tab_layout = [
             [Sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
             [Sg.Frame("ParlAI", parlai_items, expand_x=True)],
-            [Sg.Frame("LangChain", langchain_items, expand_x=True)],
         ]
 
         return chat_tab_layout
@@ -78,10 +60,3 @@ class SettingsChatTabLayout(BaseLayout):
             case self._config.KEY_PARLAI_PORT_NO:
                 new_value = self._main_window.input_validation_number_only(event, values)
                 self._config.set_parlai_port_no(int(new_value))
-            case self._config.KEY_LANGCHAIN_CONVERSATION_VERBOSE:
-                self._config.set_langchain_conversation_verbose(
-                    values[self._config.KEY_LANGCHAIN_CONVERSATION_VERBOSE])
-
-        if event in LangChainMemoryType.keys():
-            [self._config.set_langchain_memory_type(memory_type)
-             for memory_type in LangChainMemoryType if values[memory_type.name]]

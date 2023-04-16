@@ -186,6 +186,14 @@ class SettingsAdvancedTabLayout(BaseLayout):
              ],
         ]
 
+        langchain_items = [
+            [Sg.Checkbox("LangChainを使用する",
+                         default=self._config.get_advanced_langchain_enabled(),
+                         key=self._config.KEY_ADVANCED_LANGCHAIN_ENABLED,
+                         enable_events=True,
+                         )]
+        ]
+
         status_items = [
             [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
         ]
@@ -198,6 +206,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 [Sg.Frame("ログ", log_level_items, expand_x=True)],
                 [Sg.Frame("口パク用第二音声デバイス", secondary_audio_items, expand_x=True)],
                 [Sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
+                [Sg.Frame("LangChain", langchain_items, expand_x=True)],
                 [Sg.Frame("GUI", gui_items, expand_x=True)],
                 [Sg.Frame("APIステータス", status_items, expand_x=True)],
             ],
@@ -280,6 +289,11 @@ class SettingsAdvancedTabLayout(BaseLayout):
             case self._config.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED:
                 self._config.set_advanced_chat_gpt_history_log_enabled(
                     values[self._config.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED])
+            case self._config.KEY_ADVANCED_LANGCHAIN_ENABLED:
+                self._config.set_advanced_langchain_enabled(
+                    values[self._config.KEY_ADVANCED_LANGCHAIN_ENABLED])
+                from susumu_ai_dialogue_system.ui.settings_layout import SettingsLayout
+                self._main_window.update_all_elements_in_window(SettingsLayout.get_key())
 
     def __get_selected_console_log_level(self, values):
         selected_log_level_key = values[self._KEY_ADVANCED_CONSOLE_LOG_LEVEL]
@@ -294,4 +308,3 @@ class SettingsAdvancedTabLayout(BaseLayout):
             logger.error(e)
             Sg.PopupError(e, title="エラー", keep_on_top=True)
         return api_name, device_name
-

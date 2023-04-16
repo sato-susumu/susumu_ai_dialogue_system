@@ -47,14 +47,15 @@ class FunctionFactory:
 
     @staticmethod
     def create_chat(config: Config) -> BaseChat:
+        if config.get_advanced_langchain_enabled():
+            return LangChainChat(config)
+
         chat_function = config.get_common_chat_function()
         match chat_function:
             case ChatFunction.PARLAI:
                 return ParlAIChat(config)
             case ChatFunction.CHATGPT:
                 return ChatGPTChat(config)
-            case ChatFunction.LANGCHAIN:
-                return LangChainChat(config)
             case _:
                 raise ValueError(f"Invalid chat_function: {chat_function}")
 

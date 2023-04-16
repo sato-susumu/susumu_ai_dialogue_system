@@ -126,7 +126,10 @@ class MainLayout(BaseLayout):
                 else:
                     self.__main_thread_stop()
                 self._main_window.update_all_elements_in_window(self.get_key())
+
             case self._KEY_MAIN_SETTINGS:
                 temp_config = self._config.clone()
                 self._main_window.set_temporary_config(SettingsLayout.get_key(), temp_config)
                 self._main_window.create_new_window(SettingsLayout.get_key())
+                if self._config.get_openai_api_key() == "":
+                    self._main_window.window["api_keys_tab"].select()

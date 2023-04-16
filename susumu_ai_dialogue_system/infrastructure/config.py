@@ -125,6 +125,7 @@ class Config:
     KEY_PYAUDIO_SECONDARY_OUTPUT_DEVICE_NAME = "pyaudio_secondary_output_device_name"
     KEY_ADVANCED_CONSOLE_LOG_LEVEL = "advanced_console_log_level"
     KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED = "advanced_chat_gpt_history_log_enabled"
+    KEY_ADVANCED_LANGCHAIN_ENABLED = "advanced_langchain_enabled"
     KEY_LANGCHAIN_CONVERSATION_VERBOSE = "langchain_conversation_verbose"
     KEY_LANGCHAIN_MEMORY_TYPE = "langchain_memory_type"
 
@@ -146,7 +147,6 @@ class Config:
     chat_function_dict = {
         ChatFunction.CHATGPT.value: "ChatGPT API (OpenAI API Key設定が必要)",
         ChatFunction.PARLAI.value: "ParlAIクライント (追加設定が必要)",
-        ChatFunction.LANGCHAIN.value: "LangChain (追加設定が必要)",
     }
     output_function_dict = {
         OutputFunction.NONE.value: "なし",
@@ -212,6 +212,7 @@ class Config:
             Advanced:
               advanced_chat_gpt_history_log_enabled: false
               advanced_console_log_level: "DEBUG"
+              advanced_langchain_enabled: false
             GUI:
               gui_app_title: "susumu_ai_dialogue_system"
               gui_theme_name: "Bright Colors"   
@@ -512,6 +513,12 @@ class Config:
 
     def set_advanced_chat_gpt_history_log_enabled(self, value: bool) -> None:
         self._config["Advanced"][self.KEY_ADVANCED_CHAT_GPT_HISTORY_LOG_ENABLED] = value
+
+    def get_advanced_langchain_enabled(self) -> bool:
+        return self._config["Advanced"][self.KEY_ADVANCED_LANGCHAIN_ENABLED]
+
+    def set_advanced_langchain_enabled(self, value: bool) -> None:
+        self._config["Advanced"][self.KEY_ADVANCED_LANGCHAIN_ENABLED] = value
 
     # langchain_conversation_verbose
     def get_langchain_conversation_verbose(self) -> bool:
