@@ -22,7 +22,7 @@
 <br/>
 
 <p align="center">
-<img src="./docs/resources/susumu_ai_dialogue_system_modules_ja.png" />
+<img src="./docs/resources/susumu_ai_dialogue_system_modules.png" />
 </p>
 
 
@@ -104,7 +104,6 @@ AI VTuberとして動かすためには次のステップを踏むだけ、、�
 | カテゴリ | モジュール | 条件                                     |
 | -------- | ---------- |----------------------------------------|
 | チャット | [ChatGPT](https://chat.openai.com/)    | APIキーが必要                               |
-| チャット     | [ParlAI](https://parl.ai/) | ParlAIチャットサーバーが必要                      |
 | 音声認識 | Googleストリーミング音声認識 | GCP認証か、APIキーが必要                        |
 | 音声認識 | [SpeechRecognition(Google)](https://github.com/Uberi/speech_recognition#readme) |                                        |
 | 音声認識 | 標準入力を使った<br>擬似的な音声認識モジュール |                                        |
