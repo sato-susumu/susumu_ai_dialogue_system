@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 import PySimpleGUI as Sg
 
 from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
-from susumu_ai_dialogue_system.infrastructure.config import Config, InputFunction, ChatFunction, BaseFunction,\
+from susumu_ai_dialogue_system.infrastructure.config import Config, InputFunction, BaseFunction,\
     OutputFunction
 
 
@@ -38,13 +38,6 @@ class SettingsCommonTabLayout(BaseLayout):
                      )
         ] for key, text in self._config.input_function_dict.items()]
 
-        chat_function_items = [[
-            Sg.Radio(key=key, text=text, group_id='chat',
-                     default=self._config.get_common_chat_function().value == key,
-                     enable_events=True,
-                     )
-        ] for key, text in self._config.chat_function_dict.items()]
-
         output_function_items = [[
             Sg.Radio(key=key, text=text, group_id='output',
                      default=self._config.get_common_output_function().value == key,
@@ -71,7 +64,6 @@ class SettingsCommonTabLayout(BaseLayout):
             Sg.Column([
                 [Sg.Frame("ベース機能", base_function_items, expand_x=True)],
                 [Sg.Frame("入力", input_function_items, expand_x=True)],
-                [Sg.Frame("チャットエンジン", chat_function_items, expand_x=True)],
                 [Sg.Frame("出力", output_function_items, expand_x=True)],
                 [Sg.Frame("実験", other_function_items, expand_x=True)],
             ],
@@ -91,10 +83,6 @@ class SettingsCommonTabLayout(BaseLayout):
         if event in self._config.input_function_dict.keys():
             [self._config.set_common_input_function(InputFunction.str2function(key)) for key in
              self._config.input_function_dict.keys() if values[key]]
-
-        if event in self._config.chat_function_dict.keys():
-            [self._config.set_common_chat_function(ChatFunction.str2function(key)) for key in
-             self._config.chat_function_dict.keys() if values[key]]
 
         if event in self._config.output_function_dict.keys():
             [self._config.set_common_output_function(OutputFunction.str2function(key))

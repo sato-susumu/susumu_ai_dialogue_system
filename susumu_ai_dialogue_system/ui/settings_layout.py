@@ -9,7 +9,6 @@ from susumu_ai_dialogue_system.ui.base_layout import BaseLayout
 from susumu_ai_dialogue_system.ui.settings_advanced_tab_layout import SettingsAdvancedTabLayout
 from susumu_ai_dialogue_system.ui.settings_ai_tab_layout import SettingsAiTabLayout
 from susumu_ai_dialogue_system.ui.settings_api_key_tab_layout import SettingsApiKeyTabLayout
-from susumu_ai_dialogue_system.ui.settings_chat_tab_layout import SettingsChatTabLayout
 from susumu_ai_dialogue_system.ui.settings_common_tab_layout import SettingsCommonTabLayout
 from susumu_ai_dialogue_system.ui.settings_langchain_tab_layout import SettingsLangchainTabLayout
 from susumu_ai_dialogue_system.ui.settings_stt_tab_layout import SettingsSttTabLayout
@@ -32,7 +31,6 @@ class SettingsLayout(BaseLayout):
         self.__advanced_tab_layout = SettingsAdvancedTabLayout(config, self, main_window)
         self.__langchain_tab_layout = SettingsLangchainTabLayout(config, self, main_window)
         self.__api_key_tab_layout = SettingsApiKeyTabLayout(config, self, main_window)
-        self.__chat_tab_layout = SettingsChatTabLayout(config, self, main_window)
         self.__ai_tab_layout = SettingsAiTabLayout(config, self, main_window)
         self.__tab_layout_list = [
             self.__common_tab_layout,
@@ -40,7 +38,6 @@ class SettingsLayout(BaseLayout):
             self.__tts_tab_layout,
             self.__advanced_tab_layout,
             self.__api_key_tab_layout,
-            self.__chat_tab_layout,
             self.__ai_tab_layout,
         ]
 
@@ -74,7 +71,6 @@ class SettingsLayout(BaseLayout):
                     [Sg.Tab('API KEY', self.__api_key_tab_layout.get_layout(), key="api_keys_tab")],
                     [Sg.Tab('AI設定', self.__ai_tab_layout.get_layout())],
                     [Sg.Tab('入力', self.__stt_tab_layout.get_layout())],
-                    [Sg.Tab('チャットエンジン', self.__chat_tab_layout.get_layout())],
                     [Sg.Tab('出力', self.__tts_tab_layout.get_layout())],
                     [Sg.Tab('実験', self.__advanced_tab_layout.get_layout())],
                     [Sg.Tab(title="LangChain",

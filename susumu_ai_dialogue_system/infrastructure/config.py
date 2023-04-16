@@ -57,19 +57,6 @@ class BaseFunction(Enum):
         raise ValueError(f"{function_str} is not found in BaseFunction.")
 
 
-class ChatFunction(Enum):
-    CHATGPT = "chatgpt"
-    PARLAI = "parlai"
-    LANGCHAIN = "langchain"
-
-    @classmethod
-    def str2function(cls, function_str: str) -> Any:
-        for function in ChatFunction:
-            if function.value == function_str:
-                return function
-        raise ValueError(f"{function_str} is not found in ChatFunction.")
-
-
 class LangChainMemoryType(Enum):
     ConversationBufferWindowMemory = "conversation_buffer_window_memory"
     ConversationBufferMemory = "conversation_buffer_memory"
@@ -111,8 +98,6 @@ class Config:
     KEY_COMMON_OUTPUT_FUNCTION = "common_output_function"
     KEY_COMMON_OBS_ENABLED = "common_obs_enabled"
     KEY_COMMON_V_MAGIC_MIRROR_CONNECTION_ENABLED = "common_v_magic_mirror_connection_enabled"
-    KEY_PARLAI_HOST = "parlai_host"
-    KEY_PARLAI_PORT_NO = "parlai_port_no"
     KEY_WRIME_EMOTION_SERVER_HOST = "wrime_emotion_server_host"
     KEY_WRIME_EMOTION_SERVER_PORT_NO = "wrime_emotion_server_port_no"
     KEY_GCP_TEXT_TO_SPEECH_API_KEY = "gcp_text_to_speech_api_key"
@@ -143,10 +128,6 @@ class Config:
         InputFunction.GOOGLE_STREAMING.value: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
         InputFunction.WHISPER_API.value: "Whisper API音声認識 (OpenAI API Key設定が必要)",
         InputFunction.YOUTUBE_PSEUD.value: "YouTubeコメント取得 (追加設定が必要)",
-    }
-    chat_function_dict = {
-        ChatFunction.CHATGPT.value: "ChatGPT API (OpenAI API Key設定が必要)",
-        ChatFunction.PARLAI.value: "ParlAIクライント (追加設定が必要)",
     }
     output_function_dict = {
         OutputFunction.NONE.value: "なし",
@@ -184,9 +165,6 @@ class Config:
               voicevox_host: "127.0.0.1"
               voicevox_port_no: 50021
               voicevox_speaker_no: 8
-            ParlAI:
-              parlai_host: "127.0.0.1"
-              parlai_port_no: 35496
             YouTube:
               # GCP YouTube Data API v3のAPIキー
               gcp_youtube_data_api_key: ""
@@ -359,18 +337,6 @@ class Config:
     def set_voicevox_speaker_no(self, value: int) -> None:
         self._config["VOICEVOX"][self.KEY_VOICEVOX_SPEAKER_NO] = value
 
-    def get_parlai_host(self) -> str:
-        return self._config["ParlAI"][self.KEY_PARLAI_HOST]
-
-    def set_parlai_host(self, value: str) -> None:
-        self._config["ParlAI"][self.KEY_PARLAI_HOST] = value
-
-    def get_parlai_port_no(self) -> int:
-        return self._config["ParlAI"][self.KEY_PARLAI_PORT_NO]
-
-    def set_parlai_port_no(self, value: int) -> None:
-        self._config["ParlAI"][self.KEY_PARLAI_PORT_NO] = value
-
     def get_gcp_youtube_data_api_key(self) -> str:
         return self._config["YouTube"][self.KEY_GCP_YOUTUBE_DATA_API_KEY]
 
@@ -443,17 +409,6 @@ class Config:
 
     def set_common_input_function(self, function: InputFunction) -> None:
         self._config["Common"][self.KEY_COMMON_INPUT_FUNCTION] = function.value
-
-    def get_common_chat_function_name(self) -> str:
-        key = self.get_common_chat_function()
-        return self.chat_function_dict[key.value]
-
-    def get_common_chat_function(self) -> ChatFunction:
-        value = self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION]
-        return ChatFunction.str2function(value)
-
-    def set_common_chat_function(self, function: ChatFunction) -> None:
-        self._config["Common"][self.KEY_COMMON_CHAT_FUNCTION] = function.value
 
     def get_common_output_function_name(self) -> str:
         function = self.get_common_output_function()
