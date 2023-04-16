@@ -113,10 +113,10 @@ class SettingsTtsTabLayout(BaseLayout):
         ]
 
         tts_tab_layout = [
-            [Sg.Frame("gTTS 音声合成(動作確認用)", gtts_items, expand_x=True)],
+            [Sg.Frame("サンプル音声合成 pyttsx3", pyttsx3_items, expand_x=True)],
             [Sg.Frame("VOICEVOX 音声合成", voicevox_items, expand_x=True)],
             [Sg.Frame("Google Text-to-Speech 音声合成", google_cloud_tts_items, expand_x=True)],
-            [Sg.Frame("Pyttsx3 音声合成", pyttsx3_items, expand_x=True)],
+            [Sg.Frame("サンプル音声合成 gTTS", gtts_items, expand_x=True)],
             [
                 Sg.Text("テスト再生用文字列"),
                 Sg.Multiline(default_text="音声合成の再生テストです",

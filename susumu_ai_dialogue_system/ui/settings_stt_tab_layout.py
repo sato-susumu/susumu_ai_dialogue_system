@@ -79,11 +79,11 @@ class SettingsSttTabLayout(BaseLayout):
 
         stt_tab_layout = [
             [Sg.Text('・テスト実行時の内容はコンソールに表示されます。')],
-            [Sg.Frame("SpeechRecognition 音声認識(動作確認用)", sr_google_stt_items, expand_x=True)],
-            [Sg.Frame("Google Speech-to-Text ストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
-            [Sg.Frame("Whisper API 音声認識", whisper_api_stt_items, expand_x=True)],
-            [Sg.Frame("YouTube チャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
+            [Sg.Frame("サンプル音声認識 SpeechRecognition", sr_google_stt_items, expand_x=True)],
             [Sg.Frame("文字入力", stdin_pseud_stt_items, expand_x=True)],
+            [Sg.Frame("Google Speech-to-Text ストリーミング音声認識", google_streaming_stt_items, expand_x=True)],
+            [Sg.Frame("Whisper API音声認識", whisper_api_stt_items, expand_x=True)],
+            [Sg.Frame("YouTube ライブチャット入力取り込み", youtube_pseud_stt_items, expand_x=True)],
         ]
 
         return stt_tab_layout

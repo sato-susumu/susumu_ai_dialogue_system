@@ -123,17 +123,17 @@ class Config:
         BaseFunction.TEXT_DIALOGUE.value: "文字対話",
     }
     input_function_dict = {
-        InputFunction.SR_GOOGLE.value: "サンプル音声認識",
+        InputFunction.SR_GOOGLE.value: "サンプル音声認識 SpeechRecognition",
         InputFunction.STDIN_PSEUD.value: "文字入力",
         InputFunction.GOOGLE_STREAMING.value: "Google Speech-to-Text ストリーミング音声認識 (追加設定が必要)",
         InputFunction.WHISPER_API.value: "Whisper API音声認識 (OpenAI API Key設定が必要)",
-        InputFunction.YOUTUBE_PSEUD.value: "YouTubeコメント取得 (追加設定が必要)",
+        InputFunction.YOUTUBE_PSEUD.value: "YouTube ライブチャット入力取り込み (追加設定が必要)",
     }
     output_function_dict = {
         OutputFunction.NONE.value: "なし",
         OutputFunction.PYTTSX3.value: "サンプル音声合成 pyttsx3",
-        OutputFunction.VOICEVOX.value: "VOICEVOX (VOICEVOXアプリ起動が必要)",
-        OutputFunction.GOOGLE_CLOUD.value: "Google Text-to-Speech (追加設定が必要)",
+        OutputFunction.VOICEVOX.value: "VOICEVOX 音声合成 (VOICEVOXアプリ起動が必要)",
+        OutputFunction.GOOGLE_CLOUD.value: "Google Text-to-Speech 音声合成 (追加設定が必要)",
         OutputFunction.GTTS.value: "サンプル音声合成 gTTS",
     }
 
