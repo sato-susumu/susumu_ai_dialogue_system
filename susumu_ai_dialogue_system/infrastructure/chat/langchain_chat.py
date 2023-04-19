@@ -44,23 +44,27 @@ class LangChainChat(BaseChat):
             verbose=self._config.get_langchain_conversation_verbose(),
         )
 
-    def _run_and_count_tokens(self, chain: ConversationChain, query: str):
+    def _run_and_count_tokens(self, chain: ConversationChain, query: str) -> str:
         with get_openai_callback() as cb:
             result = chain.run(query)
-            total_tokens = cb.total_tokens
+            logger.debug(f"successful_requests: {cb.successful_requests} "
+                         + f"prompt_tokens: {cb.prompt_tokens} "
+                         + f"completion_tokens: {cb.completion_tokens} "
+                         + f"total_tokens: {cb.total_tokens} "
+                         + f"total_cost: {cb.total_cost:.3f} "
+                         )
 
-        return result, total_tokens
+        return result
 
     def send_message(self, text: str) -> None:
         before = time.perf_counter()
 
-        messages, total_tokens = self._run_and_count_tokens(self._conversation, text)
+        messages = self._run_and_count_tokens(self._conversation, text)
         # history = self._memory.chat_memory
         # messages_dict = json.dumps(messages_to_dict(history.messages), indent=2, ensure_ascii=False)
         # print(f"memory: {messages_dict}")
 
         after = time.perf_counter()
-        logger.debug(f"total_tokens={total_tokens}")
         logger.debug(f"LangChain conversation processing time={after - before:.3f} s")
 
         self._event_publish(ChatEvent.MESSAGE, ChatResult(messages, []))
