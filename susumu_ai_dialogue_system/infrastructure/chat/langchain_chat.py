@@ -24,8 +24,8 @@ class LangChainChat(BaseChat):
 
         chat = ChatOpenAI(temperature=0)
 
-        self._conv_buffer_window_memory = LangChainPartsFactory.create_memory(config)
-        logger.debug(f"memory: {type(self._conv_buffer_window_memory).__name__}")
+        self._memory = LangChainPartsFactory.create_memory(config)
+        logger.debug(f"memory: {type(self._memory).__name__}")
 
         current_ai_id = config.get_ai_id_list()[0]
         system_settings = config.get_ai_system_settings(current_ai_id)
@@ -39,7 +39,7 @@ class LangChainChat(BaseChat):
 
         self._conversation = ConversationChain(
             llm=chat,
-            memory=self._conv_buffer_window_memory,
+            memory=self._memory,
             prompt=prompt,
             verbose=self._config.get_langchain_conversation_verbose(),
         )
@@ -55,7 +55,7 @@ class LangChainChat(BaseChat):
         before = time.perf_counter()
 
         messages, total_tokens = self._run_and_count_tokens(self._conversation, text)
-        # history = self._conv_buffer_window_memory.chat_memory
+        # history = self._memory.chat_memory
         # messages_dict = json.dumps(messages_to_dict(history.messages), indent=2, ensure_ascii=False)
         # print(f"memory: {messages_dict}")
 
