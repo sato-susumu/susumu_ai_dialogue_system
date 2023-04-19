@@ -28,3 +28,4 @@ numpy
 python-rtmidi
 loguru
 langchain
+tiktoken

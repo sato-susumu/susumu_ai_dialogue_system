@@ -39,6 +39,7 @@ class SettingsLayout(BaseLayout):
             self.__advanced_tab_layout,
             self.__api_key_tab_layout,
             self.__ai_tab_layout,
+            self.__langchain_tab_layout,
         ]
 
     @classmethod
