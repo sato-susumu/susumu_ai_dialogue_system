@@ -13,6 +13,7 @@ from loguru import logger
 from susumu_ai_dialogue_system.application.common.langchain_parts_factory import LangChainPartsFactory
 from susumu_ai_dialogue_system.infrastructure.chat.base_chat import BaseChat, ChatResult, ChatEvent
 from susumu_ai_dialogue_system.infrastructure.config import Config
+from langchain.callbacks import get_openai_callback
 
 
 # noinspection PyUnusedLocal,PyMethodMayBeStatic,PyShadowingNames
@@ -43,15 +44,23 @@ class LangChainChat(BaseChat):
             verbose=self._config.get_langchain_conversation_verbose(),
         )
 
+    def _run_and_count_tokens(self, chain: ConversationChain, query: str):
+        with get_openai_callback() as cb:
+            result = chain.run(query)
+            total_tokens = cb.total_tokens
+
+        return result, total_tokens
+
     def send_message(self, text: str) -> None:
         before = time.perf_counter()
 
-        messages = self._conversation.predict(input=text)
+        messages, total_tokens = self._run_and_count_tokens(self._conversation, text)
         # history = self._conv_buffer_window_memory.chat_memory
         # messages_dict = json.dumps(messages_to_dict(history.messages), indent=2, ensure_ascii=False)
         # print(f"memory: {messages_dict}")
 
         after = time.perf_counter()
+        logger.debug(f"total_tokens={total_tokens}")
         logger.debug(f"LangChain conversation processing time={after - before:.3f} s")
 
         self._event_publish(ChatEvent.MESSAGE, ChatResult(messages, []))
