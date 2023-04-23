@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 import pyaudio
 from loguru import logger
@@ -29,7 +28,7 @@ class PyAudioUtility:
                 return speaker.device_id
         return -1
 
-    def get_speaker_list(self) -> List[PyAudioDevice]:
+    def get_speaker_list(self) -> list[PyAudioDevice]:
         speaker_list = []
         pa = pyaudio.PyAudio()
         for host_index in range(pa.get_host_api_count()):

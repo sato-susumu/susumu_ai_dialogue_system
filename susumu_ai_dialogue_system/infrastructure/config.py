@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import os
 from enum import Enum
-from typing import List, Any
+from typing import Any
 from typing import TYPE_CHECKING
 
 from omegaconf import OmegaConf
@@ -247,7 +247,7 @@ class Config:
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
 
-    def get_ai_id_list(self) -> List[str]:
+    def get_ai_id_list(self) -> list[str]:
         return self._ai_config_list.get_ai_id_list()
 
     def get_ai_system_settings(self, ai_id: str) -> SystemSettings:
