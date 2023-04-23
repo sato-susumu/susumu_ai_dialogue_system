@@ -194,8 +194,10 @@ class SettingsAdvancedTabLayout(BaseLayout):
                          )]
         ]
 
-        status_items = [
-            [Sg.Text('OpenAI'), self.create_linked_text("https://status.openai.com/", "https://status.openai.com/")]
+        link_items = [
+            [Sg.Text('OpenAI'),
+             self.create_linked_text("Status", "https://status.openai.com/"),
+             self.create_linked_text("Usage", "https://platform.openai.com/account/usage")],
         ]
 
         advanced_tab_layout = [[
@@ -208,7 +210,7 @@ class SettingsAdvancedTabLayout(BaseLayout):
                 [Sg.Frame("ChatGPT", chat_gpt_items, expand_x=True)],
                 [Sg.Frame("LangChain", langchain_items, expand_x=True)],
                 [Sg.Frame("GUI", gui_items, expand_x=True)],
-                [Sg.Frame("APIステータス", status_items, expand_x=True)],
+                [Sg.Frame("リンク", link_items, expand_x=True)],
             ],
                 scrollable=True,
                 vertical_scroll_only=True,
