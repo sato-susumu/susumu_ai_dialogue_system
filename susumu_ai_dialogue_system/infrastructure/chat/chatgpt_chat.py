@@ -48,6 +48,11 @@ class ChatGPTChat(BaseChat):
         after = time.perf_counter()
         logger.debug(f"ChatGPT processing time={after - before:.3f} s")
 
+        usage = result.usage
+        logger.debug(f"prompt_tokens={usage.prompt_tokens} "
+                     f"completion_tokens={usage.completion_tokens} "
+                     f"total_tokens={usage.total_tokens}")
+
         result_text = result.choices[0].message.content
         self._append_message("assistant", result_text)
 
