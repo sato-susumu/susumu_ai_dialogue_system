@@ -85,7 +85,7 @@ class MainWindow:
                         title="OpenAIのAPI Keyが設定されていません。")
 
         while True:
-            event, values = self.window.read()
+            event, values = self.window.read(timeout=2000)
             if event in (Sg.WIN_CLOSED, self.KEY_WINDOW_EXIT):
                 break
             for layout in self.__layout_list:
